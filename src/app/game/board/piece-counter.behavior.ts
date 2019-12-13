@@ -43,13 +43,13 @@ export class PieceCounterBehavior extends BehaviorBase<PieceCounterType, PieceCo
     const cont:ContainerComponent = new ContainerComponent({
         parent: parent,
         element: {
-          position: new Point(countPos%3 * 16, Math.ceil(value/3) * 16),
+          position: new Point(countPos%3 * 20, -50 + Math.ceil(value/3) * 20),
         },
         children: [
           new SpriteComponent({
             tag: ['ball'],
             element: {
-              scale: new Point(0.8,0.8),
+              scale: new Point(1,1),
               tint: 0xaaaaaa
             }
           }).texture(this.getBallTexture(value), 'content')
@@ -61,7 +61,8 @@ export class PieceCounterBehavior extends BehaviorBase<PieceCounterType, PieceCo
               position: new Point(0,0),
               text: value.toString(),
               font: '10px arial',
-              tint: 0x111111,
+              // 0x111111
+              tint: 0xEEEEEE,
               anchor: new Point(0.5,0.5),
             }
           })
@@ -71,7 +72,7 @@ export class PieceCounterBehavior extends BehaviorBase<PieceCounterType, PieceCo
   }
 
   onReiceveValue(value:number):void {
-    (this.listDots.get(value).getChildWithTag('ball').element as Sprite).tint = 0xffffff;
+    (this.listDots.get(value).getChildWithTag('ball').element as Sprite).tint = 0x444444;
     this.listDots.get(value).getChildWithTag('text').element.visible = true;
 
   }

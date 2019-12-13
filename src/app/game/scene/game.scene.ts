@@ -113,7 +113,7 @@ export class GameScene extends StateContainer {
     })
   }
   private getTotalBalls(): number {
-    let initial = 35;
+    let initial = Resources.getConfig().total_balls;
 
     GameModelData.instance.items.forEach((value: PowerList) => {
       if (value === 'extra-ball') {
@@ -346,7 +346,8 @@ export class GameScene extends StateContainer {
         }),
         new ButtonComponent({
           element: {
-            position: new Point(0, 75)
+            position: new Point(0, 75),
+            visible: false
           }
         }).text('Exit').AddCallback(() => {
           this.onForceQuit();
@@ -452,7 +453,7 @@ export class GameScene extends StateContainer {
             text: 'GAME\nOVER\n20s',
             align: 'center',
             font: '10px arial',
-            tint: 0x000000,
+            tint: 0xEEEEEE,
             anchor: new Point(0.5, 0.5)
           }
         }).on('text', (elem: ComponentBase, value: number) => {
