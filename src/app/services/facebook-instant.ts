@@ -120,6 +120,21 @@ export class FacebookInstant extends EventEmitter {
         this._online = value;
     }
 
+    public createShortcut():void {
+        FBInstant.canCreateShortcutAsync()
+                .then(function(canCreateShortcut) {
+                    if (canCreateShortcut) {
+                    FBInstant.createShortcutAsync()
+                        .then(function() {
+                        // Shortcut created
+                        })
+                        .catch(function() {
+                        // Shortcut not created
+                        });
+                    }
+                });
+    }
+
     //tarun added weekly scoring
     public addScore(value: number, callback: (data: any) => void): void {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
@@ -264,13 +279,19 @@ export class FacebookInstant extends EventEmitter {
     //tarun bot confirmation
     public showBot(callback: () => void): void {
         FBInstant.getSupportedAPIs();
-        FBInstant.player.canSubscribeBotAsync().then(function (can_subscribe) {
-            if (can_subscribe) {
-                FBInstant.player.subscribeBotAsync().then(()=> {
-                    // Player is subscribed to the bot
+        FBInstant.player.canSubscribeBotAsync()
+            .then(function (can_subscribe) {
+                if (can_subscribe) {
+                    FBInstant.player.subscribeBotAsync().then(()=> {
+                        // Player is subscribed to the bot
+                        callback();
+                    });
+                }else{
                     callback();
-                });
-            }
+                }
+        }).catch((error)=>{
+            console.error("Error in show bot: ", error);
+            callback();
         });
 // Then when you want to ask the player to subscribe
 
@@ -281,6 +302,13 @@ export class FacebookInstant extends EventEmitter {
     }
     public removePause(): void {
         FBInstant.onPause( () => {} );
+    }
+
+    public inviteSocial(callback:() => void):void{
+        FBInstant.context.chooseAsync()
+            .then(()=>{
+                callback();
+            })
     }
 
     public startMatchmaking(callback: (value: string) => void): void {

@@ -30,7 +30,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           element: {
             text: 'Play with Friends',
             font: '30px lobster',
-            tint: 0x333333,
+            tint: 0xffd700,
             position: new Point(0, -210),
             anchor: new Point(0.5, 0.5)
           }
@@ -38,6 +38,28 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
         new ContainerComponent({
           element: {
             position: new Point(0, -145)
+          },
+          children: [
+            new BitmapTextComponent({
+              element: {
+                text: 'Play With Friends',
+                font: '22px arial',
+                tint: 0x333333,
+                position: new Point(-140, 0),
+                anchor: new Point(0, 0.5)
+              }
+            }),
+            new ButtonComponent({
+              element: {
+                position: new Point(110, 0),
+                scale: new Point(0.7, 0.7)
+              }
+            }).text('Invite').AddCallback(() => this.onInviteFriend())
+          ]
+        }),
+        new ContainerComponent({
+          element: {
+            position: new Point(0, -90)
           },
           children: [
             new BitmapTextComponent({
@@ -59,7 +81,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
         }),
         new ContainerComponent({
           element: {
-            position: new Point(0, -80)
+            position: new Point(0, -30)
           },
           children: [
             new BitmapTextComponent({
@@ -93,6 +115,13 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     );
   }
 
+  onInviteFriend(): void {
+    
+    FacebookInstant.instance.inviteSocial(() => {
+      console.log('inviteSocial', Resources.getConfig().templates.template1.prize);
+    })
+  }
+
   onInviteNew(): void {
     
     FacebookInstant.instance.updateStatus(() => {
@@ -118,12 +147,13 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           this.addEntry(containerParent, i, list[i]);
         // }
       }
+
     });
   }
 
   protected addEntry(parent: ContainerComponent, index: number, entry: FBInstant.LeaderboardEntry): void {
 
-    const dy: number = -10 + index * 45;
+    const dy: number = 35 + index * 45;
 
     parent.addChildren([
       new BitmapTextComponent({

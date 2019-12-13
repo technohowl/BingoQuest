@@ -223,7 +223,7 @@ export class MapSelectScene extends StateContainer {
 
    subscribeBot():void {
       FacebookInstant.instance.showBot(()=>{
-
+          FacebookInstant.instance.createShortcut();
       });
   }
 }

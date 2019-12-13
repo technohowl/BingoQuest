@@ -248,6 +248,7 @@ export class DailyPrizeScene extends StateContainer {
     SoundController.instance.audio('sfx').play('collect');
     FacebookInstant.instance.saveAllData( () => {
       EventManager.Instance.emit('change-state', 'map');
+
     })
   }
 

@@ -35,7 +35,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
         element: {
           text: 'Leaderboard',
           font: '30px lobster',
-          tint: 0x333333,
+          tint: 0xffd700,
           position: new Point(0, -210),
           anchor: new Point(0.5, 0.5)
         }

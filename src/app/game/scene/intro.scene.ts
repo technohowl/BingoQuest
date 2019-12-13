@@ -87,7 +87,9 @@ export class IntroScene extends StateContainer {
     if (timeDiff > 6) {
       EventManager.Instance.emit('change-state', 'daily');
     } else {
-      EventManager.Instance.emit('change-state', 'map');
+      EventManager.Instance.emit('change-state', 'social');
+
+      //EventManager.Instance.emit('change-state', 'map');
     }
 
   }
