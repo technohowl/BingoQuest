@@ -105,6 +105,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     })
 
     this.showFriendsLeaderboard();
+    this.sendUpdate();
 
   }
 
@@ -122,7 +123,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     })
   }
 
-  onInviteNew(): void {
+  sendUpdate(): void {
     
     FacebookInstant.instance.updateStatus(() => {
       console.log('updateStatus', Resources.getConfig().templates.template1.prize);
