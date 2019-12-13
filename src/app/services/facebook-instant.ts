@@ -126,11 +126,14 @@ export class FacebookInstant extends EventEmitter {
                     if (canCreateShortcut) {
                     FBInstant.createShortcutAsync()
                         .then(function() {
+                            window.localStorage.setItem('shortcut', "1");
+
                         // Shortcut created
                         })
                         .catch(function() {
                         // Shortcut not created
-                        });
+                        window.localStorage.setItem('shortcut', "1");
+                    });
                     }
                 });
     }
