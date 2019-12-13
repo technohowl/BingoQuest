@@ -1,0 +1,54 @@
+{
+  "name": "pixi-webpack-ts",
+  "version": "5.0.1",
+  "license": "CC-BY-NC-4.0",
+  "author": "Sharbel Freiberger",
+  "description": "A pre installed environnement to work with pixi.js with webpack & typescript",
+  "engines": {
+    "node": "~8.11.0",
+    "npm": "~5.8.0"
+  },
+  "main": "./index.html",
+  "scripts": {
+    "npm-reset": "rm -rf node_modules && npm cache verify && npm i",
+    "git-reset": "git reset HEAD --hard && git clean -fd && git fetch --all --tags --prune && git pull",
+    "https": "webpack-dev-server --https --cacert cert.pem",
+    "start": "webpack-dev-server",
+    "build": "webpack --env build"
+  },
+  "keywords": [
+    "pixijs",
+    "playground",
+    "basic",
+    "webpack",
+    "typescript",
+    "seed"
+  ],
+  "dependencies": {
+    "gsap": "^2.1.2",
+    "howler": "^2.1.2",
+    "pixi.js": "^4.8.0"
+  },
+  "devDependencies": {
+    "@types/facebook-instant-games": "^6.3.0",
+    "@types/gsap": "^1.20.2",
+    "@types/howler": "^2.1.1",
+    "@types/node": "9.6.0",
+    "@types/pixi.js": "4.8.0",
+    "awesome-typescript-loader": "5.0.0-1",
+    "clean-webpack-plugin": "0.1.19",
+    "copy-webpack-plugin": "4.5.1",
+    "file-loader": "1.1.11",
+    "html-webpack-plugin": "3.1.0",
+    "install": "^0.13.0",
+    "npm": "^6.11.3",
+    "terser-webpack-plugin": "^2.1.0",
+    "tsconfig-paths-webpack-plugin": "3.0.2",
+    "tslint": "5.9.1",
+    "typescript": "2.7.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "4.3.0",
+    "webpack-cli": "2.0.13",
+    "webpack-dev-server": "3.1.1"
+  }
+}
