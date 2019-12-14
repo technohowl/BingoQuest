@@ -1,18 +1,18 @@
 
 import {
     StateContainer,
-    EventManager, FacebookInstant
+    EventManager, FacebookInstant, Resources
 } from '@app/game';
 import { RendererController } from '@app/controller/renderer.controller';
 import { SpriteComponent } from '@app/components/sprite.component';
-import { Point, Graphics } from 'pixi.js';
+import {Point, Graphics, Texture} from 'pixi.js';
 import { ScrollingBehavior } from '../map/scrolling.behavior';
 import { ContainerComponent } from '@app/components/container.component';
 import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { BingoCounterComponent } from '../map/bingo-counter.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
-import { GameModelData } from '@models/game-model.data';
+import {GameModelData} from '@models/game-model.data';
 import { SoundController } from '@app/controller/sound.controller';
 import { Bounce, TweenMax} from "gsap";
 
@@ -22,6 +22,7 @@ export class MapSelectScene extends StateContainer {
     private lastOpened:boolean;
     private counter:BingoCounterComponent;
     private background:Graphics;
+    private bottomBar: SpriteComponent;
 
     constructor () {
         super()
@@ -40,7 +41,7 @@ export class MapSelectScene extends StateContainer {
         this.subscribeBot();
 
         this.createBingoCounter();
-        this.createSocialButton();
+        this.createBottomBar();
 
         RendererController.Instance.resizeHandler()
     }
@@ -214,6 +215,7 @@ export class MapSelectScene extends StateContainer {
             return;
         }
         this.counter.element.y = -RendererController.Instance.center.y + 44;
+        this.bottomBar.element.y = RendererController.Instance.center.y ;
         this.background.x = -RendererController.Instance.center.x;
         this.background.y = -RendererController.Instance.center.y;
         this.background.width = RendererController.Instance.center.x * 2;
@@ -232,18 +234,35 @@ export class MapSelectScene extends StateContainer {
         });
     }
 
-    createSocialButton() :void{
-        new SpriteComponent({
+    createBottomBar(): void {
+
+        this.bottomBar = new SpriteComponent({
             parent: this,
             element: {
-                position: new Point(-190, 330)
+                position: new Point(0, RendererController.Instance.center.y ),
+            }
+        }).texture('botton-bar', 'background').anchor(0.5, 1);
+
+        this.createItemCounter( new Point(-60, -50), Resources.getTexture('key', 'content'));
+        this.createItemCounter( new Point(40, -50), Resources.getTexture('coin', 'content'));
+        this.createItemCounter( new Point(140, -50), Resources.getTexture('bingo-icon', 'content'));
+        // this.createItemCounter('powers-daub', new Point( 150, -60), Resources.getTexture('star-icon', 'content'))
+
+        this.createButtonSettings();
+    }
+
+    createButtonSettings(): void {
+        new SpriteComponent({
+            parent: this.bottomBar.element,
+            element: {
+                position: new Point(-160, -36)
             },
             children: [
                 new SpriteComponent({
                     element: {
                         position: new Point(0, -4),
-                        scale: new Point(0.6, 0.6),
-                        blendMode: 0,
+                        scale: new Point(0.7, 0.7),
+                        blendMode: 2,
                         tint: 0x555555
                     }
                 }).texture('icon-tropy', 'content').anchor(0.5)
@@ -255,7 +274,35 @@ export class MapSelectScene extends StateContainer {
                     }
                 })
             ]
-        }).texture('circular-button', 'content').anchor(0.5);
+        }).texture('circular-button', 'content').anchor(0.5)
+    }
+
+    createItemCounter(position: Point, tex: Texture): void {
+
+       new SpriteComponent({
+            parent: this.bottomBar.element,
+            element: {
+                position: position
+            },
+            children: [
+                new SpriteComponent({
+                    element: {
+                        scale: new Point(0.5, 0.5),
+                        position: new Point(0, 0),
+                        texture: tex,
+                    }
+                }).anchor(0.5),
+
+            ],
+           behavior: [
+               new ButtonBehavior({
+                   click: () => {
+                       EventManager.Instance.emit('change-state', 'social');
+                   }
+               })
+           ]
+        }).anchor(0.5).texture('bottom-marker-background', 'content')
+
 
     }
 }
