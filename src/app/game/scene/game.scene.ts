@@ -347,9 +347,9 @@ export class GameScene extends StateContainer {
         new ButtonComponent({
           element: {
             position: new Point(0, 75),
-            visible: false
+            visible: true
           }
-        }).text('Exit').AddCallback(() => {
+        }).text('Exit Game').AddCallback(() => {
           this.onForceQuit();
         }),
       ]

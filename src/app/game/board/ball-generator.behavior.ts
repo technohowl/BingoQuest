@@ -114,7 +114,7 @@ export class BallGeneratorBehavior extends BehaviorBase<BallGeneratorType, BallG
 
   changeSpeed(value:number):void {
     this._speed = value;
-    this.properties.interval = 1500 + (5 - value) * 400;
+    this.properties.interval = 2000 + (5 - value) * 400;
   }
   get speed():number {
     return this._speed;
