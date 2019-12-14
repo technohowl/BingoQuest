@@ -102,7 +102,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           ]
         })
       ]
-    })
+    });
 
     this.showFriendsLeaderboard();
     this.sendUpdate();

@@ -40,6 +40,7 @@ export class MapSelectScene extends StateContainer {
         this.subscribeBot();
 
         this.createBingoCounter();
+        this.createSocialButton();
 
         RendererController.Instance.resizeHandler()
     }
@@ -229,5 +230,32 @@ export class MapSelectScene extends StateContainer {
             if((parseInt(window.localStorage.getItem('shortcut')) || 0) == 0)
                 FacebookInstant.instance.createShortcut();
         });
+    }
+
+    createSocialButton() :void{
+        new SpriteComponent({
+            parent: this,
+            element: {
+                position: new Point(-190, 330)
+            },
+            children: [
+                new SpriteComponent({
+                    element: {
+                        position: new Point(0, -4),
+                        scale: new Point(0.6, 0.6),
+                        blendMode: 0,
+                        tint: 0x555555
+                    }
+                }).texture('icon-tropy', 'content').anchor(0.5)
+            ],
+            behavior: [
+                new ButtonBehavior({
+                    click: () => {
+                        EventManager.Instance.emit('change-state', 'social');
+                    }
+                })
+            ]
+        }).texture('circular-button', 'content').anchor(0.5);
+
     }
 }
