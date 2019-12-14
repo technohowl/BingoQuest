@@ -12,10 +12,15 @@ export class FacebookInstant extends EventEmitter {
     private leaderboardImages: Map<string, Texture>;
     private intAd: FBInstant.AdInstance;
     private rewardAd: FBInstant.AdInstance;
+    private isRewardedAdLoaded: boolean;
+    private isInterstitialLoaded: boolean;
 
     private constructor() {
         super();
         this._online = true;
+        this.isRewardedAdLoaded = false;
+        this.isInterstitialLoaded = false;
+
         this.leaderboardImages = new Map<string, Texture>();
     }
 
@@ -120,6 +125,23 @@ export class FacebookInstant extends EventEmitter {
         this._online = value;
     }
 
+    public logEvent( eventName:string, value?:number ):void{
+        FBInstant.logEvent(
+            eventName,
+            value
+        );
+    }
+
+    public openGame(gameId: string, callback: ()=> void):void{
+        FBInstant
+            .switchGameAsync(gameId)
+            .then(function() {
+                console.log(FBInstant.context.getID());
+                callback();
+                // 1234567890
+            });
+    }
+
     public createShortcut():void {
         FBInstant.canCreateShortcutAsync()
                 .then(function(canCreateShortcut) {
@@ -195,24 +217,29 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public isRewardedAdAvailable(): Boolean {
-        return this.rewardAd == null;
+        console.log("this.isRewardedAdLoaded:",this.isRewardedAdLoaded);
+        return this.isRewardedAdLoaded;
     }
 
     public cacheRewarded(id: string):void {
+        console.log("Rewarded video cache started:" , id);
         FBInstant.getRewardedVideoAsync(id)
             .then((rewardedVideo: FBInstant.AdInstance) => {
                 this.rewardAd = rewardedVideo;
-                return this.rewardAd.loadAsync();
+                console.log("Rewarded video getRewardedVideoAsync:" , rewardedVideo.getPlacementID());
+                return this.rewardAd.loadAsync().then(()=>{
+                    this.isRewardedAdLoaded = true;
+                });
             });
     }
-    public playVideo(onComplete: () => void, onFail: (data: any) => void): void {
 
+    public playVideo(onComplete: () => void, onFail: (data: any) => void): void {
         if (!this.isOnline) {
             onComplete();
             return;
         }
 
-        if(this.rewardAd == null){
+        if(!this.isRewardedAdLoaded){
             onFail("Not available.");
             return;
         }
@@ -220,6 +247,7 @@ export class FacebookInstant extends EventEmitter {
         this.rewardAd.showAsync()
             .then(() => {
                 this.rewardAd = null;
+                this.isRewardedAdLoaded = false;
                 this.cacheRewarded(Resources.getConfig().ads.game);
                 onComplete();
             })
@@ -254,7 +282,9 @@ export class FacebookInstant extends EventEmitter {
             .then((interAd: FBInstant.AdInstance) => {
                 this.intAd = interAd;
                 console.log(this.intAd);
-                return this.intAd.loadAsync();
+                return this.intAd.loadAsync().then(()=>{
+                    this.isInterstitialLoaded = true;
+                });
             }).then(() => {
             console.log('loaded');
             onComplete();
@@ -268,13 +298,17 @@ export class FacebookInstant extends EventEmitter {
             onComplete();
             return;
         }
-        if(this.intAd == null){
+        if(this.intAd == null || !this.isInterstitialLoaded){
             onComplete();
             return;
         }
+
         this.intAd.showAsync().then(()=>{
             this.intAd = null;
-            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {}, () => {});
+            this.isInterstitialLoaded = false;
+            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {}, (_:Error) => {});
+            onComplete();
+        }).catch((_:Error)=>{
             onComplete();
         });
     }

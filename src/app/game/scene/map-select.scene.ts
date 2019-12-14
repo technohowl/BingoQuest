@@ -12,7 +12,7 @@ import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { BingoCounterComponent } from '../map/bingo-counter.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
-import {GameModelData} from '@models/game-model.data';
+import { GameModelData } from '@models/game-model.data';
 import { SoundController } from '@app/controller/sound.controller';
 import { Bounce, TweenMax} from "gsap";
 
@@ -243,9 +243,9 @@ export class MapSelectScene extends StateContainer {
             }
         }).texture('botton-bar', 'background').anchor(0.5, 1);
 
-        this.createItemCounter( new Point(-60, -50), Resources.getTexture('key', 'content'));
-        this.createItemCounter( new Point(40, -50), Resources.getTexture('coin', 'content'));
-        this.createItemCounter( new Point(140, -50), Resources.getTexture('bingo-icon', 'content'));
+        this.createItemCounter( new Point(-60, -50), Resources.getTexture('bingoicon'),'2458786131022945');
+        this.createItemCounter( new Point(40, -50), Resources.getTexture('sudokuicon'),'836916043371368');
+        this.createItemCounter( new Point(140, -50), Resources.getTexture('idlepizza'),'958968481102514');
         // this.createItemCounter('powers-daub', new Point( 150, -60), Resources.getTexture('star-icon', 'content'))
 
         this.createButtonSettings();
@@ -277,7 +277,7 @@ export class MapSelectScene extends StateContainer {
         }).texture('circular-button', 'content').anchor(0.5)
     }
 
-    createItemCounter(position: Point, tex: Texture): void {
+    createItemCounter(position: Point, tex: Texture, gameId: string): void {
 
        new SpriteComponent({
             parent: this.bottomBar.element,
@@ -287,7 +287,7 @@ export class MapSelectScene extends StateContainer {
             children: [
                 new SpriteComponent({
                     element: {
-                        scale: new Point(0.5, 0.5),
+                        scale: new Point(0.60, 0.60),
                         position: new Point(0, 0),
                         texture: tex,
                     }
@@ -297,7 +297,10 @@ export class MapSelectScene extends StateContainer {
            behavior: [
                new ButtonBehavior({
                    click: () => {
-                       EventManager.Instance.emit('change-state', 'social');
+                       FacebookInstant.instance.logEvent("game_open_"+ gameId, 1);
+                       FacebookInstant.instance.openGame(gameId, ()=>{
+
+                       });
                    }
                })
            ]

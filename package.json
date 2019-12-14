@@ -12,7 +12,7 @@
   "scripts": {
     "npm-reset": "rm -rf node_modules && npm cache verify && npm i",
     "git-reset": "git reset HEAD --hard && git clean -fd && git fetch --all --tags --prune && git pull",
-    "https": "webpack-dev-server --https --cacert cert.pem",
+    "https": "webpack-dev-server  --disable-host-check --https --cacert cert.pem",
     "start": "webpack-dev-server",
     "build": "webpack --env build"
   },

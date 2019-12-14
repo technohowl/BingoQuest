@@ -22,6 +22,9 @@ export class PreloaderScene extends StateContainer {
     // this.addChild( this.preloaderBar )
 
     loader.add('background2', 'assets/background2.jpg');
+    loader.add('bingoicon', 'assets/bingoicon.png');
+    loader.add('sudokuicon', 'assets/sudokuicon.png');
+    loader.add('idlepizza', 'assets/idlepizza.png');
 
     loader.add('background', 'assets/background.json');
     loader.add('content', 'assets/content.json');

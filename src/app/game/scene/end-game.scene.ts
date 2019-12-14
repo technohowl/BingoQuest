@@ -19,6 +19,7 @@ import { ContainerComponent } from '@app/components/container.component';
 export class EndGameScene extends StateContainer {
 
   private money:MoneyCounterComponent;
+  private bingosWon: number;
 
   constructor () {
     super()
@@ -113,6 +114,7 @@ export class EndGameScene extends StateContainer {
   private saveData():void {
 
     GameModelData.instance.money += GameModelData.instance.powerCoins;
+    this.bingosWon = GameModelData.instance.powerBingos;
     GameModelData.instance.bingos += GameModelData.instance.powerBingos;
 
     GameModelData.instance.powerCoins = 0;
@@ -145,6 +147,8 @@ export class EndGameScene extends StateContainer {
   }
 
   createMoneyShower():void {
+    if(this.money!=null)
+      console.log("createMoneyShower money not null");
     this.money = new MoneyCounterComponent({
       parent: this,
       element: {
@@ -162,6 +166,8 @@ export class EndGameScene extends StateContainer {
   onStartGame():void {
 
     FacebookInstant.instance.addScore(GameModelData.instance.bingos, (data:any) => {
+      FacebookInstant.instance.logEvent("bingos", this.bingosWon);
+      this.bingosWon = 0;
       console.log(data);
     });
 

@@ -156,6 +156,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
     const dy: number = 35 + index * 45;
 
+    console.log("addEntry:",entry.getRank().toString(),  entry.getPlayer().getName(), entry.getScore());
     parent.addChildren([
       new BitmapTextComponent({
         element: {

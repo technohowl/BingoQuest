@@ -116,7 +116,7 @@ export class PowerSelectScene extends StateContainer {
 
   validateMoneyButtons():void {
     this.listContainers.forEach( (container:ContainerComponent) => {
-      if(GameModelData.instance.money < 20 + 5 * (container.behaviors[0] as PowerSelectBehavior).totalClicks) {
+      if(GameModelData.instance.money < 15 + 5 * (container.behaviors[0] as PowerSelectBehavior).totalClicks) {
         container.getChildWithTag('button').element.alpha = 0.5;
         container.getChildWithTag('button').element.interactive = false;
         container.getChildWithTag('button').element.buttonMode = false;
@@ -197,7 +197,7 @@ export class PowerSelectScene extends StateContainer {
       //tarun
       GameModelData.instance.money -= (15 + 5 * powerSelected.totalClicks);
       this.validateMoneyButtons();
-    })
+    });
 
     const container:ContainerComponent = new ContainerComponent({
       parent: comp.element,
@@ -245,13 +245,13 @@ export class PowerSelectScene extends StateContainer {
               tag: ['power-counter'],
               element: {
                 position: new Point(15,-2),
-                text: '10',
+                text: '20',
                 font: '36px lobster',
                 tint: 0x333333,
                 anchor: new Point(0.5,0.6)
               }
             }).on('power-counter', (comp:ComponentBase, _:number) => {
-              (comp as BitmapTextComponent).text(`${10+5*powerSelected.totalClicks}`);
+              (comp as BitmapTextComponent).text(`${20+5*powerSelected.totalClicks}`);
             })
           ],
           behavior: [ new ButtonBehavior({
@@ -274,7 +274,7 @@ export class PowerSelectScene extends StateContainer {
     GameModelData.instance.items = [];
     this.powersSelected.forEach( (value:PowerList) => {
       (value && GameModelData.instance.items.push(value));
-    })
+    });
     this.beginLevel();
   }
 

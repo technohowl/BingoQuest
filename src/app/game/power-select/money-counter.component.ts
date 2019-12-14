@@ -41,6 +41,7 @@ export class MoneyCounterComponent extends ContainerComponent {
     }));
 
     GameModelData.instance.on('money', (value:number) => {
+      console.warn("GameModelData: money");
       this.emitToChildren('text-value', 'text-value', value);
     })
 

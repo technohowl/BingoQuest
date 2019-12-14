@@ -42,6 +42,7 @@ export class GameScene extends StateContainer {
   private gameOverCounter:TimeEvent;
   private endGameContainer:ContainerComponent;
   private isAdUsed:boolean;
+  private isGameRunning: boolean;
 
   constructor() {
     super()
@@ -79,8 +80,12 @@ export class GameScene extends StateContainer {
     this.createBottomBar();
 
     RendererController.Instance.resizeHandler();
-
-    FacebookInstant.instance.addPause(() => this.pauseScreen());
+    this.isGameRunning = true;
+    FacebookInstant.instance.addPause(() =>
+    {
+        this.pauseScreen()
+    }
+    );
   }
 
   createBehaviors(): void {
@@ -281,10 +286,11 @@ export class GameScene extends StateContainer {
   }
 
   pauseScreen(): void {
-    if(Timer.Instance.paused) {
+    ///console.error("OnPaused:");
+    if(Timer.Instance.paused || !this.isGameRunning) {
       return;
     }
-    
+
     Timer.Instance.paused = true;
 
     const container: ContainerComponent = new ContainerComponent({
@@ -416,7 +422,7 @@ export class GameScene extends StateContainer {
   }
 
   private onFinishLevel(): void {
-
+    this.isGameRunning = false;
     const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable();
     if(isRewardVisible)
       this.createAdsButton();
@@ -474,7 +480,7 @@ export class GameScene extends StateContainer {
     new SpriteComponent({
       parent: this,
       element: {
-        position: new Point(175, -245),
+        position: new Point(175, -300),
         scale: new Point(0.8, 0.8),
       },
       children: [
