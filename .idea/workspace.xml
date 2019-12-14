@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="" />
+    <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/board/board-piece.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/board/board-piece.behavior.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +28,7 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
@@ -50,6 +56,8 @@
       <option name="presentableId" value="Default" />
       <updated>1576070134586</updated>
       <workItem from="1576070138551" duration="5702000" />
+      <workItem from="1576214196935" duration="129000" />
+      <workItem from="1576304298070" duration="1395000" />
     </task>
     <servers />
   </component>
@@ -61,6 +69,26 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="880" y="373" key="#Inspections/0.23.2560.1369@0.23.2560.1369" timestamp="1576070581459" />
+    <state x="1003" y="517" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576304817702">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state x="1003" y="517" key="#com.intellij.fileTypes.FileTypeChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1576304817702" />
+    <state width="2539" height="393" key="GridCell.Tab.0.bottom" timestamp="1576304939386">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state width="2539" height="393" key="GridCell.Tab.0.bottom/0.23.2560.1369@0.23.2560.1369" timestamp="1576304939386" />
+    <state width="2539" height="393" key="GridCell.Tab.0.center" timestamp="1576304939385">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state width="2539" height="393" key="GridCell.Tab.0.center/0.23.2560.1369@0.23.2560.1369" timestamp="1576304939385" />
+    <state width="2539" height="393" key="GridCell.Tab.0.left" timestamp="1576304939384">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state width="2539" height="393" key="GridCell.Tab.0.left/0.23.2560.1369@0.23.2560.1369" timestamp="1576304939384" />
+    <state width="2539" height="393" key="GridCell.Tab.0.right" timestamp="1576304939385">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state width="2539" height="393" key="GridCell.Tab.0.right/0.23.2560.1369@0.23.2560.1369" timestamp="1576304939385" />
     <state x="789" y="346" key="SettingsEditor" timestamp="1576070522790">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
@@ -69,14 +97,18 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="500" height="445" key="SwitcherDM" timestamp="1576092318116">
+    <state width="500" height="445" key="SwitcherDM" timestamp="1576304357509">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
-    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576092318116" />
-    <state x="946" y="469" width="667" height="476" key="find.popup" timestamp="1576092177449">
+    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576304357509" />
+    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576305471552">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
-    <state x="946" y="469" width="667" height="476" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576092177449" />
+    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1576305471552" />
+    <state x="946" y="469" width="667" height="476" key="find.popup" timestamp="1576304782595">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state x="946" y="469" width="667" height="476" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576304782595" />
     <state x="945" y="336" width="670" height="676" key="search.everywhere.popup" timestamp="1576078841240">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>

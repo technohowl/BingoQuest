@@ -2,6 +2,7 @@ import { Container, Sprite, Texture, Rectangle } from 'pixi.js';
 import { TweenMax, Bounce } from 'gsap';
 import { BehaviorBase } from '@app/core/behavior.core';
 import { ComponentBase } from '@app/core/component.core';
+import {SoundController} from "@app/controller/sound.controller";
 
 export type BoardPieceType = 'active' | 'clicked';
 
@@ -51,6 +52,8 @@ export class BoardPieceBehavior extends BehaviorBase<BoardPieceType, BoardPieceP
     TweenMax.fromTo(image.scale, 0.2, {x: 0.1, y: 0.1}, {x: 0.4, y: 0.4, ease: Bounce.easeOut})
 
     image.texture = this.properties.textureBingo;
+    SoundController.instance.audio('sfx').play('collect-item');
+
   }
 
   private onBonus(_:ComponentBase):void {
