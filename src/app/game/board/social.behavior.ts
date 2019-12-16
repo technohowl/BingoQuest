@@ -27,7 +27,7 @@ export class SocialBehavior extends BehaviorBase<SocialType, SocialProps> {
     parent.addChild(background);
     background.position.set(-190,-240);
     background.width = 380;
-    background.height = 480;
+    background.height = 540;
 
   }
 

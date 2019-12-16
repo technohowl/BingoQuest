@@ -8,6 +8,8 @@ import { FacebookInstant } from '@app/services/facebook-instant';
 import { EventManager } from '@app/components/event-manager.component';
 import { Resources } from '@app/utils/resources.utils';
 import { SpriteComponent } from '@app/components/sprite.component';
+import {ButtonBehavior} from "@app/behaviors/button.behavior";
+import {GameModelData} from "@models/game-model.data";
 
 export type SharingType = 'active' | 'clicked';
 
@@ -111,29 +113,41 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
   onInviteRandom(): void {
     FacebookInstant.instance.startMatchmaking((_: string) => {
-      EventManager.Instance.emit('change-state', 'map')
+      EventManager.Instance.emit('change-state', 'map');
+          FacebookInstant.instance.logEvent("e_matchmaking", 1);
     }
     );
   }
 
   onInviteFriend(): void {
-    
     FacebookInstant.instance.inviteSocial(() => {
       console.log('inviteSocial', Resources.getConfig().templates.template1.prize);
+      FacebookInstant.instance.logEvent("e_socialInvite", 1);
     })
   }
 
   sendUpdate(): void {
-    
-    FacebookInstant.instance.updateStatus(() => {
-      console.log('updateStatus', Resources.getConfig().templates.template1.prize);
-    })
+    let name: string = FBInstant.player.getName();
+
+    if(GameModelData.instance.sessionBingos!=0) {
+      FacebookInstant.instance.sendUpdate(name + ' just scored '+ GameModelData.instance.sessionBingos +' bingos!' , () => {
+        GameModelData.instance.sessionBingos = 0;
+        FacebookInstant.instance.logEvent("e_sendUpdate", 1);
+        console.log('updateStatus', Resources.getConfig().templates.template2.text);
+      });
+    }else{
+      FacebookInstant.instance.sendUpdate(name + ' played their turn!' , () => {
+        FacebookInstant.instance.logEvent("e_sendUpdate_turn", 1);
+        console.log('updateStatus', Resources.getConfig().templates.template2.text);
+      });
+    }
   }
 
   onShare(): void {
     
     FacebookInstant.instance.share(() => {
       console.log('onShare', Resources.getConfig().templates.template1.prize);
+      FacebookInstant.instance.logEvent("e_shareGame", 1);
     })
   }
 
@@ -142,10 +156,24 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
       parent: this.targets[0].element
     });
 
-    FacebookInstant.instance.getGlobalScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
-      for (let i = 0; i < list.length; i++) {
+    /*FacebookInstant.instance.getFriendsScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
+      let length = list.length;
+      if(length > 6)
+        length = 6;
+      for (let i = 0; i < length; i++) {
         // for (let j = 0; j < 5; j++) {
           this.addEntry(containerParent, i, list[i]);
+        // }
+      }
+
+    });*/
+    FacebookInstant.instance.getFriendsScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
+      let length = list.length;
+      if(length > 6)
+        length = 6;
+      for (let i = 0; i < length; i++) {
+        // for (let j = 0; j < 5; j++) {
+        this.addEntry(containerParent, i, list[i]);
         // }
       }
 
@@ -179,7 +207,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
         .mask(new Graphics().beginFill(0xff0000).drawCircle(-100, dy, 20).endFill()),
       new BitmapTextComponent({
         element: {
-          text: entry.getPlayer().getName().substr(0, 20),
+          text: entry.getPlayer().getName().substr(0, 15),
           font: '20px arial',
           tint: 0x333333,
           align: 'left',
@@ -200,10 +228,25 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           font: '26px arial',
           align: 'right',
           tint: 0x333333,
-          position: new Point(150, dy),
+          position: new Point(120, dy),
           anchor: new Point(1, 0.5)
         }
-      })
+      }),
+      new SpriteComponent({
+        element: {
+          position: new Point(160, dy)
+        },
+        behavior: [
+          new ButtonBehavior({
+            click: () => {
+                FacebookInstant.instance.switchAsync(entry.getPlayer().getID(), ()=>{
+                  FacebookInstant.instance.logEvent("e_friend_invited", 1);
+              });
+            }
+          })
+        ]
+      }).texture('playicon').anchor(0.5)
+
     ]);
 
 

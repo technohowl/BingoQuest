@@ -115,6 +115,8 @@ export class EndGameScene extends StateContainer {
 
     GameModelData.instance.money += GameModelData.instance.powerCoins;
     this.bingosWon = GameModelData.instance.powerBingos;
+    GameModelData.instance.sessionBingos = GameModelData.instance.powerBingos;
+
     GameModelData.instance.bingos += GameModelData.instance.powerBingos;
 
     GameModelData.instance.powerCoins = 0;
@@ -166,7 +168,7 @@ export class EndGameScene extends StateContainer {
   onStartGame():void {
 
     FacebookInstant.instance.addScore(GameModelData.instance.bingos, (data:any) => {
-      FacebookInstant.instance.logEvent("bingos", this.bingosWon);
+      FacebookInstant.instance.logEvent("e_bingos", this.bingosWon);
       this.bingosWon = 0;
       console.log(data);
     });

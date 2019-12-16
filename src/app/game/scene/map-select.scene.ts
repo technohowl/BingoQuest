@@ -297,7 +297,7 @@ export class MapSelectScene extends StateContainer {
            behavior: [
                new ButtonBehavior({
                    click: () => {
-                       FacebookInstant.instance.logEvent("game_open_"+ gameId, 1);
+                       FacebookInstant.instance.logEvent("e_game_open_"+ gameId, 1);
                        FacebookInstant.instance.openGame(gameId, ()=>{
 
                        });

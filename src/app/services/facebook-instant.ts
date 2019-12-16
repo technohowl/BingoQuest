@@ -195,15 +195,27 @@ export class FacebookInstant extends EventEmitter {
                 console.log(reason);
             });
     }
-    public getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
+    public  getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
             .getLeaderboardAsync(Resources.getConfig().leaderboard.global)
             .then( (leaderboard: any) => {
                 console.log(leaderboard);
-                return leaderboard.getConnectedPlayerEntriesAsync(5, 0);
+                return leaderboard.getConnectedPlayerEntriesAsync(total, page * total);
             } )
-            .then((leaderboard) => leaderboard.getEntriesAsync(total, page * total))
             .then((entries) => callback(entries))
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+
+    public  getConnectedPlayers(callback: (entries: FBInstant.ContextPlayer[]) => void): void {
+        FBInstant
+            .context.getPlayersAsync()
+            .then( (players: any) => {
+                console.log(players);
+                callback(players)
+            } )
+
             .catch((reason: any) => {
                 console.log(reason);
             });
@@ -383,6 +395,21 @@ export class FacebookInstant extends EventEmitter {
             .catch((value: any) => console.log(value));
     }
 
+    public sendUpdate(text:string, callback: () => void): void {
+        FBInstant.updateAsync({
+            action: "CUSTOM",
+            cta: Resources.getConfig().templates.template2.cta,
+            image: Resources.getConfig().templates.template2.image,
+            text: text,
+            template: Resources.getConfig().templates.template2.name,
+
+            strategy: "IMMEDIATE",
+            notification: "NO_PUSH"
+        })
+            .then(() => callback())
+            .catch((value: any) => console.log(value));
+    }
+
     public getPlayerImage(player: FBInstant.LeaderboardPlayer): Texture {
         if (this.leaderboardImages.has(player.getID())) {
             return this.leaderboardImages.get(player.getID());
@@ -394,4 +421,9 @@ export class FacebookInstant extends EventEmitter {
         return text;
     }
 
+    public switchAsync(id: string, callback: () => void):void {
+        FBInstant.context.createAsync(id)
+            .then(() => callback())
+            .catch((value: any) => console.log(value));
+    }
 }

@@ -3,7 +3,10 @@
     "custom_update_templates": {
       "sharing-template": {
         "example": "Join the game to win 100 gold"
-      }      
+      },
+      "update-template": {
+        "example": "Edgar scored 5 bingos!"
+      }
     },
     "surfaceable_stats": {
       

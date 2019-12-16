@@ -90,14 +90,14 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
 
     let isLoaded:boolean = false;
 
-    FacebookInstant.instance.getWeeklyScore(0, 100, (list: Array<FBInstant.LeaderboardEntry>) => {
+    FacebookInstant.instance.getWeeklyScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
       this.weeklyLeaderboard = list;
       if(isLoaded) {
         callback();
       }
       isLoaded = true;
     });
-    FacebookInstant.instance.getGlobalScore(0, 100, (list: Array<FBInstant.LeaderboardEntry>) => {
+    FacebookInstant.instance.getGlobalScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
       this.globalLeaderboard = list;
       if(isLoaded) {
         callback();
@@ -152,14 +152,20 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
 
   showWeeklyLeaderboard():void {
     this.createContainer('Weekly');
-    for (let i = 0; i < this.weeklyLeaderboard.length; i++) {
+    let length = this.weeklyLeaderboard.length;
+    if(length > 6)
+      length = 6;
+    for (let i = 0; i < length; i++) {
       this.addEntry(i, this.weeklyLeaderboard[i]);
     }  
   }
 
   showGlobalLeaderboard():void {
     this.createContainer('Global');
-    for (let i = 0; i < this.globalLeaderboard.length; i++) {
+    let length = this.globalLeaderboard.length;
+    if(length > 6)
+      length = 6;
+    for (let i = 0; i < length; i++) {
       this.addEntry(i, this.globalLeaderboard[i]);
     }  
   }

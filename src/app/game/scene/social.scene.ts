@@ -150,7 +150,7 @@ export class SocialScene extends StateContainer {
       parent: this,
       element: {
         // 280
-        position: new Point(0, 310),
+        position: new Point(0, 350),
       },
       children: [
         new BitmapTextComponent({
