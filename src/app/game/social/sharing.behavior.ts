@@ -10,6 +10,7 @@ import { Resources } from '@app/utils/resources.utils';
 import { SpriteComponent } from '@app/components/sprite.component';
 import {ButtonBehavior} from "@app/behaviors/button.behavior";
 import {GameModelData} from "@models/game-model.data";
+import Texture = PIXI.Texture;
 
 export type SharingType = 'active' | 'clicked';
 
@@ -174,16 +175,100 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
       for (let i = 0; i < length; i++) {
         // for (let j = 0; j < 5; j++) {
         this.addEntry(containerParent, i, list[i]);
-        // }
       }
-
+      /*FacebookInstant.instance.getConnectedPlayers( (contextList: Array<FBInstant.ContextPlayer>) => {
+        let contextlength = contextList.length;
+        console.log("getConnectedPlayers:",contextList.length);
+        if(contextlength > 3)
+          contextlength = 3;
+        if(contextlength < 3 && list.length > 3){
+          for (let i = 3; i < list.length; i++) {
+            // for (let j = 0; j < 5; j++) {
+            this.addEntry(containerParent, i, list[i]);
+          }
+        }
+        for (let i = 0; i < contextlength; i++) {
+          // for (let j = 0; j < 5; j++) {
+          this.addContextEntry(containerParent, i + 3, contextList[i]);
+          // }
+        }
+      });*/
     });
+
+  }
+  protected addContextEntry(parent: ContainerComponent, index: number, entry: FBInstant.ContextPlayer): void {
+    const dy: number = 35 + index * 45;
+
+    console.log("addEntry:",entry.getID(),  entry.getName());
+    parent.addChildren([
+      new BitmapTextComponent({
+        element: {
+          text: index.toString(),
+          font: '24px arial',
+          tint: 0x333333,
+          align: 'right',
+          position: new Point(-140, dy),
+          anchor: new Point(1, 0.5)
+        }
+      }),
+      new SpriteComponent({
+        element: {
+          width: 40, height: 40,
+          position: new Point(-100, dy)
+        }
+      })
+          .fromTexture(Texture.from(entry.getPhoto()))
+          .anchor(0.5)
+          .mask(new Graphics().beginFill(0xff0000).drawCircle(-100, dy, 20).endFill()),
+      new BitmapTextComponent({
+        element: {
+          text: entry.getName().substr(0, 15),
+          font: '20px arial',
+          tint: 0x333333,
+          align: 'left',
+          position: new Point(-60, dy),
+          anchor: new Point(0, 0.5)
+        }
+      }),
+      new SpriteComponent({
+        element: {
+          position: new Point(-100, dy),
+          scale: new Point(0.5, 0.5),
+          tint: 0x4ce9fd
+        }
+      }).texture('circular-mask', 'content').anchor(0.5),
+      new BitmapTextComponent({
+        element: {
+          text: "",
+          font: '26px arial',
+          align: 'right',
+          tint: 0x333333,
+          position: new Point(120, dy),
+          anchor: new Point(1, 0.5)
+        }
+      }),
+      new SpriteComponent({
+        element: {
+          position: new Point(160, dy)
+        },
+        behavior: [
+          new ButtonBehavior({
+            click: () => {
+              FacebookInstant.instance.switchAsync(entry.getID(), ()=>{
+                FacebookInstant.instance.logEvent("e_ctx_friend_invited", 1);
+              });
+            }
+          })
+        ]
+      }).texture('playicon').anchor(0.5)
+
+    ]);
   }
 
   protected addEntry(parent: ContainerComponent, index: number, entry: FBInstant.LeaderboardEntry): void {
 
     const dy: number = 35 + index * 45;
-
+    const isVisible: boolean = (FBInstant.player.getID() !== entry.getPlayer().getID());
     console.log("addEntry:",entry.getRank().toString(),  entry.getPlayer().getName(), entry.getScore());
     parent.addChildren([
       new BitmapTextComponent({
@@ -234,7 +319,8 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
       }),
       new SpriteComponent({
         element: {
-          position: new Point(160, dy)
+          position: new Point(160, dy),
+          visible: isVisible
         },
         behavior: [
           new ButtonBehavior({

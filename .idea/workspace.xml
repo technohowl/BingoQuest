@@ -2,19 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/assets/play_icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fbapp-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/fbapp-config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/board/social.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/board/social.behavior.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/scene/end-game.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/end-game.scene.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/scene/preloader.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/preloader.scene.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/scene/social.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/social.scene.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/social/leaderboard.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/social/leaderboard.behavior.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/services/facebook-instant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/facebook-instant.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/game-model.data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/game-model.data.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +32,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="ServiceViewManager">
@@ -69,6 +61,9 @@
       <workItem from="1576214196935" duration="129000" />
       <workItem from="1576304298070" duration="13941000" />
       <workItem from="1576480400957" duration="4855000" />
+      <workItem from="1576574423091" duration="85000" />
+      <workItem from="1576574534082" duration="1906000" />
+      <workItem from="1576583798793" duration="1946000" />
     </task>
     <servers />
   </component>
@@ -104,25 +99,28 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state width="2539" height="393" key="GridCell.Tab.0.right/0.23.2560.1369@0.23.2560.1369" timestamp="1576352855728" />
-    <state x="789" y="346" key="SettingsEditor" timestamp="1576070522790">
-      <screen x="0" y="23" width="2560" height="1369" />
+    <state x="444" y="134" key="SettingsEditor" timestamp="1576574502190">
+      <screen x="0" y="23" width="1440" height="833" />
     </state>
+    <state x="444" y="134" key="SettingsEditor/0.23.1440.833@0.23.1440.833" timestamp="1576574502190" />
     <state x="789" y="346" key="SettingsEditor/0.23.2560.1369@0.23.2560.1369" timestamp="1576070522790" />
     <state x="1010" y="446" width="540" height="524" key="StructurePopup" timestamp="1576071329557">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="500" height="445" key="SwitcherDM" timestamp="1576482406729">
-      <screen x="0" y="23" width="2560" height="1369" />
+    <state width="500" height="400" key="SwitcherDM" timestamp="1576585528366">
+      <screen x="0" y="23" width="1440" height="833" />
     </state>
+    <state width="500" height="400" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1576585528366" />
     <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576482406729" />
     <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576305471552">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1576305471552" />
-    <state x="946" y="469" width="816" height="540" key="find.popup" timestamp="1576510957482">
-      <screen x="0" y="23" width="2560" height="1369" />
+    <state x="532" y="294" width="685" height="508" key="find.popup" timestamp="1576584017996">
+      <screen x="0" y="23" width="1440" height="833" />
     </state>
+    <state x="532" y="294" width="685" height="508" key="find.popup/0.23.1440.833@0.23.1440.833" timestamp="1576584017996" />
     <state x="946" y="469" width="816" height="540" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576510957482" />
     <state x="945" y="336" width="670" height="676" key="search.everywhere.popup" timestamp="1576333198073">
       <screen x="0" y="23" width="2560" height="1369" />

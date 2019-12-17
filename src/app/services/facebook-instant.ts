@@ -34,6 +34,9 @@ export class FacebookInstant extends EventEmitter {
     get contextId(): string {
         return FBInstant.context.getID();
     }
+    get getId(): string {
+        return FBInstant.player.getID();
+    }
 
     public initializeAPI(onInitialize: () => void): void {
         if (!this._online) {
@@ -197,7 +200,7 @@ export class FacebookInstant extends EventEmitter {
     }
     public  getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
-            .getLeaderboardAsync(Resources.getConfig().leaderboard.global)
+            .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
             .then( (leaderboard: any) => {
                 console.log(leaderboard);
                 return leaderboard.getConnectedPlayerEntriesAsync(total, page * total);

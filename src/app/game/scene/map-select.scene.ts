@@ -299,13 +299,11 @@ export class MapSelectScene extends StateContainer {
                    click: () => {
                        FacebookInstant.instance.logEvent("e_game_open_"+ gameId, 1);
                        FacebookInstant.instance.openGame(gameId, ()=>{
-
+                           FacebookInstant.instance.logEvent("e_game_open_success_"+ gameId, 1);
                        });
                    }
                })
            ]
         }).anchor(0.5).texture('bottom-marker-background', 'content')
-
-
     }
 }
