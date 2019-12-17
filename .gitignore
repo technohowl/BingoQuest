@@ -106,3 +106,4 @@ build
 build/
 node_modules/
 *.zip
+.idea/workspace.xml
