@@ -157,43 +157,33 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
       parent: this.targets[0].element
     });
 
-    /*FacebookInstant.instance.getFriendsScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
-      let length = list.length;
-      if(length > 6)
-        length = 6;
-      for (let i = 0; i < length; i++) {
-        // for (let j = 0; j < 5; j++) {
-          this.addEntry(containerParent, i, list[i]);
-        // }
-      }
-
-    });*/
-    FacebookInstant.instance.getFriendsScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
-      let length = list.length;
-      if(length > 6)
-        length = 6;
-      for (let i = 0; i < length; i++) {
-        // for (let j = 0; j < 5; j++) {
-        this.addEntry(containerParent, i, list[i]);
-      }
-      /*FacebookInstant.instance.getConnectedPlayers( (contextList: Array<FBInstant.ContextPlayer>) => {
+    if(FBInstant.context.getID()!= null){
+      console.error("FBInstant.context.getID() != null");
+      FacebookInstant.instance.getConnectedPlayers( (contextList: Array<FBInstant.ContextPlayer>) => {
         let contextlength = contextList.length;
         console.log("getConnectedPlayers:",contextList.length);
-        if(contextlength > 3)
-          contextlength = 3;
-        if(contextlength < 3 && list.length > 3){
-          for (let i = 3; i < list.length; i++) {
-            // for (let j = 0; j < 5; j++) {
-            this.addEntry(containerParent, i, list[i]);
-          }
-        }
+        if(contextlength > 6)
+          contextlength = 6;
+
         for (let i = 0; i < contextlength; i++) {
           // for (let j = 0; j < 5; j++) {
-          this.addContextEntry(containerParent, i + 3, contextList[i]);
+          this.addContextEntry(containerParent, i , contextList[i]);
           // }
         }
-      });*/
-    });
+      });
+    }else{
+      console.error("FBInstant.context.getID() = null");
+      FacebookInstant.instance.getFriendsScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
+        let length = list.length;
+        if(length > 6)
+          length = 6;
+        for (let i = 0; i < length; i++) {
+          // for (let j = 0; j < 5; j++) {
+          this.addEntry(containerParent, i, list[i]);
+        }
+      });
+    }
+
 
   }
   protected addContextEntry(parent: ContainerComponent, index: number, entry: FBInstant.ContextPlayer): void {
@@ -203,7 +193,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     parent.addChildren([
       new BitmapTextComponent({
         element: {
-          text: index.toString(),
+          text: (index+1).toString(),
           font: '24px arial',
           tint: 0x333333,
           align: 'right',
@@ -222,7 +212,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           .mask(new Graphics().beginFill(0xff0000).drawCircle(-100, dy, 20).endFill()),
       new BitmapTextComponent({
         element: {
-          text: entry.getName().substr(0, 15),
+          text: entry.getName().substr(0, 20),
           font: '20px arial',
           tint: 0x333333,
           align: 'left',
@@ -243,10 +233,10 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           font: '26px arial',
           align: 'right',
           tint: 0x333333,
-          position: new Point(120, dy),
+          position: new Point(150, dy),
           anchor: new Point(1, 0.5)
         }
-      }),
+      })/*,
       new SpriteComponent({
         element: {
           position: new Point(160, dy)
@@ -260,7 +250,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
             }
           })
         ]
-      }).texture('playicon').anchor(0.5)
+      }).texture('playicon').anchor(0.5)*/
 
     ]);
   }

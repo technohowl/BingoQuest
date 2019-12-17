@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/services/facebook-instant.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/facebook-instant.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +60,7 @@
       <workItem from="1576480400957" duration="4855000" />
       <workItem from="1576574423091" duration="85000" />
       <workItem from="1576574534082" duration="1906000" />
-      <workItem from="1576583798793" duration="1946000" />
+      <workItem from="1576583798793" duration="3205000" />
     </task>
     <servers />
   </component>
