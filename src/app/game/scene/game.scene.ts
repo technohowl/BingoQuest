@@ -26,6 +26,7 @@ import { GraphicsComponent } from '@app/components/graphics.component';
 import { ButtonComponent } from '../board/button.component';
 import { SpeedChangeBehavior } from '../board/speed-change.behavior';
 import { FacebookInstant } from '@app/services/facebook-instant';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class GameScene extends StateContainer {
@@ -322,7 +323,7 @@ export class GameScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(0, -100),
-            text: 'Paused',
+            text: LocaleHelper.Instance.getLocale("paused"), //'Paused',
             font: '40px lobster',
             tint: 0x000000,
             anchor: new Point(0.5, 0.5)

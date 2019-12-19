@@ -34,6 +34,7 @@ export class PreloaderScene extends StateContainer {
     loader.add('sfx', 'assets/sfx.json');
     loader.add('voice', 'assets/voice.json');
     loader.add('config', 'config.json');
+    loader.add('locale', 'locale.json');
 
 
     loader.on('progress', this.onLoaderProgress, this)
@@ -60,7 +61,8 @@ export class PreloaderScene extends StateContainer {
   private onLoadData(response: GameModelProps): void {
     
     GameModelData.instance.reset();
-
+    var locale = FBInstant.getLocale(); // 'en_US'
+    console.log("Locale:", locale);
     if (!response.lastTime) {
       GameModelData.instance.money = Resources.getConfig().initial_money;
       if(FacebookInstant.instance.entryPoint) {

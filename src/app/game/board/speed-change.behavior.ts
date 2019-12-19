@@ -4,6 +4,7 @@ import { SpriteComponent } from '@app/components/sprite.component';
 import { Container, Point } from 'pixi.js';
 import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 export type SpeedChangeType = 'active' | 'clicked';
 
@@ -44,7 +45,7 @@ export class SpeedChangeBehavior extends BehaviorBase<SpeedChangeType, SpeedChan
       parent: parent,
       element: {
         position: new Point(x,y),
-        text: 'Speed',
+        text: LocaleHelper.Instance.getLocale("speed"), //'Speed',
         font: '20px arial',
         tint: 0x333333,
         anchor: new Point(0.5, 0.5)

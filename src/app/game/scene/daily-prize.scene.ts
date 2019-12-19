@@ -18,6 +18,7 @@ import { ComponentBase } from '@app/core/component.core';
 import { TweenMax, Sine } from 'gsap';
 import { SoundController } from '@app/controller/sound.controller';
 import { EventManager } from '@app/components/event-manager.component';
+import {LocaleHelper} from "@app/components/locale.componenet";
 //import { Resources } from '@app/utils/resources.utils';
 
 
@@ -96,7 +97,7 @@ export class DailyPrizeScene extends StateContainer {
               parent: this,
               element: {
                 position: new Point(0, -6),
-                text: 'Spin',
+                text: LocaleHelper.Instance.getLocale("spin"), //'Spin',
                 font: '56px lobster',
                 align: 'center',
                 tint: 0x111111,
@@ -123,9 +124,9 @@ export class DailyPrizeScene extends StateContainer {
     spinBehavior.on('spinning', () => {
       this.spinningWheel.emitToChildren('button', 'button');
       const sound:Howl = SoundController.instance.audio('sfx');
-      sound.play('spin-sort')
+      sound.play('spin-sort');
       sound.rate(0.5);
-    })
+    });
 
     spinBehavior.on('completed', () => this.onCompleteSpin(results[spinBehavior.spinResult]));
 
@@ -174,7 +175,7 @@ export class DailyPrizeScene extends StateContainer {
       children: [
         new BitmapTextComponent({
             element: {
-              text: 'Continue',
+              text: LocaleHelper.Instance.getLocale("continue"), //'Continue',
               font: '30px arial',
               tint: 0x555555,
               anchor: new Point(0.5,0.65)
@@ -213,7 +214,7 @@ export class DailyPrizeScene extends StateContainer {
         new BitmapTextComponent({
             element: {
               position: new Point(18, 0),
-              text: 'Spin\nAgain',
+              text: LocaleHelper.Instance.getLocale("spin_again"), //'Spin\nAgain',
               align: 'center',
               font: '20px arial',
               tint: 0x555555,

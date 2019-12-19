@@ -66,6 +66,21 @@ export class GameModelData {
         this.emitter.emit(name, value);
     }
 
+
+    onUserSave(callback:(value:any)=>void){
+        this.emitter.on("UserSaveData", callback);
+    }
+
+    emitUserSave<T>(value:T) {
+
+        console.warn("Emitting save data");
+        this.emitter.emit("UserSaveData", value);
+    }
+
+    saveUser():void{
+        this.emitUserSave<GameModelProps>(this.properties);
+    }
+
     saveTime():void {
         this.lastTime = Date.now();
     }

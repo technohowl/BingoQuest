@@ -14,6 +14,7 @@ import { GameModelData } from '@models/game-model.data';
 import { MoneyCounterComponent } from '../power-select/money-counter.component';
 import { FacebookInstant } from '@app/services/facebook-instant';
 import { ContainerComponent } from '@app/components/container.component';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class EndGameScene extends StateContainer {
@@ -58,7 +59,7 @@ export class EndGameScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(0, -150),
-            text: 'Congratulations',
+            text: LocaleHelper.Instance.getLocale("congrats"), //'Congratulations',
             font: '35px lobster',
             tint: 0x333333,
             anchor: new Point(0.5,0.5)
@@ -133,7 +134,7 @@ export class EndGameScene extends StateContainer {
       children: [
         new BitmapTextComponent({
             element: {
-              text: 'Continue',
+              text: LocaleHelper.Instance.getLocale("continue"), //'Continue',
               font: '30px arial',
               tint: 0x555555,
               anchor: new Point(0.5,0.65)
@@ -149,8 +150,6 @@ export class EndGameScene extends StateContainer {
   }
 
   createMoneyShower():void {
-    if(this.money!=null)
-      console.log("createMoneyShower money not null");
     this.money = new MoneyCounterComponent({
       parent: this,
       element: {

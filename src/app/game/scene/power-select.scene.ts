@@ -17,6 +17,7 @@ import { MoneyCounterComponent } from '../power-select/money-counter.component';
 import { FacebookInstant } from '@app/services/facebook-instant';
 import { TweenMax, Bounce } from 'gsap';
 import { SoundController } from '@app/controller/sound.controller';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class PowerSelectScene extends StateContainer {
@@ -45,7 +46,7 @@ export class PowerSelectScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(0, -193),
-            text: 'Powerups Selection',
+            text: LocaleHelper.Instance.getLocale("power_selection"), //'Powerups Selection',
             font: '34px lobster',
             tint: 0x333333,
             anchor: new Point(0.5,0.5)
@@ -54,7 +55,7 @@ export class PowerSelectScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(0, -105),
-            text: 'Buy up to 3 powerups\nwith your coins and powers\npopup with powers icon.',
+            text: LocaleHelper.Instance.getLocale("power_desc"), //'Buy up to 3 powerups\nwith your coins and powers\npopup with powers icon.',
             align: 'center',
             font: '20px arial',
             tint: 0x333333,
@@ -99,7 +100,7 @@ export class PowerSelectScene extends StateContainer {
       children: [
         new BitmapTextComponent({
             element: {
-              text: 'Continue',
+              text: LocaleHelper.Instance.getLocale("continue"), //'Continue',
               font: '30px arial',
               tint: 0x555555,
               anchor: new Point(0.5,0.65)
@@ -145,6 +146,7 @@ export class PowerSelectScene extends StateContainer {
         new BitmapTextComponent({
             element: {
               position: new Point(11, 4),
+              //todo locale
               text: `Win\n${prize}    `,
               align: 'center',
               font: '24px arial',

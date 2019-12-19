@@ -10,6 +10,8 @@ import { Resources } from '@app/utils/resources.utils';
 import { SpriteComponent } from '@app/components/sprite.component';
 import {ButtonBehavior} from "@app/behaviors/button.behavior";
 import {GameModelData} from "@models/game-model.data";
+import { LocaleHelper } from '@app/components/locale.componenet';
+
 import Texture = PIXI.Texture;
 
 export type SharingType = 'active' | 'clicked';
@@ -26,12 +28,14 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
   protected onSubscribe(value: ComponentBase): void {
 
+    console.warn(LocaleHelper.Instance.getLocale("play_friends"));
+
     new ContainerComponent({
       parent: value.element,
       children: [
         new BitmapTextComponent({
           element: {
-            text: 'Play with Friends',
+            text: LocaleHelper.Instance.getLocale("play_friends"), //'Play with Friends',
             font: '30px lobster',
             tint: 0xffd700,
             position: new Point(0, -210),
@@ -45,7 +49,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Play With Friends',
+                text: LocaleHelper.Instance.getLocale("play_friends"),//'Play With Friends',
                 font: '22px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
@@ -67,7 +71,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Share Game',
+                text: LocaleHelper.Instance.getLocale("share_game"),// 'Share Game',
                 font: '24px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
@@ -89,7 +93,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Random Player',
+                text: LocaleHelper.Instance.getLocale("random_play"), //'Random Player',
                 font: '24px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
