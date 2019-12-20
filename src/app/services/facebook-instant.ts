@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 import { GameModelData } from "@models/game-model.data";
 import { Resources } from "@app/utils/resources.utils";
 import { Texture } from "pixi.js";
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 export class FacebookInstant extends EventEmitter {
 
@@ -170,7 +171,13 @@ export class FacebookInstant extends EventEmitter {
                 leaderboard.setScoreAsync(value).then((entry) => {
                     console.log("leaderboard:", entry);
                     FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly).then((weekylyLeaderboard) => {
-                        callback(weekylyLeaderboard.setScoreAsync(value));
+                        if(FBInstant.context.getID() !=null){
+                            FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context}`).then((groupLoeaderboard) => {
+
+                                callback(groupLoeaderboard.setScoreAsync(value));
+                            });
+                        }else
+                            callback(weekylyLeaderboard.setScoreAsync(value));
                     });
                 });
 
@@ -205,6 +212,16 @@ export class FacebookInstant extends EventEmitter {
                 console.log(leaderboard);
                 return leaderboard.getConnectedPlayerEntriesAsync(total, page * total);
             } )
+            .then((entries) => callback(entries))
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+
+    public getContextLeaderboard(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
+        FBInstant
+            .getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`)
+            .then((leaderboard) => leaderboard.getEntriesAsync(total, page * total))
             .then((entries) => callback(entries))
             .catch((reason: any) => {
                 console.log(reason);
@@ -372,7 +389,7 @@ export class FacebookInstant extends EventEmitter {
         FBInstant.shareAsync({
             intent: "REQUEST",
             image: Resources.getConfig().templates.template1.image,
-            text: Resources.getConfig().templates.template1.text,
+            text: `${LocaleHelper.Instance.getLocale("join_game")}`,
             data: {
                 invite: "new-player-from-shared"
             }
@@ -386,7 +403,7 @@ export class FacebookInstant extends EventEmitter {
             action: "CUSTOM",
             cta: Resources.getConfig().templates.template1.cta,
             image: Resources.getConfig().templates.template1.image,
-            text: Resources.getConfig().templates.template1.text,
+            text: `${LocaleHelper.Instance.getLocale("join_game")}`,
             template: Resources.getConfig().templates.template1.name,
             data: {
                 invite: Resources.getConfig().templates.template1.prize

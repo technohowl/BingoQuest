@@ -14,15 +14,15 @@ export class LocaleHelper extends ContainerComponent{
 
     public initialize():void {
         this.locale = FBInstant.getLocale() || "en-US";
-        //this.locale =  "es-US";
+        //this.locale =  "es_ES";
     }
 
     getLocale(text: string): string{
-        if(this.locale.localeCompare("en-US"))
-            return text;
+        //console.warn("Locale:", this.locale);
+
         if(Resources.getLocale().hasOwnProperty(this.locale)){
             return Resources.getLocale()[this.locale][text];
         }
-        return text;
+        return Resources.getLocale()["en-US"][text];
     }
 }

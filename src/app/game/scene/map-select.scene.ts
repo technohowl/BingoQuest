@@ -25,7 +25,7 @@ export class MapSelectScene extends StateContainer {
     private bottomBar: SpriteComponent;
 
     constructor () {
-        super()
+        super();
     }
 
     protected init():void {
@@ -140,7 +140,7 @@ export class MapSelectScene extends StateContainer {
         const container:ContainerComponent = new ContainerComponent({
             element: {
                 position: position,
-                visible: isNextOpen
+                visible: true
             },
             children: [
                 new SpriteComponent({
