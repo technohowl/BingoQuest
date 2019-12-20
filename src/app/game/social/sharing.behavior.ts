@@ -137,6 +137,9 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     if(GameModelData.instance.sessionBingos!=0) {
       FacebookInstant.instance.sendUpdate( `${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`  , () => {
         GameModelData.instance.sessionBingos = 0;
+        FacebookInstant.instance.saveData(GameModelData.instance.props, ()=>{
+
+        });
         FacebookInstant.instance.logEvent("e_sendUpdate", 1);
         console.log('updateStatus', Resources.getConfig().templates.template2.text);
       });

@@ -113,6 +113,7 @@ export class GameModelData {
     get sessionBingos():number {
         return this.properties.sessionScore;
     }
+
     set sessionBingos(value:number) {
         this.properties.sessionScore = value;
         this.emit<number>('sessionBingos', this.properties.sessionScore);

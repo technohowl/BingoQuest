@@ -106,7 +106,7 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
       power: 'instant-bingo',
       icon: Resources.getTexture('bingo-icon', 'content'),
       onSaveOn: (value:ComponentBase) => {
-        value.emitter.emit('bingo')
+        value.emitter.emit('bingo');
         GameModelData.instance.powerBingos++;
         SoundController.instance.audio('voice').play('bingo');
       },

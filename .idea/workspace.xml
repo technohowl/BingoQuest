@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/board/powerup-consumer.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/board/powerup-consumer.behavior.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/game-model.data.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/game-model.data.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +84,7 @@
       <workItem from="1576583798793" duration="3205000" />
       <workItem from="1576738428373" duration="6693000" />
       <workItem from="1576765396657" duration="3093000" />
-      <workItem from="1576822785571" duration="5540000" />
+      <workItem from="1576822785571" duration="6028000" />
     </task>
     <servers />
   </component>
@@ -127,20 +129,20 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="500" height="445" key="SwitcherDM" timestamp="1576843925229">
+    <state width="500" height="445" key="SwitcherDM" timestamp="1576848342250">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state width="500" height="400" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1576585528366" />
-    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576843925229" />
+    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576848342250" />
     <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576305471552">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1576305471552" />
-    <state x="946" y="469" width="816" height="540" key="find.popup" timestamp="1576838178249">
+    <state x="946" y="469" width="816" height="540" key="find.popup" timestamp="1576848420562">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="532" y="294" width="685" height="508" key="find.popup/0.23.1440.833@0.23.1440.833" timestamp="1576588518349" />
-    <state x="946" y="469" width="816" height="540" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576838178249" />
+    <state x="946" y="469" width="816" height="540" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576848420562" />
     <state x="945" y="336" width="670" height="676" key="search.everywhere.popup" timestamp="1576333198073">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
