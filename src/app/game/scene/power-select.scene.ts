@@ -184,12 +184,12 @@ export class PowerSelectScene extends StateContainer {
 
     const powerSelected:PowerSelectBehavior = new PowerSelectBehavior({
       powers:[
-        {name: 'Bingo',      chances: 1, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
-        {name: 'Coin',       chances: 7, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
-        {name: 'Extra Ball', chances: 4, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
-        {name: 'Daub',       chances: 3, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
+        {name: 'Bingo',      chances: 3, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
+        {name: 'Coin',       chances: 5, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
+        {name: 'Extra Ball', chances: 6, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
+        {name: 'Daub',       chances: 4, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
         {name: '2 Daub',     chances: 2, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
-        {name: 'Key',        chances: 8, texture:Resources.getTexture('key', 'content'), power: 'key'},
+        {name: 'Key',        chances: 5, texture:Resources.getTexture('key', 'content'), power: 'key'},
       ]
     });
 

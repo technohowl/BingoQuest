@@ -167,7 +167,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     if(FBInstant.context.getID()!= null){
       console.error("FBInstant.context.getID() != null");
       //getContextLeaderboard
-      FacebookInstant.instance.getContextLeaderboard(6,0, (list: Array<FBInstant.LeaderboardEntry>) => {
+      FacebookInstant.instance.getContextLeaderboard(0,6, (list: Array<FBInstant.LeaderboardEntry>) => {
         let length = list.length;
         if(length > 6)
           length = 6;
