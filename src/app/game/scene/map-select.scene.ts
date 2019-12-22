@@ -117,7 +117,10 @@ export class MapSelectScene extends StateContainer {
         containers.push(this.createLevel(45,370, new Point( 120,-1440),20));
         containers.push(this.createLevel(46,390, new Point( 183,-1495),30));
         containers.push(this.createLevel(47,420, new Point( 103,-1533),30));
-        containers.push(this.createLevel(48,450, new Point(  18,-1533), 0,true));
+        containers.push(this.createLevel(48,450, new Point(  18,-1533), 30));
+        containers.push(this.createLevel(49,480, new Point(  -68,-1545), 30));
+        containers.push(this.createLevel(50,510, new Point(  -145,-1562), 30));
+        containers.push(this.createLevel(51,540, new Point(  -150,-1585), 0,true));
 
 
         containers.sort( (a:ContainerComponent, b:ContainerComponent) => {

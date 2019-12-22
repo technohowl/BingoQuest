@@ -257,6 +257,7 @@ export class GameScene extends StateContainer {
 
     this.createButtonSettings();
   }
+
   createButtonSettings(): void {
     new SpriteComponent({
       parent: this.bottomBar.element,
@@ -394,7 +395,7 @@ export class GameScene extends StateContainer {
           comp.text(value.toString());
         })
       ]
-    }).anchor(0.5).texture('bottom-marker-background', 'content')
+    }).anchor(0.5).texture('bottom-marker-background', 'content');
 
     GameModelData.instance.on(name, (value: number) => {
       sprite.emitToChildren('text', 'text', value);
@@ -547,7 +548,7 @@ export class GameScene extends StateContainer {
     this.pieceCounter.destroy();
     this.ballGenerator.destroy();
     Timer.Instance.paused = false;
-    EventManager.Instance.emit('change-state', 'map')
+    EventManager.Instance.emit('change-state', 'map');
     FacebookInstant.instance.removePause()
   }
 

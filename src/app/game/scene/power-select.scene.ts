@@ -185,15 +185,18 @@ export class PowerSelectScene extends StateContainer {
     const powerSelected:PowerSelectBehavior = new PowerSelectBehavior({
       powers:[
         {name: 'Bingo',      chances: 3, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
-        {name: 'Coin',       chances: 5, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
-        {name: 'Extra Ball', chances: 6, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
+        {name: 'Coin',       chances: 7, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
+        {name: 'Extra Ball', chances: 5, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
         {name: 'Daub',       chances: 4, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
-        {name: '2 Daub',     chances: 2, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
+        {name: '2 Daub',     chances: 1, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
         {name: 'Key',        chances: 5, texture:Resources.getTexture('key', 'content'), power: 'key'},
       ]
     });
 
     powerSelected.on('selected', () => {
+      if(GameModelData.instance.money < 20){
+        return;
+      }
       SoundController.instance.audio('sfx').play('collect');
       this.powersSelected[index] = powerSelected.selected;
       //tarun
@@ -257,7 +260,12 @@ export class PowerSelectScene extends StateContainer {
             })
           ],
           behavior: [ new ButtonBehavior({
-            click: (value:SpriteComponent) => value.emitter.emit('click')
+            click: (value:SpriteComponent) => {
+              if(GameModelData.instance.money < (20+5*powerSelected.totalClicks)){
+                return;
+              }
+              value.emitter.emit('click');
+            }
           })
           ],
         }).anchor(0.5).texture('button', 'content')

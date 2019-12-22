@@ -3,10 +3,8 @@ import {GameModelData} from "@models/game-model.data";
 import {Resources} from "@app/utils/resources.utils";
 import {Texture} from "pixi.js";
 import {LocaleHelper} from "@app/components/locale.componenet";
-import {Timber} from "@timberio/browser";
-import {LogLevel} from "@timberio/types";
-
-export type LogType = 'info' | 'coin' | 'instant-bingo' | 'bonus-daub' | '2-bonus-daub' | 'extra-ball'
+//import {Timber} from "@timberio/browser";
+//import {LogLevel} from "@timberio/types";
 
 
 export class FacebookInstant extends EventEmitter {
@@ -19,7 +17,7 @@ export class FacebookInstant extends EventEmitter {
     private rewardAd: FBInstant.AdInstance;
     private isRewardedAdLoaded: boolean;
     private isInterstitialLoaded: boolean;
-    private logger: Timber;
+    //private logger: Timber;
 
     private constructor() {
         super();
@@ -45,8 +43,9 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public initializeAPI(onInitialize: () => void): void {
-        this.logger = new Timber("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS50aW1iZXIuaW8vIiwiZXhwIjpudWxsLCJpYXQiOjE1NzcwMDI2ODEsImlzcyI6Imh0dHBzOi8vYXBpLnRpbWJlci5pby9hcGlfa2V5cyIsInByb3ZpZGVyX2NsYWltcyI6eyJhcGlfa2V5X2lkIjo0NTIxLCJ1c2VyX2lkIjoiYXBpX2tleXw0NTIxIn0sInN1YiI6ImFwaV9rZXl8NDUyMSJ9.oFVim2193TrwYEI_6UZwizKftYOiexSGjtNKx4IJAiA",
+/*        this.logger = new Timber("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS50aW1iZXIuaW8vIiwiZXhwIjpudWxsLCJpYXQiOjE1NzcwMDI2ODEsImlzcyI6Imh0dHBzOi8vYXBpLnRpbWJlci5pby9hcGlfa2V5cyIsInByb3ZpZGVyX2NsYWltcyI6eyJhcGlfa2V5X2lkIjo0NTIxLCJ1c2VyX2lkIjoiYXBpX2tleXw0NTIxIn0sInN1YiI6ImFwaV9rZXl8NDUyMSJ9.oFVim2193TrwYEI_6UZwizKftYOiexSGjtNKx4IJAiA",
             "25818");
+        this.logger.info("Hello");*/
         if (!this._online) {
             onInitialize();
             return;
@@ -66,12 +65,12 @@ export class FacebookInstant extends EventEmitter {
         }
         FBInstant.setLoadingProgress(value);
     }
-
+/*
     public sendLog(data: any, logLevel: LogLevel = LogLevel.Info){
         this.logger.log(data, logLevel).then(_=>{
 
         });
-    }
+    }*/
 
     public startGame(callback: () => void): void {
         if (!this._online) {
@@ -87,7 +86,7 @@ export class FacebookInstant extends EventEmitter {
 
                     //console.log("Weekly score:", entry);
                     GameModelData.instance.weeklyScore = entry == null ? 0 : entry.getScore() || 0;
-                    this.sendLog( `Weekly Score: ${FBInstant.player.getID()} - ${GameModelData.instance.weeklyScore}`, LogLevel.Debug);
+                    //this.sendLog( `Weekly Score: ${FBInstant.player.getID()} - ${GameModelData.instance.weeklyScore}`, LogLevel.Debug);
                     this.cacheRewarded(Resources.getConfig().ads.game);
                     this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
 
@@ -100,7 +99,7 @@ export class FacebookInstant extends EventEmitter {
             } )
             .catch((reason: any) => {
                 console.log(reason);
-                this.sendLog(reason, LogLevel.Error);
+                //this.sendLog(`startGameAsync: ${reason}`, LogLevel.Error);
             });
     }
 
@@ -222,7 +221,7 @@ export class FacebookInstant extends EventEmitter {
             })
             .catch((reason: any) => {
                 console.log(reason);
-                this.sendLog(reason, LogLevel.Error);
+                //his.sendLog(reason, LogLevel.Error);
             });
     }
 
