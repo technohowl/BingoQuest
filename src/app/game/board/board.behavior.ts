@@ -16,7 +16,8 @@ export type BoardBehaviorProps = {
   lines?: boolean[],
   columns?: boolean[],
   positive?: boolean,
-  negative?: boolean
+  negative?: boolean,
+  star?: boolean
 }
 
 export class BoardBehavior extends BehaviorBase<BoardBehaviorType, BoardBehaviorProps> {
@@ -300,6 +301,9 @@ export class BoardBehavior extends BehaviorBase<BoardBehaviorType, BoardBehavior
     if(this.validateDiagonalNegative()) {
       this.markDiagonalNegative();
     }
+    if(this.validateStar()){
+
+    }
 
   }
 
@@ -340,6 +344,37 @@ export class BoardBehavior extends BehaviorBase<BoardBehaviorType, BoardBehavior
       }
     }
     return counter >= 5;
+  }
+
+  validateStar():boolean {
+    let counter:number = 0;
+    if(this.markedValues[0][0])
+      counter ++;
+    if(this.markedValues[4][0])
+      counter ++;
+    if(this.markedValues[0][4])
+      counter ++;
+    if(this.markedValues[4][4])
+      counter ++;
+    if(this.markedValues[2][2])
+      counter ++;
+    return counter >= 5;
+  }
+
+  markStar(value:number):void {
+    if(this.properties.star) {
+      return;
+    }
+
+    this.properties.star = true;
+    this.listPieces[0][0].emitter.emit('bingo');
+    this.listPieces[4][0].emitter.emit('bingo');
+    this.listPieces[0][4].emitter.emit('bingo');
+    this.listPieces[4][4].emitter.emit('bingo');
+    this.listPieces[2][2].emitter.emit('bingo');
+
+    GameModelData.instance.powerBingos++;
+    this.playBingoSound();
   }
 
   markLine(value:number):void {

@@ -194,9 +194,6 @@ export class PowerSelectScene extends StateContainer {
     });
 
     powerSelected.on('selected', () => {
-      if(GameModelData.instance.money < 20){
-        return;
-      }
       SoundController.instance.audio('sfx').play('collect');
       this.powersSelected[index] = powerSelected.selected;
       //tarun
