@@ -9,7 +9,8 @@ import { EventManager } from '@app/components/event-manager.component';
 import { Resources } from '@app/utils/resources.utils';
 import { SpriteComponent } from '@app/components/sprite.component';
 import {ButtonBehavior} from "@app/behaviors/button.behavior";
-import {GameModelData} from "@models/game-model.data";
+import { LocaleHelper } from '@app/components/locale.componenet';
+
 import Texture = PIXI.Texture;
 
 export type SharingType = 'active' | 'clicked';
@@ -26,12 +27,14 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
   protected onSubscribe(value: ComponentBase): void {
 
+    console.warn(LocaleHelper.Instance.getLocale("play_friends"));
+
     new ContainerComponent({
       parent: value.element,
       children: [
         new BitmapTextComponent({
           element: {
-            text: 'Play with Friends',
+            text: LocaleHelper.Instance.getLocale("play_friends"), //'Play with Friends',
             font: '30px lobster',
             tint: 0xffd700,
             position: new Point(0, -210),
@@ -40,12 +43,12 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
         }),
         new ContainerComponent({
           element: {
-            position: new Point(0, -145)
+            position: new Point(-30, -145)
           },
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Play With Friends',
+                text: LocaleHelper.Instance.getLocale("play_friends"),//'Play With Friends',
                 font: '22px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
@@ -54,20 +57,20 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
             }),
             new ButtonComponent({
               element: {
-                position: new Point(110, 0),
+                position: new Point(140, 0),
                 scale: new Point(0.7, 0.7)
               }
-            }).text('Invite').AddCallback(() => this.onInviteFriend())
+            }).text(LocaleHelper.Instance.getLocale("invite")).AddCallback(() => this.onInviteFriend())
           ]
         }),
         new ContainerComponent({
           element: {
-            position: new Point(0, -90)
+            position: new Point(-30, -90)
           },
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Share Game',
+                text: LocaleHelper.Instance.getLocale("share_game"),// 'Share Game',
                 font: '24px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
@@ -76,20 +79,20 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
             }),
             new ButtonComponent({
               element: {
-                position: new Point(110, 0),
+                position: new Point(140, 0),
                 scale: new Point(0.7, 0.7)
               }
-            }).text('Share').AddCallback(() => this.onShare())
+            }).text(LocaleHelper.Instance.getLocale("share")).AddCallback(() => this.onShare())
           ]
         }),
         new ContainerComponent({
           element: {
-            position: new Point(0, -30)
+            position: new Point(-30, -30)
           },
           children: [
             new BitmapTextComponent({
               element: {
-                text: 'Random Player',
+                text: LocaleHelper.Instance.getLocale("random_play"), //'Random Player',
                 font: '24px arial',
                 tint: 0x333333,
                 position: new Point(-140, 0),
@@ -98,17 +101,16 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
             }),
             new ButtonComponent({
               element: {
-                position: new Point(110, 0),
+                position: new Point(140, 0),
                 scale: new Point(0.7, 0.7)
               }
-            }).text('Join').AddCallback(() => this.onInviteRandom())
+            }).text(LocaleHelper.Instance.getLocale("join")).AddCallback(() => this.onInviteRandom())
           ]
         })
       ]
     });
 
     this.showFriendsLeaderboard();
-    this.sendUpdate();
 
   }
 
@@ -127,23 +129,6 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     })
   }
 
-  sendUpdate(): void {
-    let name: string = FBInstant.player.getName();
-
-    if(GameModelData.instance.sessionBingos!=0) {
-      FacebookInstant.instance.sendUpdate(name + ' just scored '+ GameModelData.instance.sessionBingos +' bingos!' , () => {
-        GameModelData.instance.sessionBingos = 0;
-        FacebookInstant.instance.logEvent("e_sendUpdate", 1);
-        console.log('updateStatus', Resources.getConfig().templates.template2.text);
-      });
-    }else{
-      FacebookInstant.instance.sendUpdate(name + ' played their turn!' , () => {
-        FacebookInstant.instance.logEvent("e_sendUpdate_turn", 1);
-        console.log('updateStatus', Resources.getConfig().templates.template2.text);
-      });
-    }
-  }
-
   onShare(): void {
     
     FacebookInstant.instance.share(() => {
@@ -159,16 +144,14 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
     if(FBInstant.context.getID()!= null){
       console.error("FBInstant.context.getID() != null");
-      FacebookInstant.instance.getConnectedPlayers( (contextList: Array<FBInstant.ContextPlayer>) => {
-        let contextlength = contextList.length;
-        console.log("getConnectedPlayers:",contextList.length);
-        if(contextlength > 6)
-          contextlength = 6;
-
-        for (let i = 0; i < contextlength; i++) {
+      //getContextLeaderboard
+      FacebookInstant.instance.getContextLeaderboard(0,6, (list: Array<FBInstant.LeaderboardEntry>) => {
+        let length = list.length;
+        if(length > 6)
+          length = 6;
+        for (let i = 0; i < length; i++) {
           // for (let j = 0; j < 5; j++) {
-          this.addContextEntry(containerParent, i , contextList[i]);
-          // }
+          this.addEntry(containerParent, i, list[i]);
         }
       });
     }else{

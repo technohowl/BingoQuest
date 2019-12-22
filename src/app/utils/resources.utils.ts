@@ -11,6 +11,10 @@ export class Resources {
     return loader.resources['config'].data;
   }
 
+  public static getLocale():any {
+    return loader.resources['locale'].data;
+  }
+
   public static getTexture(image:string, spritesheet:string=null):Texture {
 
     if(spritesheet == null) {

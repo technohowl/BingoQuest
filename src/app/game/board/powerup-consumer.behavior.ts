@@ -106,7 +106,7 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
       power: 'instant-bingo',
       icon: Resources.getTexture('bingo-icon', 'content'),
       onSaveOn: (value:ComponentBase) => {
-        value.emitter.emit('bingo')
+        value.emitter.emit('bingo');
         GameModelData.instance.powerBingos++;
         SoundController.instance.audio('voice').play('bingo');
       },
@@ -120,7 +120,9 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
     return new PieceKeyBehavior({
       power: 'bonus-daub',
       icon: Resources.getTexture('star-icon', 'content'),
-      onSaveOn: () => {},
+      onSaveOn: () => {
+        SoundController.instance.audio('sfx').play('selection-2');
+      },
       onInitialize: ( (value:ComponentBase) => {
         value.emitter.emit('select')
       })
@@ -131,7 +133,9 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
     return new PieceKeyBehavior({
       power: '2-bonus-daub',
       icon: Resources.getTexture('star-icon2', 'content'),
-      onSaveOn: () => {},
+      onSaveOn: () => {
+        SoundController.instance.audio('sfx').play('selection-2');
+      },
       onInitialize: ( (value:ComponentBase) => {
         value.emitter.emit('select')
       })
@@ -144,6 +148,7 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
       icon: Resources.getTexture('coin', 'content'),
       onSaveOn: () => {
         GameModelData.instance.powerCoins++;
+        SoundController.instance.audio('sfx').play('selection-2');
       },
       onInitialize: ( (value:ComponentBase) => {
         (value.getChildWithTag('background').element as Sprite).texture = Resources.getTexture('coin', 'content');
@@ -157,6 +162,7 @@ export class PowerupConsumerBehavior extends BehaviorBase<PowerupConsumerType, P
       icon: Resources.getTexture('key', 'content'),
       onSaveOn: () => {
         GameModelData.instance.powerKeys++;
+        SoundController.instance.audio('sfx').play('selection-2');
       },
       onInitialize: ( (value:ComponentBase) => {
         (value.getChildWithTag('background').element as Sprite).texture = Resources.getTexture('key', 'content');

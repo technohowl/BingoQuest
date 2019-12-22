@@ -29,6 +29,7 @@ module.exports = {
       { from: './src/assets', to: 'assets' },
       { from: './fbapp-config.json', to: './fbapp-config.json' },
       { from: './config.json', to: './config.json' },
+      { from: './locale.json', to: './locale.json' },
     ]),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()

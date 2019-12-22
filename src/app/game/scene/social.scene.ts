@@ -15,6 +15,7 @@ import { Resources } from '@app/utils/resources.utils';
 import { SocialBehavior } from '../board/social.behavior';
 import { LeaderboardBehavior } from '../social/leaderboard.behavior';
 import { SharingBehavior } from '../social/sharing.behavior';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class SocialScene extends StateContainer {
@@ -155,7 +156,7 @@ export class SocialScene extends StateContainer {
       children: [
         new BitmapTextComponent({
           element: {
-            text: 'Continue',
+            text: LocaleHelper.Instance.getLocale("continue"), //'Continue',
             font: '32px arial',
             tint: 0x555555,
             anchor: new Point(0.5, 0.65)

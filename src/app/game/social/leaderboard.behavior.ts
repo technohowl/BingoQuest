@@ -6,6 +6,7 @@ import { FacebookInstant } from '@app/services/facebook-instant';
 import { SpriteComponent } from '@app/components/sprite.component';
 import { ContainerComponent } from '@app/components/container.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export type LeaderboardType = 'active' | 'clicked';
@@ -33,7 +34,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
     value.addChildren([
       new BitmapTextComponent({
         element: {
-          text: 'Leaderboard',
+          text: LocaleHelper.Instance.getLocale("leaderboard"), //'Leaderboard',
           font: '30px lobster',
           tint: 0xffd700,
           position: new Point(0, -210),
@@ -61,7 +62,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       }).texture('switch-back', 'content').anchor(0.5),
       new BitmapTextComponent({
         element: {
-          text: 'Weekly',
+          text: LocaleHelper.Instance.getLocale("weekly"), //'Weekly',
           font: '16px arial',
           tint: 0x333333,
           position: new Point(44, -62),
@@ -70,7 +71,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       }),
       new BitmapTextComponent({
         element: {
-          text: 'All Time',
+          text: LocaleHelper.Instance.getLocale("all_time"), //'All Time',
           font: '16px arial',
           tint: 0x333333,
           position: new Point(-46, -62),
@@ -247,7 +248,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       children: [
         new BitmapTextComponent({
           element: {
-            text: 'Your Best Score',
+            text: LocaleHelper.Instance.getLocale("best_score"), //'Your Best Score',
             font: '16px arial',
             tint: 0x000000,
             position: new Point(0, -150),

@@ -17,6 +17,7 @@ import { FacebookInstant } from '@app/services/facebook-instant';
 import { TimelineMax } from 'gsap';
 import { Helper } from '@app/utils/helper.utils';
 import { ContainerComponent } from '@app/components/container.component';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class ChestSelectScene extends StateContainer {
@@ -165,7 +166,7 @@ export class ChestSelectScene extends StateContainer {
       children: [
         new BitmapTextComponent({
             element: {
-              text: 'Continue',
+              text: LocaleHelper.Instance.getLocale("continue"), //'Continue',
               font: '30px arial',
               tint: 0x555555,
               anchor: new Point(0.5,0.65)

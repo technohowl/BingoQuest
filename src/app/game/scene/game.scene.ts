@@ -26,6 +26,7 @@ import { GraphicsComponent } from '@app/components/graphics.component';
 import { ButtonComponent } from '../board/button.component';
 import { SpeedChangeBehavior } from '../board/speed-change.behavior';
 import { FacebookInstant } from '@app/services/facebook-instant';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class GameScene extends StateContainer {
@@ -46,9 +47,6 @@ export class GameScene extends StateContainer {
 
   constructor() {
     super()
-
-
-
   }
 
   resize(): void {
@@ -259,6 +257,7 @@ export class GameScene extends StateContainer {
 
     this.createButtonSettings();
   }
+
   createButtonSettings(): void {
     new SpriteComponent({
       parent: this.bottomBar.element,
@@ -322,7 +321,7 @@ export class GameScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(0, -100),
-            text: 'Paused',
+            text: LocaleHelper.Instance.getLocale("paused"), //'Paused',
             font: '40px lobster',
             tint: 0x000000,
             anchor: new Point(0.5, 0.5)
@@ -396,7 +395,7 @@ export class GameScene extends StateContainer {
           comp.text(value.toString());
         })
       ]
-    }).anchor(0.5).texture('bottom-marker-background', 'content')
+    }).anchor(0.5).texture('bottom-marker-background', 'content');
 
     GameModelData.instance.on(name, (value: number) => {
       sprite.emitToChildren('text', 'text', value);
@@ -549,7 +548,7 @@ export class GameScene extends StateContainer {
     this.pieceCounter.destroy();
     this.ballGenerator.destroy();
     Timer.Instance.paused = false;
-    EventManager.Instance.emit('change-state', 'map')
+    EventManager.Instance.emit('change-state', 'map');
     FacebookInstant.instance.removePause()
   }
 

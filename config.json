@@ -7,7 +7,8 @@
     },
     "leaderboard": {
         "global": "global",
-        "weekly": "weekly"
+        "weekly": "weekly",
+        "group": "group."
     },
     "templates": {
         "template1": {
@@ -26,6 +27,6 @@
     },
     "ads_win_powerup": 100,
     "ads_win_extra_ball": 5,
-    "initial_money": 100,
+    "initial_money": 200,
     "total_balls":30
 }

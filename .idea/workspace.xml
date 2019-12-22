@@ -2,13 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/social/sharing.behavior.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/board/board.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/board/board.behavior.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -22,8 +28,10 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app/services" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -31,6 +39,16 @@
     <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/services" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/app" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/game" />
+    </key>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -61,6 +79,13 @@
       <workItem from="1576574423091" duration="85000" />
       <workItem from="1576574534082" duration="1906000" />
       <workItem from="1576583798793" duration="3205000" />
+      <workItem from="1576738428373" duration="6693000" />
+      <workItem from="1576765396657" duration="3093000" />
+      <workItem from="1576822785571" duration="6946000" />
+      <workItem from="1576915502866" duration="5476000" />
+      <workItem from="1577001493515" duration="479000" />
+      <workItem from="1577001994400" duration="3711000" />
+      <workItem from="1577010938532" duration="4472000" />
     </task>
     <servers />
   </component>
@@ -76,10 +101,10 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1003" y="517" key="#com.intellij.fileTypes.FileTypeChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1576304817702" />
-    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser" timestamp="1576340314508">
+    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser" timestamp="1576746141928">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
-    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1576340314508" />
+    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1576746141928" />
     <state width="2539" height="393" key="GridCell.Tab.0.bottom" timestamp="1576352855728">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
@@ -105,20 +130,24 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="500" height="400" key="SwitcherDM" timestamp="1576585528366">
-      <screen x="0" y="23" width="1440" height="833" />
-    </state>
-    <state width="500" height="400" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1576585528366" />
-    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1576482406729" />
-    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1576305471552">
+    <state width="500" height="445" key="SwitcherDM" timestamp="1577017725511">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
-    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1576305471552" />
-    <state x="532" y="294" width="685" height="508" key="find.popup" timestamp="1576588518349">
-      <screen x="0" y="23" width="1440" height="833" />
+    <state width="500" height="400" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1576585528366" />
+    <state width="500" height="445" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1577017725511" />
+    <state x="100" y="123" width="2360" height="1169" key="VCS.FileHistoryDialog" timestamp="1577013135929">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state x="100" y="123" width="2360" height="1169" key="VCS.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577013135929" />
+    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1577011009728">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577011009728" />
+    <state x="946" y="469" width="816" height="540" key="find.popup" timestamp="1577017611699">
+      <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="532" y="294" width="685" height="508" key="find.popup/0.23.1440.833@0.23.1440.833" timestamp="1576588518349" />
-    <state x="946" y="469" width="816" height="540" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1576510957482" />
+    <state x="946" y="469" width="816" height="540" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1577017611699" />
     <state x="945" y="336" width="670" height="676" key="search.everywhere.popup" timestamp="1576333198073">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>

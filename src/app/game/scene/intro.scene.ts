@@ -13,6 +13,7 @@ import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { TweenMax, Sine } from 'gsap';
 import { SoundController } from '@app/controller/sound.controller';
+import {LocaleHelper} from "@app/components/locale.componenet";
 
 
 export class IntroScene extends StateContainer {
@@ -62,7 +63,7 @@ export class IntroScene extends StateContainer {
       children: [
         new BitmapTextComponent({
           element: {
-            text: 'Play',
+            text: LocaleHelper.Instance.getLocale("play"), //'Play',
             font: '32px arial',
             tint: 0x555555,
             anchor: new Point(0.5, 0.65)

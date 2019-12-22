@@ -82,6 +82,7 @@ export class BoardPieceBehavior extends BehaviorBase<BoardPieceType, BoardPieceP
     value.element.interactive = false;
     value.element.buttonMode = false;
     value.emitter.emit('selected');
+
   }
 
   private bounceEffect(element:Container):void {
