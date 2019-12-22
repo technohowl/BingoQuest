@@ -119,9 +119,37 @@ export class EndGameScene extends StateContainer {
     GameModelData.instance.sessionBingos = GameModelData.instance.powerBingos;
 
     GameModelData.instance.bingos += GameModelData.instance.powerBingos;
+    GameModelData.instance.weeklyScore += GameModelData.instance.powerBingos;
+    this.sendUpdate();
 
     GameModelData.instance.powerCoins = 0;
     GameModelData.instance.powerBingos = 0;
+
+  }
+
+
+
+  sendUpdate(): void {
+      let name: string = FBInstant.player.getName();
+
+      if (GameModelData.instance.sessionBingos != 0) {
+        if(FBInstant.context.getID()!=null) {
+
+          FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`, () => {
+            GameModelData.instance.sessionBingos = 0;
+            FacebookInstant.instance.saveData(GameModelData.instance.props, () => {
+
+            });
+            FacebookInstant.instance.logEvent("e_sendUpdate", 1);
+            console.log('updateStatus', Resources.getConfig().templates.template2.text);
+          });
+        }
+      } else {
+        FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("played_turn")}`, () => {
+          FacebookInstant.instance.logEvent("e_sendUpdate_turn", 1);
+          console.log('updateStatus', Resources.getConfig().templates.template2.text);
+        });
+      }
 
   }
 

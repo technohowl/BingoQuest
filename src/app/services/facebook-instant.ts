@@ -1,9 +1,13 @@
-
-import { EventEmitter } from "events";
-import { GameModelData } from "@models/game-model.data";
-import { Resources } from "@app/utils/resources.utils";
-import { Texture } from "pixi.js";
+import {EventEmitter} from "events";
+import {GameModelData} from "@models/game-model.data";
+import {Resources} from "@app/utils/resources.utils";
+import {Texture} from "pixi.js";
 import {LocaleHelper} from "@app/components/locale.componenet";
+import {Timber} from "@timberio/browser";
+import {LogLevel} from "@timberio/types";
+
+export type LogType = 'info' | 'coin' | 'instant-bingo' | 'bonus-daub' | '2-bonus-daub' | 'extra-ball'
+
 
 export class FacebookInstant extends EventEmitter {
 
@@ -15,6 +19,7 @@ export class FacebookInstant extends EventEmitter {
     private rewardAd: FBInstant.AdInstance;
     private isRewardedAdLoaded: boolean;
     private isInterstitialLoaded: boolean;
+    private logger: Timber;
 
     private constructor() {
         super();
@@ -40,6 +45,8 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public initializeAPI(onInitialize: () => void): void {
+        this.logger = new Timber("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS50aW1iZXIuaW8vIiwiZXhwIjpudWxsLCJpYXQiOjE1NzcwMDI2ODEsImlzcyI6Imh0dHBzOi8vYXBpLnRpbWJlci5pby9hcGlfa2V5cyIsInByb3ZpZGVyX2NsYWltcyI6eyJhcGlfa2V5X2lkIjo0NTIxLCJ1c2VyX2lkIjoiYXBpX2tleXw0NTIxIn0sInN1YiI6ImFwaV9rZXl8NDUyMSJ9.oFVim2193TrwYEI_6UZwizKftYOiexSGjtNKx4IJAiA",
+            "25818");
         if (!this._online) {
             onInitialize();
             return;
@@ -60,6 +67,12 @@ export class FacebookInstant extends EventEmitter {
         FBInstant.setLoadingProgress(value);
     }
 
+    public sendLog(data: any, logLevel: LogLevel = LogLevel.Info){
+        this.logger.log(data, logLevel).then(_=>{
+
+        });
+    }
+
     public startGame(callback: () => void): void {
         if (!this._online) {
             callback();
@@ -70,16 +83,24 @@ export class FacebookInstant extends EventEmitter {
                 // this.ID = FBInstant.context.getID();
                 // this.playerName = FBInstant.player.getName();
                 // this.playerId = FBInstant.player.getID();
-                this.cacheRewarded(Resources.getConfig().ads.game);
-                this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
+                return this.getPlayerWeeklyScore(entry => {
 
-                }, (data: any) =>{
-                    console.log("Failed to load interstitial:" , data);
+                    //console.log("Weekly score:", entry);
+                    GameModelData.instance.weeklyScore = entry == null ? 0 : entry.getScore() || 0;
+                    this.sendLog( `Weekly Score: ${FBInstant.player.getID()} - ${GameModelData.instance.weeklyScore}`, LogLevel.Debug);
+                    this.cacheRewarded(Resources.getConfig().ads.game);
+                    this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
+
+                    }, (data: any) =>{
+                        console.log("Failed to load interstitial:" , data);
+                    });
+                    this.addEvents();
                 });
-                this.addEvents();
+
             } )
             .catch((reason: any) => {
                 console.log(reason);
+                this.sendLog(reason, LogLevel.Error);
             });
     }
 
@@ -150,32 +171,49 @@ export class FacebookInstant extends EventEmitter {
         FBInstant.canCreateShortcutAsync()
                 .then(function(canCreateShortcut) {
                     if (canCreateShortcut) {
-                    FBInstant.createShortcutAsync()
-                        .then(function() {
-                            window.localStorage.setItem('shortcut', "1");
+                        FBInstant.createShortcutAsync()
+                            .then(function() {
+                                window.localStorage.setItem('shortcut', "1");
 
-                        // Shortcut created
-                        })
-                        .catch(function() {
-                        // Shortcut not created
-                        window.localStorage.setItem('shortcut', "1");
-                    });
+                            // Shortcut created
+                            })
+                            .catch(function() {
+                            // Shortcut not created
+                            window.localStorage.setItem('shortcut', "1");
+                        });
                     }
                 });
     }
 
     //tarun added weekly scoring
     public addScore(value: number, callback: (data: any) => void): void {
+        //console.log("Adding score:", value);
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
             .then((leaderboard) => {
-                leaderboard.setScoreAsync(value).then((entry) => {
-                    console.log("leaderboard:", entry);
+                leaderboard.setScoreAsync(value).then((_) => {
+                    //console.log("leaderboard:", entry);
                     FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly).then((weekylyLeaderboard) => {
                         if(FBInstant.context.getID() !=null){
-                            FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context}`).then((groupLoeaderboard) => {
+                            weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore).then((_)=>{
+                                /*FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
+                                    callback(groupLoeaderboard.setScoreAsync(value));
+                                });*/
+                                //console.warn("Updating leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
+                                    groupLoeaderboard.setScoreAsync(value).then(_=>{
+                                        console.warn("Updated score leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                        FBInstant.updateAsync({
+                                            action: "LEADERBOARD",
+                                            name: `${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`
+                                        }).then((entryData)=>{
+                                            console.warn("Context leaderbaord upadted:", entryData);
+                                            callback(entryData);
+                                        });
+                                    });
+                                });
 
-                                callback(groupLoeaderboard.setScoreAsync(value));
                             });
+
                         }else
                             callback(weekylyLeaderboard.setScoreAsync(value));
                     });
@@ -184,13 +222,14 @@ export class FacebookInstant extends EventEmitter {
             })
             .catch((reason: any) => {
                 console.log(reason);
+                this.sendLog(reason, LogLevel.Error);
             });
     }
 
     public getGlobalScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
             .getLeaderboardAsync(Resources.getConfig().leaderboard.global)
-            .then((leaderboard) => leaderboard.getEntriesAsync(total, page * total))
+            .then((leaderboard) => {return leaderboard.getEntriesAsync(total, page * total)})
             .then((entries) => callback(entries))
             .catch((reason: any) => {
                 console.log(reason);
@@ -199,7 +238,7 @@ export class FacebookInstant extends EventEmitter {
     public getWeeklyScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
             .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
-            .then((leaderboard) => leaderboard.getEntriesAsync(total, page * total))
+            .then((leaderboard) => {return leaderboard.getEntriesAsync(total, page * total)})
             .then((entries) => callback(entries))
             .catch((reason: any) => {
                 console.log(reason);
@@ -219,10 +258,20 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public getContextLeaderboard(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
+        //console.log("Getting context leaderboard:");
         FBInstant
             .getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`)
-            .then((leaderboard) => leaderboard.getEntriesAsync(total, page * total))
-            .then((entries) => callback(entries))
+            .then((leaderboard) =>
+            {
+                console.log("context leaderboard:", leaderboard);
+
+                return leaderboard.getEntriesAsync(total, page * total)
+            })
+            .then((entries) => {
+                console.log("context leaderboard:", entries.length);
+
+                callback(entries);
+            })
             .catch((reason: any) => {
                 console.log(reason);
             });
@@ -243,6 +292,13 @@ export class FacebookInstant extends EventEmitter {
 
     public getPlayerScore(callback: (entries: FBInstant.LeaderboardEntry) => void): void {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
+            .then( (leaderboard: any) => leaderboard.getPlayerEntryAsync())
+            .then((entry: FBInstant.LeaderboardEntry) => callback(entry))
+            .catch((error: any) => console.log(error));
+    }
+
+    public getPlayerWeeklyScore(callback: (entries: FBInstant.LeaderboardEntry) => void): void {
+        FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
             .then( (leaderboard: any) => leaderboard.getPlayerEntryAsync())
             .then((entry: FBInstant.LeaderboardEntry) => callback(entry))
             .catch((error: any) => console.log(error));
@@ -443,7 +499,12 @@ export class FacebookInstant extends EventEmitter {
 
     public switchAsync(id: string, callback: () => void):void {
         FBInstant.context.createAsync(id)
-            .then(() => callback())
+            .then(() => {
+                    callback()
+
+                }
+
+            )
             .catch((value: any) => console.log(value));
     }
 }

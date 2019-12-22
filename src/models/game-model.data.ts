@@ -7,6 +7,7 @@ export type GameModelProps = {
     money:number,
     bingos:number,
     sessionScore:number,
+    weeklyScore:number,
     powers:GameLevePowers,
     items: PowerList[]
 }
@@ -21,7 +22,7 @@ export type GameLevePowers = {
 export type PowerList = 'key' | 'coin' | 'instant-bingo' | 'bonus-daub' | '2-bonus-daub' | 'extra-ball'
 
 
-export type GameModelPropType =  'lastTime' | 'money' | 'bingos' | 'sessionBingos' | 'items' | 'powers-keys' | 'powers-bingos' | 'powers-coins' | 'powers-daub' | 'powers-daub2';
+export type GameModelPropType =  'lastTime' | 'money' | 'bingos' | 'sessionBingos' | 'weeklyScore' | 'items' | 'powers-keys' | 'powers-bingos' | 'powers-coins' | 'powers-daub' | 'powers-daub2';
 
 
 export class GameModelData {
@@ -42,6 +43,7 @@ export class GameModelData {
                     money: 0, bingos: 0,
                     lastTime: 0,
                     sessionScore:0,
+                    weeklyScore:0,
                     items: [],
                     powers: {
                         bingos: 0,
@@ -116,7 +118,16 @@ export class GameModelData {
 
     set sessionBingos(value:number) {
         this.properties.sessionScore = value;
-        this.emit<number>('sessionBingos', this.properties.sessionScore);
+        this.emit<number>('weeklyScore', this.properties.sessionScore);
+    }
+
+    get weeklyScore():number {
+        return this.properties.weeklyScore;
+    }
+
+    set weeklyScore(value:number) {
+        this.properties.sessionScore = value;
+        this.emit<number>('weeklyScore', this.properties.weeklyScore);
     }
 
     get items():PowerList[] {

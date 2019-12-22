@@ -9,7 +9,6 @@ import { EventManager } from '@app/components/event-manager.component';
 import { Resources } from '@app/utils/resources.utils';
 import { SpriteComponent } from '@app/components/sprite.component';
 import {ButtonBehavior} from "@app/behaviors/button.behavior";
-import {GameModelData} from "@models/game-model.data";
 import { LocaleHelper } from '@app/components/locale.componenet';
 
 import Texture = PIXI.Texture;
@@ -112,7 +111,6 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
     });
 
     this.showFriendsLeaderboard();
-    this.sendUpdate();
 
   }
 
@@ -129,26 +127,6 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
       console.log('inviteSocial', Resources.getConfig().templates.template1.prize);
       FacebookInstant.instance.logEvent("e_socialInvite", 1);
     })
-  }
-
-  sendUpdate(): void {
-    let name: string = FBInstant.player.getName();
-
-    if(GameModelData.instance.sessionBingos!=0) {
-      FacebookInstant.instance.sendUpdate( `${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`  , () => {
-        GameModelData.instance.sessionBingos = 0;
-        FacebookInstant.instance.saveData(GameModelData.instance.props, ()=>{
-
-        });
-        FacebookInstant.instance.logEvent("e_sendUpdate", 1);
-        console.log('updateStatus', Resources.getConfig().templates.template2.text);
-      });
-    }else{
-      FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("played_turn")}` , () => {
-        FacebookInstant.instance.logEvent("e_sendUpdate_turn", 1);
-        console.log('updateStatus', Resources.getConfig().templates.template2.text);
-      });
-    }
   }
 
   onShare(): void {

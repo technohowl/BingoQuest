@@ -47,9 +47,6 @@ export class GameScene extends StateContainer {
 
   constructor() {
     super()
-
-
-
   }
 
   resize(): void {
