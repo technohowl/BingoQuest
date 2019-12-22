@@ -302,7 +302,7 @@ export class BoardBehavior extends BehaviorBase<BoardBehaviorType, BoardBehavior
       this.markDiagonalNegative();
     }
     if(this.validateStar()){
-
+      this.markStar();
     }
 
   }
@@ -361,7 +361,7 @@ export class BoardBehavior extends BehaviorBase<BoardBehaviorType, BoardBehavior
     return counter >= 5;
   }
 
-  markStar(value:number):void {
+  markStar():void {
     if(this.properties.star) {
       return;
     }
