@@ -94,6 +94,9 @@ export class FacebookInstant extends EventEmitter {
                         console.log("Failed to load interstitial:" , data);
                     });
                     this.addEvents();
+                    this.getContextScore(()=>{
+
+                    });
                 });
 
             } )
@@ -186,7 +189,7 @@ export class FacebookInstant extends EventEmitter {
 
     //tarun added weekly scoring
     public addScore(value: number, callback: (data: any) => void): void {
-        //console.log("Adding score:", value);
+        //console.log("Adding score:", value, GameModelData.instance.weeklyScore, GameModelData.instance.playerContextScore);
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
             .then((leaderboard) => {
                 leaderboard.setScoreAsync(value).then((_) => {
@@ -197,9 +200,10 @@ export class FacebookInstant extends EventEmitter {
                                 /*FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
                                     callback(groupLoeaderboard.setScoreAsync(value));
                                 });*/
-                                //console.warn("Updating leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                console.log("Updating leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+
                                 FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
-                                    groupLoeaderboard.setScoreAsync(value).then(_=>{
+                                    groupLoeaderboard.setScoreAsync(GameModelData.instance.playerContextScore).then(_=>{
                                         console.warn("Updated score leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
                                         FBInstant.updateAsync({
                                             action: "LEADERBOARD",
@@ -213,8 +217,9 @@ export class FacebookInstant extends EventEmitter {
 
                             });
 
-                        }else
+                        }else {
                             callback(weekylyLeaderboard.setScoreAsync(value));
+                        }
                     });
                 });
 
@@ -239,6 +244,30 @@ export class FacebookInstant extends EventEmitter {
             .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
             .then((leaderboard) => {return leaderboard.getEntriesAsync(total, page * total)})
             .then((entries) => callback(entries))
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+    public getPlayerStats( callback: (entries: FBInstant.StatsObject) => void, keys?:Array<string>): void {
+        FBInstant.player
+            .getStatsAsync(keys)
+            .then((stats) => {callback(stats)})
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+    public setPlayerStats(data:any, callback: () => void): void {
+        FBInstant.player
+            .setDataAsync(data)
+            .then(() => {callback()})
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+    public incPlayerStats(data:any, callback: () => void): void {
+        FBInstant.player
+            .incrementStatsAsync(data)
+            .then(() => {callback()})
             .catch((reason: any) => {
                 console.log(reason);
             });
@@ -431,7 +460,7 @@ export class FacebookInstant extends EventEmitter {
     public inviteSocial(callback:() => void):void{
         FBInstant.context.chooseAsync()
             .then(()=>{
-                callback();
+                this.getContextScore(callback);
             })
     }
 
@@ -499,11 +528,31 @@ export class FacebookInstant extends EventEmitter {
     public switchAsync(id: string, callback: () => void):void {
         FBInstant.context.createAsync(id)
             .then(() => {
-                    callback()
+                this.getContextScore(callback);
 
                 }
 
             )
             .catch((value: any) => console.log(value));
+    }
+
+    public getContextScore(callBack:()=>void):void {
+        console.warn("getContextScore player stats:");
+        if(FacebookInstant.instance.contextId != null){
+            let data: string[] = [
+                `${FacebookInstant.instance.contextId.toString()}`
+            ];
+            try {
+                FacebookInstant.instance.getPlayerStats(entries => {
+                    console.warn("Received player stats:", entries);
+                    GameModelData.instance.playerContextScore = entries[`${FacebookInstant.instance.contextId.toString()}`];
+                    callBack();
+                }, data);
+            } catch (e) {
+                console.error("Error in getting player stats:", e);
+                callBack();
+            }
+
+        }else callBack();
     }
 }

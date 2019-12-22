@@ -30,6 +30,7 @@ export class GameModelData {
     private static _instance:GameModelData;
     private emitter:EventEmitter;
     private properties:GameModelProps;
+    contextScore:number;
 
     private constructor(props?:GameModelProps) {
         this.properties = props;
@@ -95,6 +96,14 @@ export class GameModelData {
         this.properties.lastTime = value;
         this.emit<number>('lastTime', this.properties.lastTime);
     }
+
+    get playerContextScore():number {
+        return this.contextScore;
+    }
+    set playerContextScore(value:number) {
+        this.contextScore = value;
+    }
+
 
     get money():number {
         return this.properties.money;
