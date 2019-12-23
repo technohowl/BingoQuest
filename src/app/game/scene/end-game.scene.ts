@@ -155,14 +155,15 @@ export class EndGameScene extends StateContainer {
             console.log('updateStatus', Resources.getConfig().templates.template2.text);
 
         }else{
-          FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`, () => {
-            GameModelData.instance.sessionBingos = 0;
-            FacebookInstant.instance.saveData(GameModelData.instance.props, () => {
+          FacebookInstant.instance.saveData(GameModelData.instance.props, () => {
+            FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`, () => {
+              GameModelData.instance.sessionBingos = 0;
 
+              FacebookInstant.instance.logEvent("e_sendUpdate", 1);
+              console.log('updateStatus', Resources.getConfig().templates.template2.text);
             });
-            FacebookInstant.instance.logEvent("e_sendUpdate", 1);
-            console.log('updateStatus', Resources.getConfig().templates.template2.text);
           });
+
         }
 
       } else {

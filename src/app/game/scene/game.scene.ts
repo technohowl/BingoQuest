@@ -1,33 +1,28 @@
-
-import {
-  StateContainer,
-  Background,
-  RendererController
-} from '@app/game'
-import { Point, Texture, Graphics } from 'pixi.js';
-import { ContainerComponent } from '@app/components/container.component';
-import { SpriteComponent } from '@app/components/sprite.component';
-import { BitmapTextComponent } from '@app/components/bitmap-text.component';
-import { BallGeneratorBehavior } from '../board/ball-generator.behavior';
-import { BallSliderBehavior } from '../board/ball-slider.behavior';
-import { BoardBehavior } from '../board/board.behavior';
-import { Resources } from '@app/utils/resources.utils';
-import { PowerupCounterBehavior } from '../board/powerup-counter.behavior';
-import { PowerupConsumerBehavior } from '../board/powerup-consumer.behavior';
-import { PieceKeyBehavior } from '../board/piece-key.behavior';
-import { GameModelData, GameModelPropType, PowerList } from '@models/game-model.data';
-import { EventManager } from '@app/components/event-manager.component';
+import {Background, Helper, RendererController, StateContainer} from '@app/game';
+import {Graphics, Point, Texture} from 'pixi.js';
+import {ContainerComponent} from '@app/components/container.component';
+import {SpriteComponent} from '@app/components/sprite.component';
+import {BitmapTextComponent} from '@app/components/bitmap-text.component';
+import {BallGeneratorBehavior} from '../board/ball-generator.behavior';
+import {BallSliderBehavior} from '../board/ball-slider.behavior';
+import {BoardBehavior} from '../board/board.behavior';
+import {Resources} from '@app/utils/resources.utils';
+import {PowerupCounterBehavior} from '../board/powerup-counter.behavior';
+import {PowerupConsumerBehavior} from '../board/powerup-consumer.behavior';
+import {PieceKeyBehavior} from '../board/piece-key.behavior';
+import {GameModelData, GameModelPropType, PowerList} from '@models/game-model.data';
+import {EventManager} from '@app/components/event-manager.component';
 // import { TweenMax } from 'gsap';
-import { PieceCounterBehavior } from '../board/piece-counter.behavior';
-import { ComponentBase } from '@app/core/component.core';
-import { ButtonBehavior } from '@app/behaviors/button.behavior';
-import { Timer, TimeEvent } from '@app/utils/timer.utils';
-import { GraphicsComponent } from '@app/components/graphics.component';
-import { ButtonComponent } from '../board/button.component';
-import { SpeedChangeBehavior } from '../board/speed-change.behavior';
-import { FacebookInstant } from '@app/services/facebook-instant';
+import {PieceCounterBehavior} from '../board/piece-counter.behavior';
+import {ComponentBase} from '@app/core/component.core';
+import {ButtonBehavior} from '@app/behaviors/button.behavior';
+import {TimeEvent, Timer} from '@app/utils/timer.utils';
+import {GraphicsComponent} from '@app/components/graphics.component';
+import {ButtonComponent} from '../board/button.component';
+import {SpeedChangeBehavior} from '../board/speed-change.behavior';
+import {FacebookInstant} from '@app/services/facebook-instant';
 import {LocaleHelper} from "@app/components/locale.componenet";
-
+import {Bounce, TweenMax} from "gsap";
 
 export class GameScene extends StateContainer {
 
@@ -43,6 +38,7 @@ export class GameScene extends StateContainer {
   private gameOverCounter:TimeEvent;
   private endGameContainer:ContainerComponent;
   private isAdUsed:boolean;
+  private isExtraAdUsed:boolean;
   private isGameRunning: boolean;
 
   constructor() {
@@ -61,6 +57,7 @@ export class GameScene extends StateContainer {
   protected init(): void {
 
     this.isAdUsed = false;
+    this.isExtraAdUsed = false;
 
     const background: Background = new Background();
     this.addChild(background);
@@ -422,9 +419,20 @@ export class GameScene extends StateContainer {
 
   private onFinishLevel(): void {
     this.isGameRunning = false;
-    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable();
+    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
     if(isRewardVisible)
-      this.createAdsButton();
+      this.createAdsButton(Resources.getConfig().ads_win_extra_ball);
+
+    if(this.isAdUsed && !this.isExtraAdUsed){
+
+      const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.extraballs);
+      Helper.log("Checking extra ball cached ad", isRewardVisible);
+      if (isRewardVisible) {
+        this.isAdUsed = false;
+        this.createAdsButton(Resources.getConfig().ads_win_extra_ball_second);
+        Helper.log("Created extra ball cached ad");
+      }
+    }
 
     this.endGameContainer = this.createGameOverCountdown();
 
@@ -468,15 +476,13 @@ export class GameScene extends StateContainer {
     });
   }
 
-  createAdsButton(): void {
+  createAdsButton(award: number): void {
     if(this.isAdUsed) {
       return;
     }
     this.isAdUsed = true;
 
-    const prize: number = Resources.getConfig().ads_win_extra_ball;
-
-    new SpriteComponent({
+    let element = new SpriteComponent({
       parent: this,
       element: {
         position: new Point(175, -300),
@@ -494,7 +500,7 @@ export class GameScene extends StateContainer {
         new BitmapTextComponent({
           element: {
             position: new Point(11, 4),
-            text: `+${prize}\nBalls`,
+            text: `+${award}\nBalls`,
             align: 'center',
             font: '24px arial',
             tint: 0x555555,
@@ -504,30 +510,47 @@ export class GameScene extends StateContainer {
       ],
       behavior: [
         new ButtonBehavior({
-          click: (comp: ComponentBase) => this.onClickAds(comp)
+          click: (comp: ComponentBase) => this.onClickAds(comp, award)
         })
       ],
     }).anchor(0.5).texture('button-ads', 'content');
+    TweenMax.fromTo(element.element.scale, 0.3, {x: 0.7,y: 0.7}, {x: 0.8, y: 0.8, yoyo: true, repeat: -1, repeatDelay: 0.2, ease: Bounce.easeInOut});
   }
 
-  onClickAds(comp:ComponentBase):void {
+  onClickAds(comp: ComponentBase, award: number):void {
 
     comp.destroy();
     this.gameOverCounter.isRunning = false;
 
-    FacebookInstant.instance.playVideo( () => {
-      this.onCompleteVideo();
-    }, (_:any) => {
+    if(award == Resources.getConfig().ads_win_extra_ball) {
+      FacebookInstant.instance.cacheRewarded(Resources.getConfig().ads.extraballs, ()=>{
+        Helper.log("Received extra ball cached ad");
+      });
+    }else{
+      this.isExtraAdUsed = true;
+    }
+    FacebookInstant.instance.showRewardedAd( award == Resources.getConfig().ads_win_extra_ball
+        ? Resources.getConfig().ads.game
+        : Resources.getConfig().ads.extraballs,
+        () => {
+      this.onCompleteVideo(award);
+    }, (_: any) => {
       this.onFailVideo();
     })
+   /*   FacebookInstant.instance.playVideo(() => {
+        this.onCompleteVideo();
+      }, (_: any) => {
+        this.onFailVideo();
+      })*/
+
   }
 
-  private onCompleteVideo():void {
+  private onCompleteVideo(award: number):void {
     Timer.Instance.clear(this.gameOverCounter.id);
     this.endGameContainer.destroy();
 
     this.ballGenerator.change('waiting');
-    this.ballGenerator.addExtraBalls(Resources.getConfig().ads_win_extra_ball);
+    this.ballGenerator.addExtraBalls(award);
     this.ballGenerator.generate();
   }
   private onFailVideo():void {

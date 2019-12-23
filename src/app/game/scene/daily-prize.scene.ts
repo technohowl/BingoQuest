@@ -1,8 +1,8 @@
 
-import { 
-    StateContainer,
-    RendererController
- } from '@app/game'
+import {
+  StateContainer,
+  RendererController, Resources
+} from '@app/game';
 import { Point } from 'pixi.js';
 import { SpriteComponent } from '@app/components/sprite.component';
 import { BitmapTextComponent } from '@app/components/bitmap-text.component';
@@ -136,7 +136,7 @@ export class DailyPrizeScene extends StateContainer {
     GameModelData.instance.money += value;
     GameModelData.instance.saveTime();
     this.createContinuebutton();
-    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable();
+    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
     if(isRewardVisible)
       this.createAdsButton();
   }

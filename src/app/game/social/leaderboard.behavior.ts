@@ -18,11 +18,13 @@ export type LeaderboardProps = {
 export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps> {
 
   private leaderboardContainer: ContainerComponent;
+  private playerStats: ContainerComponent;
   private listContainer:ContainerComponent;
   private isPressed:boolean;
   private weeklyLeaderboard:Array<FBInstant.LeaderboardEntry>;
   private globalLeaderboard:Array<FBInstant.LeaderboardEntry>;
   private playerData:FBInstant.LeaderboardEntry;
+  private weeklyPlayerData:FBInstant.LeaderboardEntry;
 
   constructor(props?: LeaderboardProps) {
     super(props);
@@ -93,6 +95,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
 
     FacebookInstant.instance.getWeeklyScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
       this.weeklyLeaderboard = list;
+      //console.log("Weekly lb:", list);
       if(isLoaded) {
         callback();
       }
@@ -128,11 +131,11 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
         position: new Point(0, 30)
       }
     });
-    
+
     this.loadLeaderboardData( () => {
       this.targets[0].element.visible = true;
       this.showWeeklyLeaderboard();
-    })
+    });
 
     this.loadPlayerScore();
     // FacebookInstant.instance.getPlayerScore((entry: FBInstant.LeaderboardEntry) => this.addCurrentPosition(entry));
@@ -147,7 +150,18 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
     FacebookInstant.instance.getPlayerScore((entry: FBInstant.LeaderboardEntry) => {
       this.playerData = entry;
       this.addCurrentPosition(this.playerData);
+      FacebookInstant.instance.getPlayerWeeklyScore((entry: FBInstant.LeaderboardEntry) => {
+        this.weeklyPlayerData = entry;
+
+        if(entry!=null) {
+          this.playerStats.emitToChildren('score', 'text', this.weeklyPlayerData.getScore());
+          this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
+        }
+        //this.addCurrentPosition(this.playerData);
+      });
     });
+
+
     
   }
 
@@ -158,7 +172,15 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       length = 6;
     for (let i = 0; i < length; i++) {
       this.addEntry(i, this.weeklyLeaderboard[i]);
-    }  
+    }
+
+    if(this.weeklyPlayerData == null){
+      this.playerStats.emitToChildren('score', 'text', 0);
+      this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(0));
+    }else {
+      this.playerStats.emitToChildren('score', 'text', this.weeklyPlayerData.getScore());
+      this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
+    }
   }
 
   showGlobalLeaderboard():void {
@@ -168,7 +190,10 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       length = 6;
     for (let i = 0; i < length; i++) {
       this.addEntry(i, this.globalLeaderboard[i]);
-    }  
+    }
+
+    this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.playerData.getRank()));
+    this.playerStats.emitToChildren('score', 'text', this.playerData.getScore());
   }
 
   createContainer(name:string):void  {
@@ -240,7 +265,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
 
   protected addCurrentPosition(entry: FBInstant.LeaderboardEntry): void {
 
-    new ContainerComponent({
+    this.playerStats = new ContainerComponent({
       parent: this.leaderboardContainer.element,
       element: {
         position: new Point(0, -50)
@@ -272,6 +297,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
           }
         }).texture('circular-mask', 'content').anchor(0.5),
         new BitmapTextComponent({
+          tag: ['rank'],
           element: {
             text: this.getRankLetter(entry.getRank()),
             font: '20px arial',
@@ -279,8 +305,9 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
             position: new Point(-40, -110),
             anchor: new Point(1, 0.5)
           }
-        }),
+        }).on('text', (self:ComponentBase,value:string) => (self as BitmapTextComponent).text(value)),
         new BitmapTextComponent({
+          tag: ['score'],
           element: {
             text: entry.getScore().toString(),
             font: '36px arial',
@@ -288,7 +315,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
             position: new Point(35, -110),
             anchor: new Point(0, 0.5)
           }
-        })
+        }).on('text', (self:ComponentBase,value:string) => (self as BitmapTextComponent).text(value))
       ]
     });
 

@@ -40,4 +40,9 @@ export class Helper {
     return Math.floor(Math.random() * max) + min;
   }
 
+  public static log(...logData:any[]){
+    // @ts-ignore
+    window.log(...logData);
+  }
+
 }

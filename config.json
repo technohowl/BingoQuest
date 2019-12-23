@@ -3,6 +3,7 @@
         "wheel": "391120894915906_391123191582343",
         "powerup": "391120894915906_391123191582343",
         "game": "391120894915906_391123398248989",
+        "extraballs": "391120894915906_443135366381125",
         "interstitial": "391120894915906_391123594915636"
     },
     "leaderboard": {
@@ -27,6 +28,7 @@
     },
     "ads_win_powerup": 100,
     "ads_win_extra_ball": 5,
+    "ads_win_extra_ball_second": 2,
     "initial_money": 200,
     "total_balls":30
 }

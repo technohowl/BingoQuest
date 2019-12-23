@@ -59,10 +59,9 @@ export class PreloaderScene extends StateContainer {
   }
 
   private onLoadData(response: GameModelProps): void {
-    
     GameModelData.instance.reset();
-    var locale = FBInstant.getLocale(); // 'en_US'
-    console.log("Locale:", locale);
+    //var locale = FBInstant.getLocale(); // 'en_US'
+    console.log("Locale:", FacebookInstant.instance.getId);
     if (!response.lastTime) {
       GameModelData.instance.money = Resources.getConfig().initial_money;
       if(FacebookInstant.instance.entryPoint) {

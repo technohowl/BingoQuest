@@ -83,7 +83,7 @@ export class PowerSelectScene extends StateContainer {
       }
     });
 
-    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable();
+    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
     if(isRewardVisible)
         this.createAdsButton(element.element);
 

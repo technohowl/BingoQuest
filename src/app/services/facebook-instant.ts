@@ -3,6 +3,7 @@ import {GameModelData} from "@models/game-model.data";
 import {Resources} from "@app/utils/resources.utils";
 import {Texture} from "pixi.js";
 import {LocaleHelper} from "@app/components/locale.componenet";
+import {Helper} from "@app/utils/helper.utils";
 //import {Timber} from "@timberio/browser";
 //import {LogLevel} from "@timberio/types";
 
@@ -15,7 +16,10 @@ export class FacebookInstant extends EventEmitter {
     private leaderboardImages: Map<string, Texture>;
     private intAd: FBInstant.AdInstance;
     private rewardAd: FBInstant.AdInstance;
+    private rewardAdExtraBall: FBInstant.AdInstance;
+
     private isRewardedAdLoaded: boolean;
+    private isRewardedAdExtaBallLoaded: boolean;
     private isInterstitialLoaded: boolean;
     //private logger: Timber;
 
@@ -23,6 +27,7 @@ export class FacebookInstant extends EventEmitter {
         super();
         this._online = true;
         this.isRewardedAdLoaded = false;
+        this.isRewardedAdExtaBallLoaded = false;
         this.isInterstitialLoaded = false;
 
         this.leaderboardImages = new Map<string, Texture>();
@@ -77,17 +82,20 @@ export class FacebookInstant extends EventEmitter {
             callback();
             return;
         }
-        FBInstant.startGameAsync().then(callback)
+        FBInstant.startGameAsync()
             .then( () => {
                 // this.ID = FBInstant.context.getID();
                 // this.playerName = FBInstant.player.getName();
                 // this.playerId = FBInstant.player.getID();
                 return this.getPlayerWeeklyScore(entry => {
 
-                    //console.log("Weekly score:", entry);
-                    GameModelData.instance.weeklyScore = entry == null ? 0 : entry.getScore() || 0;
-                    //this.sendLog( `Weekly Score: ${FBInstant.player.getID()} - ${GameModelData.instance.weeklyScore}`, LogLevel.Debug);
-                    this.cacheRewarded(Resources.getConfig().ads.game);
+                    console.log("Weekly score:", entry);
+                    // get ebtry from leaderboard and save temp in gameModel.
+                    GameModelData.instance.playerWeekScore = entry == null ? 0 : entry.getScore() || 0;
+                    Helper.log( `Weekly Score: ${GameModelData.instance.playerWeekScore}`);
+                    this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
+
+                    });
                     this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
 
                     }, (data: any) =>{
@@ -95,7 +103,7 @@ export class FacebookInstant extends EventEmitter {
                     });
                     this.addEvents();
                     this.getContextScore(()=>{
-
+                        callback();
                     });
                 });
 
@@ -256,14 +264,7 @@ export class FacebookInstant extends EventEmitter {
                 console.log(reason);
             });
     }
-    public setPlayerStats(data:any, callback: () => void): void {
-        FBInstant.player
-            .setDataAsync(data)
-            .then(() => {callback()})
-            .catch((reason: any) => {
-                console.log(reason);
-            });
-    }
+
     public incPlayerStats(data:any, callback: () => void): void {
         FBInstant.player
             .incrementStatsAsync(data)
@@ -332,29 +333,88 @@ export class FacebookInstant extends EventEmitter {
             .catch((error: any) => console.log(error));
     }
 
-    public isRewardedAdAvailable(): Boolean {
-        console.log("this.isRewardedAdLoaded:",this.isRewardedAdLoaded);
-        return this.isRewardedAdLoaded;
+    public isRewardedAdAvailable(id: string): Boolean {
+        if(id === (Resources.getConfig().ads.extraballs) ){
+            return this.isRewardedAdExtaBallLoaded;
+        }else {
+            console.log("this.isRewardedAdLoaded:", this.isRewardedAdLoaded);
+            return this.isRewardedAdLoaded;
+        }
     }
 
-    public cacheRewarded(id: string):void {
-        console.log("Rewarded video cache started:" , id);
+    public cacheRewarded(id: string, onComplete: () => void):void {
+        //console.log("Rewarded video cache started:" , id);
+        //Helper.log("Rewarded video cache started:"+ id);
+
         FBInstant.getRewardedVideoAsync(id)
             .then((rewardedVideo: FBInstant.AdInstance) => {
-                this.rewardAd = rewardedVideo;
-                console.log("Rewarded video getRewardedVideoAsync:" , rewardedVideo.getPlacementID());
-                return this.rewardAd.loadAsync().then(()=>{
-                    this.isRewardedAdLoaded = true;
-                });
-            });
+                //console.log("Rewarded video getRewardedVideoAsync:" , id);
+                Helper.log("Rewarded video getRewardedVideoAsync:" , id);
+                if(id === Resources.getConfig().ads.extraballs) {
+                    this.rewardAdExtraBall = rewardedVideo;
+                    this.rewardAdExtraBall.loadAsync().then(() => {
+                        this.isRewardedAdExtaBallLoaded = true;
+                        Helper.log("Rewarded extra video loaded:" , id);
+                        onComplete();
+                    }).catch((error:any)=>{
+                        Helper.log("Rewarded video error 1:" , error);
+                        onComplete();
+                    });
+                }
+                else {
+                    this.rewardAd = rewardedVideo;
+                    this.rewardAd.loadAsync().then(() => {
+                        this.isRewardedAdLoaded = true;
+                        Helper.log("Rewarded video loaded id:" , id);
+                        onComplete();
+                    }).catch((error:any)=>{
+                        Helper.log("Rewarded video error 2:" , error);
+                        onComplete();
+                    });
+                }
+
+
+            }).catch((error:any)=>{
+            Helper.log("Rewarded video error:" , error);
+            onComplete();
+        });
     }
 
-    public playVideo(onComplete: () => void, onFail: (data: any) => void): void {
+    public showRewardedAd(id:string, onComplete: () => void, onFail: (data:any) => void):void{
         if (!this.isOnline) {
             onComplete();
             return;
         }
 
+        if(id === (Resources.getConfig().ads.extraballs) ){
+            this.playextraballsVideo(onComplete, onFail);
+
+        }else {
+            this.playVideo(onComplete, onFail);
+        }
+    }
+
+    public playextraballsVideo(onComplete: () => void, onFail: (data: any) => void): void {
+        if(!this.isRewardedAdExtaBallLoaded){
+            onFail("Not available.");
+            return;
+        }
+
+        this.rewardAdExtraBall.showAsync()
+            .then(() => {
+                this.rewardAdExtraBall = null;
+                this.isRewardedAdExtaBallLoaded = false;
+                //this.cacheRewarded(Resources.getConfig().ads.extraballs);
+                onComplete();
+            })
+            .catch((reason: any) => {
+                console.log(reason);
+                onFail(reason);
+            });
+
+    }
+
+    public playVideo(onComplete: () => void, onFail: (data: any) => void): void {
         if(!this.isRewardedAdLoaded){
             onFail("Not available.");
             return;
@@ -364,8 +424,7 @@ export class FacebookInstant extends EventEmitter {
             .then(() => {
                 this.rewardAd = null;
                 this.isRewardedAdLoaded = false;
-                this.cacheRewarded(Resources.getConfig().ads.game);
-                onComplete();
+                this.cacheRewarded(Resources.getConfig().ads.game, onComplete);
             })
             .catch((reason: any) => {
                 console.log(reason);
@@ -541,11 +600,13 @@ export class FacebookInstant extends EventEmitter {
         if(FacebookInstant.instance.contextId != null){
             let data: string[] = [
                 `${FacebookInstant.instance.contextId.toString()}`
+                //`${Resources.getConfig().leaderboard.weekly}`
             ];
             try {
                 FacebookInstant.instance.getPlayerStats(entries => {
                     console.warn("Received player stats:", entries);
                     GameModelData.instance.playerContextScore = entries[`${FacebookInstant.instance.contextId.toString()}`];
+                    //GameModelData.instance.weeklyScore = entries[`${Resources.getConfig().leaderboard.weekly}`];
                     callBack();
                 }, data);
             } catch (e) {
@@ -553,6 +614,8 @@ export class FacebookInstant extends EventEmitter {
                 callBack();
             }
 
-        }else callBack();
+        }else {
+            callBack();
+        }
     }
 }

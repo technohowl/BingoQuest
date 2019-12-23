@@ -31,6 +31,7 @@ export class GameModelData {
     private emitter:EventEmitter;
     private properties:GameModelProps;
     contextScore:number;
+    weeklyPlayerScore:number;
 
     private constructor(props?:GameModelProps) {
         this.properties = props;
@@ -59,7 +60,7 @@ export class GameModelData {
         return GameModelData._instance;
     }
     reset():void {
-
+        this.weeklyScore = this.playerWeekScore;
     }
     
     on(name:GameModelPropType, callback:(value:any)=>void) {
@@ -102,6 +103,13 @@ export class GameModelData {
     }
     set playerContextScore(value:number) {
         this.contextScore = value;
+    }
+
+    get playerWeekScore():number {
+        return this.weeklyPlayerScore;
+    }
+    set playerWeekScore(value:number) {
+        this.weeklyPlayerScore = value;
     }
 
 
