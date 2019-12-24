@@ -13,7 +13,6 @@ import { BingoCounterComponent } from '../map/bingo-counter.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
 import { GameModelData } from '@models/game-model.data';
-import { SoundController } from '@app/controller/sound.controller';
 import { Bounce, TweenMax} from "gsap";
 
 
@@ -226,7 +225,7 @@ export class MapSelectScene extends StateContainer {
     }
 
     onClickLevel(_:number):void {
-        SoundController.instance.audio('sfx').play('collect');
+        //SoundController.instance.audio('sfx').play('collect');
         EventManager.Instance.emit('change-state', 'power');
     }
 

@@ -70,7 +70,7 @@ export class EndGameScene extends StateContainer {
     }).texture('prize-window', 'background').anchor(0.5)
 
     this.createCard(new Point(-120+x, y), Resources.getTexture('key', 'content'), GameModelData.instance.powerKeys);
-    this.createCard(new Point(   0+x, y), Resources.getTexture('bingo-icon', 'content'), GameModelData.instance.powerBingos);
+    this.createCard(new Point(   x, y), Resources.getTexture('bingo-icon', 'content'), GameModelData.instance.powerBingos);
     this.createCard(new Point( 120+x, y), Resources.getTexture('coin', 'content'), GameModelData.instance.powerCoins);    
 
   }
@@ -146,7 +146,7 @@ export class EndGameScene extends StateContainer {
 
       if (GameModelData.instance.sessionBingos != 0) {
 
-        if(FacebookInstant.instance.contextId!=null) {
+        /*if(FacebookInstant.instance.contextId!=null) {
             GameModelData.instance.sessionBingos = 0;
             FacebookInstant.instance.saveData(GameModelData.instance.props, () => {
 
@@ -162,9 +162,19 @@ export class EndGameScene extends StateContainer {
               FacebookInstant.instance.logEvent("e_sendUpdate", 1);
               console.log('updateStatus', Resources.getConfig().templates.template2.text);
             });
+
           });
 
-        }
+        }*/
+        FacebookInstant.instance.saveData(GameModelData.instance.props, () => {
+          FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("scored_bingos")} ${GameModelData.instance.sessionBingos} bingos!`, () => {
+            GameModelData.instance.sessionBingos = 0;
+
+            FacebookInstant.instance.logEvent("e_sendUpdate", 1);
+            console.log('updateStatus', Resources.getConfig().templates.template2.text);
+          });
+
+        });
 
       } else {
         FacebookInstant.instance.sendUpdate(`${name} ${LocaleHelper.Instance.getLocale("played_turn")}`, () => {
@@ -220,20 +230,19 @@ export class EndGameScene extends StateContainer {
       FacebookInstant.instance.logEvent("e_bingos", this.bingosWon);
       this.bingosWon = 0;
       console.log(data);
+      if(GameModelData.instance.powerKeys > 0) {
+
+        EventManager.Instance.emit('change-state', 'chest');
+
+      } else {
+
+        FacebookInstant.instance.saveAllData( () =>{
+          // EventManager.Instance.emit('change-state', 'map');
+          EventManager.Instance.emit('change-state', 'social');
+        })
+
+      }
     });
-
-    if(GameModelData.instance.powerKeys > 0) {
-      
-      EventManager.Instance.emit('change-state', 'chest');
-
-    } else {
-
-      FacebookInstant.instance.saveAllData( () =>{
-        // EventManager.Instance.emit('change-state', 'map');
-        EventManager.Instance.emit('change-state', 'social');
-      })
-
-    }
   }
 
 }

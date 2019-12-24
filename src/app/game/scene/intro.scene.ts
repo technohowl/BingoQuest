@@ -79,7 +79,7 @@ export class IntroScene extends StateContainer {
   }
 
   onStartGame(): void {
-    SoundController.instance.audio('sfx').play('collect');
+    SoundController.instance.audio('sfx').play('notification-alert-01');
 
     TweenMax.killTweensOf(this.bingo.element);
 

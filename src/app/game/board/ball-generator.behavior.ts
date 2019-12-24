@@ -18,6 +18,7 @@ export type BallGeneratorProps = {
 export class BallGeneratorBehavior extends BehaviorBase<BallGeneratorType, BallGeneratorProps> {
 
   private ballList:number[];
+  private ballListTemp:number[];
   private totalBalls:number;
   private _speed:number;
   private timeId:TimeEvent;
@@ -33,6 +34,15 @@ export class BallGeneratorBehavior extends BehaviorBase<BallGeneratorType, BallG
     return parseInt(window.localStorage.getItem('game-speed'));
   }
 
+  getShuffledArr(arr:number[]) {
+    const newArr = arr.slice();
+    for (let i = newArr.length - 1; i > 0; i--) {
+      const rand = Math.floor(Math.random() * (i + 1));
+      [newArr[i], newArr[rand]] = [newArr[rand], newArr[i]];
+    }
+    return newArr;
+  }
+
   addExtraBalls(value:number):void {
     this.totalBalls += value;
   }
@@ -40,11 +50,15 @@ export class BallGeneratorBehavior extends BehaviorBase<BallGeneratorType, BallG
   private initialize():void {
       
     this.ballList = [];
+    this.ballListTemp = [];
 
     for(let i = 1; i <= 75; i++) {
-        this.ballList.push(i);
+        this.ballListTemp.push(i);
+        //this.ballList.push(i);
     }
-    this.ballList.sort( () => -0.5 + Math.random() )
+    //this.ballList.sort( () => -0.5 + Math.random() )
+    this.ballList = this.getShuffledArr(this.ballListTemp);
+    //console.log("this.ballList", this.ballList);
 
     this.change('stopped');
     this.setTimeout();

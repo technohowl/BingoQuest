@@ -89,7 +89,7 @@ export class FacebookInstant extends EventEmitter {
                 // this.playerId = FBInstant.player.getID();
                 return this.getPlayerWeeklyScore(entry => {
 
-                    console.log("Weekly score:", entry);
+                    //console.log("Weekly score:", entry);
                     // get ebtry from leaderboard and save temp in gameModel.
                     GameModelData.instance.playerWeekScore = entry == null ? 0 : entry.getScore() || 0;
                     Helper.log( `Weekly Score: ${GameModelData.instance.playerWeekScore}`);

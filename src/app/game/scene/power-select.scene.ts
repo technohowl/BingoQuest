@@ -173,6 +173,7 @@ export class PowerSelectScene extends StateContainer {
     comp.destroy();
 
     FacebookInstant.instance.playVideo(  () => {
+      SoundController.instance.audio('sfx').play('notification-alert-02');
       GameModelData.instance.money += Resources.getConfig().ads_win_powerup;
     }, (_:any) => {
       console.log('error');
@@ -194,7 +195,7 @@ export class PowerSelectScene extends StateContainer {
     });
 
     powerSelected.on('selected', () => {
-      SoundController.instance.audio('sfx').play('collect');
+      SoundController.instance.audio('sfx').play('notification-alert-01');
       this.powersSelected[index] = powerSelected.selected;
       //tarun
       GameModelData.instance.money -= (15 + 5 * powerSelected.totalClicks);
@@ -293,7 +294,7 @@ export class PowerSelectScene extends StateContainer {
   }
 
   beginLevel():void {
-    SoundController.instance.audio('sfx').play('collect');
+    SoundController.instance.audio('sfx').play('notification-alert-02');
     FacebookInstant.instance.saveAllData( () => {
       console.log('Data Saved');
       EventManager.Instance.emit('change-state', 'game')

@@ -15,7 +15,7 @@ import { Resources } from '@app/utils/resources.utils';
 import { SocialBehavior } from '../board/social.behavior';
 import { LeaderboardBehavior } from '../social/leaderboard.behavior';
 import { SharingBehavior } from '../social/sharing.behavior';
-import {LocaleHelper} from "@app/components/locale.componenet";
+import { LocaleHelper } from "@app/components/locale.componenet";
 
 
 export class SocialScene extends StateContainer {
