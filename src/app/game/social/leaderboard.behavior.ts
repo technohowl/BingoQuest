@@ -8,7 +8,8 @@ import { ContainerComponent } from '@app/components/container.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import {LocaleHelper} from "@app/components/locale.componenet";
 import {isNullOrUndefined} from "util";
-
+import {TextComponent} from "@app/components/text.component";
+import TextStyle = PIXI.TextStyle;
 
 export type LeaderboardType = 'active' | 'clicked';
 
@@ -181,8 +182,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       length = 6;
     for (let i = 0; i < length; i++) {
       this.addEntry(i, this.weeklyLeaderboard[i]);
-      console.log("weekly leaerboard:", this.weeklyLeaderboard[i]);
-
+      //console.log("weekly leaerboard:", this.weeklyLeaderboard[i]);
     }
 
     if(this.weeklyPlayerData == null || isNullOrUndefined(this.weeklyPlayerData.getScore())){
@@ -223,6 +223,11 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
 
     const dy: number = -40 + index * 50;
 
+    var textStyle:TextStyle ;
+    textStyle = new TextStyle( {
+      fontFamily : 'Arial', fontSize: 24, fill : 0x333333, align : 'left'
+    });
+
     this.listContainer.addChildren([
       new BitmapTextComponent({
         element: {
@@ -243,16 +248,17 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
         .fromTexture(FacebookInstant.instance.getPlayerImage(entry.getPlayer()))
         .anchor(0.5)
         .mask(new Graphics().beginFill(0xff0000).drawCircle(-100, dy, 20).endFill()),
-      new BitmapTextComponent({
+      new TextComponent({
         element: {
           text: entry.getPlayer().getName().substr(0, 20),
-          font: '20px arial',
-          tint: 0x333333,
-          align: 'left',
-          position: new Point(-60, dy),
-          anchor: new Point(0, 0.5)
+          style: textStyle
+          //font: '20px arial',
+          //tint: 0x333333,
+          //align: 'left',
+          //position: new Point(-60, dy),
+          //anchor: new ObservablePoint(()=>{}, null, -60, dy)
         }
-      }),
+      }).anchor( -60, dy - 15),
       new SpriteComponent({
         element: {
           position: new Point(-100, dy),
