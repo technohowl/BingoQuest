@@ -154,7 +154,6 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       try {
         FacebookInstant.instance.getPlayerWeeklyScore((entry: FBInstant.LeaderboardEntry) => {
           this.weeklyPlayerData = entry;
-          console.log("weekly leaerboard:", this.weeklyPlayerData);
           if (entry != null && !isNullOrUndefined(this.weeklyPlayerData.getScore())) {
             this.playerStats.emitToChildren('score', 'text', this.weeklyPlayerData.getScore());
             this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
@@ -182,6 +181,8 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       length = 6;
     for (let i = 0; i < length; i++) {
       this.addEntry(i, this.weeklyLeaderboard[i]);
+      console.log("weekly leaerboard:", this.weeklyLeaderboard[i]);
+
     }
 
     if(this.weeklyPlayerData == null || isNullOrUndefined(this.weeklyPlayerData.getScore())){

@@ -113,7 +113,7 @@ export class EndGameScene extends StateContainer {
     }
 
     private saveData():void {
-
+        GameModelData.instance.powerBingos = 1;
         GameModelData.instance.money += GameModelData.instance.powerCoins;
         this.bingosWon = GameModelData.instance.powerBingos;
         GameModelData.instance.sessionBingos = GameModelData.instance.powerBingos;
@@ -124,9 +124,11 @@ export class EndGameScene extends StateContainer {
             GameModelData.instance.powerBingos = 0;
         }else {
             this.getWeeklyScore((score: number) => {
-                //console.log("Weekly score received:", score);
+                //console.log("Weekly score received:", score, GameModelData.instance.powerBingos);
+               // GameModelData.instance.weeklyScore = 2;
+                //console.log("Weekly score received:", GameModelData.instance.weeklyScore, GameModelData.instance.powerBingos);
                 GameModelData.instance.weeklyScore = score;
-                GameModelData.instance.weeklyScore += GameModelData.instance.powerBingos;
+                GameModelData.instance.weeklyScore  = +GameModelData.instance.weeklyScore +  +GameModelData.instance.powerBingos;
                 //console.log("Weekly score received power:",  GameModelData.instance.weeklyScore);
                 GameModelData.instance.bingos += GameModelData.instance.powerBingos;
                 if (FacebookInstant.instance.contextId != null) {
@@ -220,9 +222,9 @@ export class EndGameScene extends StateContainer {
 
     onStartGame():void {
 
-        /*FacebookInstant.instance.addScore(GameModelData.instance.bingos, (data:any) => {
-            FacebookInstant.instance.logEvent("e_bingos", this.bingosWon);
-            this.bingosWon = 0;
+        FacebookInstant.instance.addScore(GameModelData.instance.bingos, (data:any) => {
+            /*FacebookInstant.instance.logEvent("e_bingos", this.bingosWon);
+            this.bingosWon = 0;*/
             console.log(data);
             if(GameModelData.instance.powerKeys > 0) {
 
@@ -236,8 +238,8 @@ export class EndGameScene extends StateContainer {
                 })
 
             }
-        });*/
-        if(GameModelData.instance.powerKeys > 0) {
+        });
+        /*if(GameModelData.instance.powerKeys > 0) {
 
             EventManager.Instance.emit('change-state', 'chest');
 
@@ -248,7 +250,7 @@ export class EndGameScene extends StateContainer {
                 EventManager.Instance.emit('change-state', 'social');
             })
 
-        }
+        }*/
     }
 
     getWeeklyScore(callback:(score:number)=>void) {
