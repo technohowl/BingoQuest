@@ -118,8 +118,11 @@ export class MapSelectScene extends StateContainer {
         containers.push(this.createLevel(47,420, new Point( 103,-1533),30));
         containers.push(this.createLevel(48,450, new Point(  18,-1533), 30));
         containers.push(this.createLevel(49,480, new Point(  -68,-1545), 30));
-        containers.push(this.createLevel(50,510, new Point(  -145,-1562), 30));
-        containers.push(this.createLevel(51,540, new Point(  -150,-1585), 0,true));
+        containers.push(this.createLevel(50,510, new Point(  -140,-1562), 30));
+        containers.push(this.createLevel(51,540, new Point(  -170,-1610), 40));
+        containers.push(this.createLevel(52,580, new Point(  -115,-1645), 40));
+        containers.push(this.createLevel(53,620, new Point(  -50,-1660), 40));
+        containers.push(this.createLevel(54,660, new Point(  -100,-1665), 0,true));
 
 
         containers.sort( (a:ContainerComponent, b:ContainerComponent) => {
@@ -251,6 +254,9 @@ export class MapSelectScene extends StateContainer {
         // this.createItemCounter('powers-daub', new Point( 150, -60), Resources.getTexture('star-icon', 'content'))
 
         this.createButtonSettings();
+        if(FBInstant.getSupportedAPIs().includes("payments.purchaseAsync")){
+            //this.createInappButton();
+        }
     }
 
     createButtonSettings(): void {
@@ -273,6 +279,32 @@ export class MapSelectScene extends StateContainer {
                 new ButtonBehavior({
                     click: () => {
                         EventManager.Instance.emit('change-state', 'social');
+                    }
+                })
+            ]
+        }).texture('circular-button', 'content').anchor(0.5)
+    }
+
+    createInappButton(): void {
+        new SpriteComponent({
+            parent: this.bottomBar.element,
+            element: {
+                position: new Point(-160, -100)
+            },
+            children: [
+                new SpriteComponent({
+                    element: {
+                        position: new Point(0, -4),
+                        scale: new Point(0.7, 0.7),
+                        blendMode: 2,
+                        tint: 0x555555
+                    }
+                }).texture('icon-tropy', 'content').anchor(0.5)
+            ],
+            behavior: [
+                new ButtonBehavior({
+                    click: () => {
+                        EventManager.Instance.emit('change-state', 'inapp');
                     }
                 })
             ]

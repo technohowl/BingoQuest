@@ -9,6 +9,7 @@ import { ChestSelectScene } from '@app/game/scene/chest-select.scene';
 import { FacebookInstant } from '@app/services/facebook-instant';
 import { SoundController } from '@app/controller/sound.controller';
 import { SocialScene } from '@app/game/scene/social.scene';
+import {ShopScene} from "@app/game/scene/shop.scene";
 
 
 class Game {
@@ -33,7 +34,8 @@ class Game {
     this.stateController.addState('map', MapSelectScene);
     this.stateController.addState('power', PowerSelectScene);
     this.stateController.addState('social', SocialScene);
-    
+    this.stateController.addState('inapp', ShopScene);
+
     this.stateController.setActive('preloader');
 
     renderer.start(); 

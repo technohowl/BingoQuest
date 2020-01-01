@@ -3,7 +3,7 @@ import { TweenMax } from "gsap";
 import { Container}   from 'pixi.js'
 import { EventManager } from '@app/components/event-manager.component';
 
-export type ScenesStates = 'preloader' | 'game' | 'intro' | 'chest' | 'daily' | 'endgame' | 'map' | 'power' | 'social';
+export type ScenesStates = 'preloader' | 'game' | 'intro' | 'chest' | 'daily' | 'endgame' | 'map' | 'power' | 'social' | 'inapp';
 
 export class StateController<T> {
 

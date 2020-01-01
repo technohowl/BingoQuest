@@ -7,6 +7,7 @@ import { SpriteComponent } from '@app/components/sprite.component';
 import { ContainerComponent } from '@app/components/container.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import {LocaleHelper} from "@app/components/locale.componenet";
+import {isNullOrUndefined} from "util";
 
 
 export type LeaderboardType = 'active' | 'clicked';
@@ -150,15 +151,24 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
     FacebookInstant.instance.getPlayerScore((entry: FBInstant.LeaderboardEntry) => {
       this.playerData = entry;
       this.addCurrentPosition(this.playerData);
-      FacebookInstant.instance.getPlayerWeeklyScore((entry: FBInstant.LeaderboardEntry) => {
-        this.weeklyPlayerData = entry;
+      try {
+        FacebookInstant.instance.getPlayerWeeklyScore((entry: FBInstant.LeaderboardEntry) => {
+          this.weeklyPlayerData = entry;
+          console.log("weekly leaerboard:", this.weeklyPlayerData);
+          if (entry != null && !isNullOrUndefined(this.weeklyPlayerData.getScore())) {
+            this.playerStats.emitToChildren('score', 'text', this.weeklyPlayerData.getScore());
+            this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
+          } else {
+            this.playerStats.emitToChildren('score', 'text', 0);
+            this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
 
-        if(entry!=null) {
-          this.playerStats.emitToChildren('score', 'text', this.weeklyPlayerData.getScore());
-          this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
-        }
-        //this.addCurrentPosition(this.playerData);
-      });
+          }
+          //this.addCurrentPosition(this.playerData);
+        });
+      }catch(e){
+        this.playerStats.emitToChildren('score', 'text', 0);
+        this.playerStats.emitToChildren('rank', 'text', 0);
+      }
     });
 
 
@@ -174,7 +184,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       this.addEntry(i, this.weeklyLeaderboard[i]);
     }
 
-    if(this.weeklyPlayerData == null){
+    if(this.weeklyPlayerData == null || isNullOrUndefined(this.weeklyPlayerData.getScore())){
       this.playerStats.emitToChildren('score', 'text', 0);
       this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(0));
     }else {

@@ -115,7 +115,7 @@ export class FacebookInstant extends EventEmitter {
     }
 
     private addEvents(): void {
-        GameModelData.instance.on("bingos", (value: number) => {
+        GameModelData.instance.on('bingos', (value: number) => {
             FacebookInstant.instance.addScore(value, (data: any) => {
                 console.log("score saved", data);
             });
@@ -201,18 +201,18 @@ export class FacebookInstant extends EventEmitter {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
             .then((leaderboard) => {
                 leaderboard.setScoreAsync(value).then((_) => {
-                    //console.log("leaderboard:", entry);
+                    //console.log("leaderboard updated:");
                     FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly).then((weekylyLeaderboard) => {
                         if(FBInstant.context.getID() !=null){
                             weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore).then((_)=>{
                                 /*FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
                                     callback(groupLoeaderboard.setScoreAsync(value));
                                 });*/
-                                console.log("Updating leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                //console.log("Updating leaderboard :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
 
                                 FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
                                     groupLoeaderboard.setScoreAsync(GameModelData.instance.playerContextScore).then(_=>{
-                                        console.warn("Updated score leaderbaord :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                        console.warn("Updated score leaderboard :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
                                         FBInstant.updateAsync({
                                             action: "LEADERBOARD",
                                             name: `${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`
@@ -226,7 +226,8 @@ export class FacebookInstant extends EventEmitter {
                             });
 
                         }else {
-                            callback(weekylyLeaderboard.setScoreAsync(value));
+                            console.warn("weekly leaderboard updated:", GameModelData.instance.weeklyScore);
+                            callback(weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore));
                         }
                     });
                 });
@@ -234,6 +235,7 @@ export class FacebookInstant extends EventEmitter {
             })
             .catch((reason: any) => {
                 console.log(reason);
+                callback(null);
                 //his.sendLog(reason, LogLevel.Error);
             });
     }
@@ -271,6 +273,7 @@ export class FacebookInstant extends EventEmitter {
             .then(() => {callback()})
             .catch((reason: any) => {
                 console.log(reason);
+                callback();
             });
     }
     public  getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
@@ -330,7 +333,10 @@ export class FacebookInstant extends EventEmitter {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
             .then( (leaderboard: any) => leaderboard.getPlayerEntryAsync())
             .then((entry: FBInstant.LeaderboardEntry) => callback(entry))
-            .catch((error: any) => console.log(error));
+            .catch((error: any) => {
+                console.log(error);
+                throw error;
+            });
     }
 
     public isRewardedAdAvailable(id: string): Boolean {
