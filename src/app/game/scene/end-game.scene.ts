@@ -209,7 +209,7 @@ export class EndGameScene extends StateContainer {
         this.money = new MoneyCounterComponent({
             parent: this,
             element: {
-                position: new Point(0, -320)
+                position: new Point(0, -RendererController.Instance.center.y + 44)
             }
         });
     }

@@ -14,7 +14,7 @@ export class LocaleHelper extends ContainerComponent{
 
     public initialize():void {
         this.locale = FBInstant.getLocale() || "en-US";
-        //this.locale =  "es_ES";
+        //this.locale =  "fr_FR";
     }
 
     getLocale(text: string): string{

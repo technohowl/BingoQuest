@@ -4,6 +4,8 @@ import {Resources} from "@app/utils/resources.utils";
 import {Texture} from "pixi.js";
 import {LocaleHelper} from "@app/components/locale.componenet";
 import {Helper} from "@app/utils/helper.utils";
+import Product = FBInstant.Product;
+import Purchase = FBInstant.Purchase;
 //import {Timber} from "@timberio/browser";
 //import {LogLevel} from "@timberio/types";
 
@@ -622,6 +624,32 @@ export class FacebookInstant extends EventEmitter {
 
         }else {
             callBack();
+        }
+    }
+
+    public getInappCatalog(callback: (products: Product[]) => void):void{
+        try {
+            FBInstant.payments.getCatalogAsync().then(function(catalog) {
+                console.log(catalog); // [{productID: '12345', ...}, ...]
+                callback(catalog);
+            });
+        }catch (e) {
+            console.error("Error in getting catalog stats:", e);
+            callback(null);
+        }
+    }
+
+    public buyInappItem(product: Product, callback: (result: Purchase) => void):void{
+        try {
+            FBInstant.payments.purchaseAsync({
+                productID: product.productID
+            }).then(function(catalog) {
+                console.log(catalog); // [{productID: '12345', ...}, ...]
+                callback(catalog);
+            });
+        }catch (e) {
+            console.error("Error in getting catalog stats:", e);
+            callback(null);
         }
     }
 }

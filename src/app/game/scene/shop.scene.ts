@@ -2,7 +2,7 @@
 import {
   StateContainer,
   RendererController,
-  EventManager, FacebookInstant
+  EventManager
 } from '@app/game';
 import { Background } from '@app/components/background.component';
 import { SpriteComponent } from '@app/components/sprite.component';
@@ -11,17 +11,14 @@ import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ContainerComponent } from '@app/components/container.component';
 import { ButtonComponent } from '../board/button.component';
-import { SocialBehavior } from '../board/social.behavior';
-import { LeaderboardBehavior } from '../social/leaderboard.behavior';
-import { SharingBehavior } from '../social/sharing.behavior';
 import { LocaleHelper } from "@app/components/locale.componenet";
+import {ShopBehavior} from "@app/game/shop/shop.behavior";
 
 
 export class ShopScene extends StateContainer {
 
   matchesTab: ContainerComponent;
-  leaderboard: LeaderboardBehavior;
-  sharing:SharingBehavior;
+  leaderboard: ShopBehavior;
 
   matchesButton:ButtonComponent;
   leaderboardButton:ButtonComponent;
@@ -34,19 +31,46 @@ export class ShopScene extends StateContainer {
 
   protected init(): void {
 
-    
+
     const background: Background = new Background();
     this.addChild(background);
 
+    new SpriteComponent({
+      parent: this,
+      element: {
+        position: new Point(0,0)
+      },
+      children: [
+        new BitmapTextComponent({
+          element: {
+            position: new Point(0, -193),
+            text: "Buy Coins", //'Powerups Selection',
+            font: '34px lobster',
+            tint: 0x333333,
+            anchor: new Point(0.5,0.5)
+          }
+        }),
+        new BitmapTextComponent({
+          element: {
+            position: new Point(0, -105),
+            text: "", //'Buy up to 3 powerups\nwith your coins and powers\npopup with powers icon.',
+            align: 'center',
+            font: '20px arial',
+            tint: 0x4ce9fd,
+            anchor: new Point(0.5,0.5)
+          }
+        })
+      ]
+    }).anchor(0.5).texture('game-modal', 'background');
+
     //this.saveLeaderboardData();
-    
+
     //this.createDefaultTab();
 
-    this.createBackgroundModel();
+    //this.createBackgroundModel();
 
     this.createLeaderboard();
 
-    this.createMultiplier();
 
     this.createContinuebutton();
 
@@ -57,14 +81,6 @@ export class ShopScene extends StateContainer {
   }
 
 
-  private createBackgroundModel(): void {
-    new ContainerComponent({
-      parent: this,
-      behavior: [
-        new SocialBehavior()
-      ]
-    });
-  }
 
   private onClickMatches():void {
    }
@@ -79,7 +95,7 @@ export class ShopScene extends StateContainer {
 
   private createLeaderboard():void {
 
-    this.leaderboard = new LeaderboardBehavior();
+    this.leaderboard = new ShopBehavior();
 
     new ContainerComponent({
       parent: this,
@@ -90,22 +106,6 @@ export class ShopScene extends StateContainer {
         this.leaderboard
       ]
     });
-
-  }
-
-  private createMultiplier(): void {
-
-    this.sharing = new SharingBehavior();
-
-    this.matchesTab = new ContainerComponent({
-      parent: this,
-      element: {
-        visible: false,
-      },
-      behavior: [
-        this.sharing
-      ]
-    })
 
   }
 
@@ -135,10 +135,7 @@ export class ShopScene extends StateContainer {
   }
 
   onStartGame(): void {
-    //tarun here on click goes to map
-    FacebookInstant.instance.showInterstitialAd(()=>{
-      EventManager.Instance.emit('change-state', 'map');
-    });
+    EventManager.Instance.emit('change-state', 'map');
   }
 
 }

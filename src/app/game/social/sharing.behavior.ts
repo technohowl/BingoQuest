@@ -172,7 +172,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
   protected addContextEntry(parent: ContainerComponent, index: number, entry: FBInstant.ContextPlayer): void {
     const dy: number = 35 + index * 45;
 
-    console.log("addEntry:",entry.getID(),  entry.getName());
+    console.log("addEntry ctx:",entry.getID(),  entry.getName());
     parent.addChildren([
       new BitmapTextComponent({
         element: {
@@ -242,7 +242,7 @@ export class SharingBehavior extends BehaviorBase<SharingType, SharingProps> {
 
     const dy: number = 35 + index * 45;
     const isVisible: boolean = (FBInstant.player.getID() !== entry.getPlayer().getID());
-    console.log("addEntry:",entry.getRank().toString(),  entry.getPlayer().getName(), entry.getScore());
+    console.log("addEntry share::",entry.getRank().toString(),  entry.getPlayer().getName(), entry.getScore());
     parent.addChildren([
       new BitmapTextComponent({
         element: {

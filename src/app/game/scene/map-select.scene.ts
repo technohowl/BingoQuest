@@ -255,7 +255,7 @@ export class MapSelectScene extends StateContainer {
 
         this.createButtonSettings();
         if(FBInstant.getSupportedAPIs().includes("payments.purchaseAsync")){
-            //this.createInappButton();
+            this.createInappButton();
         }
     }
 
