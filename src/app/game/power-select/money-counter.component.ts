@@ -35,16 +35,39 @@ export class MoneyCounterComponent extends ContainerComponent {
               anchor: new Point(0,0.5)
           }
         }).on('text-value', (comp:ComponentBase, value:number) => {
-          (comp as BitmapTextComponent).text(value.toString());
+          //(comp as BitmapTextComponent).text((value).toString());
+          let currentValue:number = +(comp as BitmapTextComponent).element.text;
+          console.error("Current money :", currentValue, value);
+          this.timerF(currentValue, value, comp);
+
         })
       ]
     }));
 
+
     GameModelData.instance.on('money', (value:number) => {
-      console.warn("GameModelData: money");
+      //console.warn("GameModelData: money");
+
       this.emitToChildren('text-value', 'text-value', value);
     })
 
+  }
+
+
+  // @ts-ignore
+  private timerF(value:number, finalValue:number, comp:ComponentBase):void{
+    let diff:number = finalValue - value;
+    if(diff<0){
+
+        (comp as BitmapTextComponent).text((value - 1).toString());
+        setTimeout( this.timerF.bind(this, (value-1), finalValue, comp), 40 );
+
+    }else if(diff>0) {
+
+        (comp as BitmapTextComponent).text((value + 1).toString());
+        setTimeout(this.timerF.bind(this, (value + 1), finalValue, comp), 40);
+
+    }
   }
 
   onPostCreate():void {
