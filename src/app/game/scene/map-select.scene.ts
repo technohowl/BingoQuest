@@ -13,7 +13,7 @@ import { BingoCounterComponent } from '../map/bingo-counter.component';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
 import { GameModelData } from '@models/game-model.data';
-import { Bounce, TweenMax} from "gsap";
+import { Bounce, TweenMax, Sine} from "gsap";
 
 
 export class MapSelectScene extends StateContainer {
@@ -255,7 +255,9 @@ export class MapSelectScene extends StateContainer {
 
         this.createButtonSettings();
         if(FBInstant.getSupportedAPIs().includes("payments.purchaseAsync")){
-            this.createInappButton();
+            FBInstant.payments.onReady(()=> {
+                this.createInappButton();
+            });
         }
     }
 
@@ -286,29 +288,32 @@ export class MapSelectScene extends StateContainer {
     }
 
     createInappButton(): void {
-        new SpriteComponent({
+       let inappBtn: SpriteComponent =  new SpriteComponent({
             parent: this.bottomBar.element,
             element: {
-                position: new Point(-160, -100)
+                position: new Point(-160, -105)
             },
             children: [
                 new SpriteComponent({
                     element: {
                         position: new Point(0, -4),
                         scale: new Point(0.7, 0.7),
-                        blendMode: 2,
-                        tint: 0x555555
+                       /* blendMode: 2,
+                        tint: 0x555555*/
                     }
-                }).texture('icon-tropy', 'content').anchor(0.5)
+                }).texture('shop').anchor(0.5)
             ],
             behavior: [
                 new ButtonBehavior({
                     click: () => {
                         EventManager.Instance.emit('change-state', 'inapp');
+                        FacebookInstant.instance.logEvent("eOpenShop", 1);
                     }
                 })
             ]
-        }).texture('circular-button', 'content').anchor(0.5)
+        })
+        TweenMax.fromTo(inappBtn.element.scale, 0.5, {x: 0.7,y: 0.7}, {x: 0.8, y: 0.8, yoyo: true, repeat: -1, repeatDelay: 0.3, ease: Sine.easeInOut});
+
     }
 
     createItemCounter(position: Point, tex: Texture, gameId: string): void {

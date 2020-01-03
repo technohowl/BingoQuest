@@ -52,14 +52,11 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
       }
     });
     this.targets[0].element.visible = true;
-    FBInstant.payments.onReady(()=>{
-      console.log("On ready called");
-      FacebookInstant.instance.getInappCatalog((catalog: Product[])=>{
-        console.log("On getInappCatalog called");
-        this.createContainer('Inapp');
-        this.showShopItems(catalog);
+    FacebookInstant.instance.getInappCatalog((catalog: Product[])=>{
+      //console.log("On getInappCatalog called");
+      this.createContainer('Inapp');
+      this.showShopItems(catalog);
 
-      });
     });
 
 
@@ -104,6 +101,22 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
     textStyle = new TextStyle( {
       fontFamily : 'Arial', fontSize: 24, fill : 0x333333, align : 'left'
     });*/
+    let comps:SpriteComponent[] = [];
+
+    for(let i:number = 0; i <= index; i++){
+      let rand :number = Math.random() * 10  + index;
+      if(i+1 % 2 == 1)
+        rand = -rand;
+      comps.push(new SpriteComponent({
+        element: {
+          width: 25, height: 25,
+          position: new Point(-45 + rand, dy + rand/2),
+        }
+      })
+          .texture('coin', 'content')
+          .anchor(0.5));
+    }
+
 
     this.listContainer.addChildren([
       new BitmapTextComponent({
@@ -116,28 +129,8 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
           anchor: new Point(1, 0.5)
         }
       }),
-      new SpriteComponent({
-        element: {
-          width: 40, height: 40,
-          position: new Point(-45, dy)
-        }
-      })
-        .texture('coin', 'content')
-        .anchor(0.5),
-      /*new TextComponent({
-        element: {
-          text: entry.description,
-          style: textStyle
+            ...comps,
 
-        }
-      }).anchor( -60, dy - 15),*/
-      /*new SpriteComponent({
-        element: {
-          position: new Point(-100, dy),
-          scale: new Point(0.5, 0.5),
-          tint: 0x4ce9fd
-        }
-      }).texture('circular-mask', 'content').anchor(0.5),*/
       new BitmapTextComponent({
         element: {
           text: entry.priceCurrencyCode + " " + entry.price,
@@ -155,12 +148,13 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
         behavior: [
           new ButtonBehavior({
             click: () => {
+              FacebookInstant.instance.logEvent("eClickInappItem", 1);
               FacebookInstant.instance.buyInappItem(entry, (result:Purchase)=>{
                   if(result){
                     FBInstant.payments.consumePurchaseAsync(result.purchaseToken).then(function () {
                       // Purchase successfully consumed!
                       // Game should now provision the product to the player
-                      GameModelData.instance.money += +entry.description;
+                      GameModelData.instance.money += +entry.title;
                       SoundController.instance.audio('sfx').play('collect-item');
                       FacebookInstant.instance.saveAllData(()=>{
 

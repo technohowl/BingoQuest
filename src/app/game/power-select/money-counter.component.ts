@@ -57,15 +57,27 @@ export class MoneyCounterComponent extends ContainerComponent {
   // @ts-ignore
   private timerF(value:number, finalValue:number, comp:ComponentBase):void{
     let diff:number = finalValue - value;
+    let decr: number = 1;
+    if(diff > 50)
+      decr = 2;
+    else if (diff > 200)
+      decr = 5;
+    else if (diff > 500)
+      decr = 50;
+    else if (diff > 1000)
+      decr = 100;
+    else if (diff > 2000)
+      decr = 200;
+
     if(diff<0){
 
-        (comp as BitmapTextComponent).text((value - 1).toString());
-        setTimeout( this.timerF.bind(this, (value-1), finalValue, comp), 40 );
+        (comp as BitmapTextComponent).text((value - decr).toString());
+        setTimeout( this.timerF.bind(this, (value - decr), finalValue, comp), 30 );
 
     }else if(diff>0) {
 
-        (comp as BitmapTextComponent).text((value + 1).toString());
-        setTimeout(this.timerF.bind(this, (value + 1), finalValue, comp), 40);
+        (comp as BitmapTextComponent).text((value + decr).toString());
+        setTimeout(this.timerF.bind(this, (value + decr), finalValue, comp), 30);
 
     }
   }
