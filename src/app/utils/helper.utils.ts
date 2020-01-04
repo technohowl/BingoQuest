@@ -1,3 +1,5 @@
+import {SpriteComponent} from "@app/components/sprite.component";
+import {Linear, TweenMax} from "gsap";
 
 export class Helper {
 
@@ -44,5 +46,18 @@ export class Helper {
     // @ts-ignore
     window.log(...logData);
   }
+/*
+  public static getLoadingSprite():SpriteComponent{
 
+  }*/
+
+  public static startProgress(progress:SpriteComponent):void{
+    progress.element.visible = true;
+    TweenMax.from(progress.element, 4, {rotation:"-=15", transformOrigin:"50% 50%", ease:Linear.easeNone,repeat:-1});
+  }
+
+  public static stopProgress(progress:SpriteComponent):void{
+    TweenMax.killTweensOf(progress.element);
+    progress.element.visible = false;
+  }
 }

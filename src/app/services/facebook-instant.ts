@@ -630,7 +630,7 @@ export class FacebookInstant extends EventEmitter {
     public getInappCatalog(callback: (products: Product[]) => void):void{
         try {
             FBInstant.payments.getCatalogAsync().then(function(catalog) {
-                console.log(catalog); // [{productID: '12345', ...}, ...]
+                //console.log(catalog); // [{productID: '12345', ...}, ...]
                 callback(catalog);
             });
         }catch (e) {
@@ -650,6 +650,16 @@ export class FacebookInstant extends EventEmitter {
         }catch (e) {
             console.error("Error in getting catalog stats:", e);
             callback(null);
+        }
+    }
+
+    public consumeItem(token: string, callback:()=>void):void{
+        try {
+            FBInstant.payments.consumePurchaseAsync(token).then(function () {
+                callback();
+            });
+        }catch (e) {
+            callback();
         }
     }
 }

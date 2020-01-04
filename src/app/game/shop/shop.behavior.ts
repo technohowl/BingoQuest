@@ -13,6 +13,7 @@ import {GameModelData} from "@models/game-model.data";
 import {SoundController} from "@app/controller/sound.controller";
 import {MoneyCounterComponent} from "@app/game/power-select/money-counter.component";
 import {RendererController} from "@app/controller/renderer.controller";
+import {Helper} from "@app/utils/helper.utils";
 
 export type LeaderboardType = 'active' | 'clicked';
 
@@ -25,6 +26,7 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
   private leaderboardContainer: ContainerComponent;
   private listContainer:ContainerComponent;
   private money: MoneyCounterComponent;
+  private progress: SpriteComponent;
 
   constructor(props?: LeaderboardProps) {
     super(props);
@@ -52,9 +54,23 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
       }
     });
     this.targets[0].element.visible = true;
+    this.createContainer('Inapp');
+    this.progress =  new SpriteComponent({
+      element: {
+        width: 50, height: 50,
+        position:  new Point(0,0),
+        visible: true
+      }
+    })
+        .texture('loading')
+        .anchor(0.5);
+    this.listContainer.addChild(this.progress);
+    Helper.startProgress(this.progress);
+
     FacebookInstant.instance.getInappCatalog((catalog: Product[])=>{
       //console.log("On getInappCatalog called");
-      this.createContainer('Inapp');
+      Helper.stopProgress(this.progress);
+
       this.showShopItems(catalog);
 
     });
@@ -62,6 +78,8 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
 
     // FacebookInstant.instance.getPlayerScore((entry: FBInstant.LeaderboardEntry) => this.addCurrentPosition(entry));
   }
+
+
 
   compare(a:Product, b:Product): number {
     /*if (+a.price > +b.price) return 1;
@@ -96,7 +114,7 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
   protected addEntry(index: number, entry: Product): void {
 
     const dy: number = -80 + index * 50;
-    console.warn("Adding:", entry);
+    //console.warn("Adding:", entry);
    /* var textStyle:TextStyle ;
     textStyle = new TextStyle( {
       fontFamily : 'Arial', fontSize: 24, fill : 0x333333, align : 'left'
@@ -148,19 +166,20 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
         behavior: [
           new ButtonBehavior({
             click: () => {
+              Helper.startProgress(this.progress);
               FacebookInstant.instance.logEvent("eClickInappItem", 1);
+
               FacebookInstant.instance.buyInappItem(entry, (result:Purchase)=>{
                   if(result){
-                    FBInstant.payments.consumePurchaseAsync(result.purchaseToken).then(function () {
-                      // Purchase successfully consumed!
-                      // Game should now provision the product to the player
+                    FacebookInstant.instance.consumeItem(result.purchaseToken, ():void=>{
                       GameModelData.instance.money += +entry.title;
                       SoundController.instance.audio('sfx').play('collect-item');
                       FacebookInstant.instance.saveAllData(()=>{
-
+                        Helper.stopProgress(this.progress);
                       });
-                    });
-
+                    })
+                  }else{
+                    Helper.stopProgress(this.progress);
                   }
               });
             }
@@ -170,22 +189,6 @@ export class ShopBehavior extends BehaviorBase<LeaderboardType, LeaderboardProps
     ]);
     this.createMoneyShower();
   }
-
-  getRankLetter(value: number): string {
-
-    switch (value) {
-      case 1:
-        return `${value}st`;
-      case 2:
-        return `${value}nd`;
-      case 3:
-        return `${value}rd`;
-      default:
-        return `${value}th`;
-    }
-
-  }
-
 
   hide(): void {
     this.targets[0].element.visible = false;

@@ -13,7 +13,7 @@ export * from './components/event-manager.component';
 export * from './components/game-model.component';
 export * from './components/text-display.component';
 export * from './components/background.component';
-export * from './components/preloader-bar.component';
+//export * from './components/preloader-bar.component';
 export * from './components/sprite.component';
 export * from './components/container.component';
 export * from './components/bitmap-text.component';
