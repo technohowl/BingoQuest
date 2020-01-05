@@ -24,13 +24,10 @@ export class ShopScene extends StateContainer {
   leaderboardButton:ButtonComponent;
 
   constructor() {
-
     super()
-
   }
 
   protected init(): void {
-
 
     const background: Background = new Background();
     this.addChild(background);
@@ -63,18 +60,10 @@ export class ShopScene extends StateContainer {
       ]
     }).anchor(0.5).texture('game-modal', 'background');
 
-    //this.saveLeaderboardData();
-
-    //this.createDefaultTab();
-
-    //this.createBackgroundModel();
-
     this.createLeaderboard();
-
 
     this.createContinuebutton();
 
-    // this.onClickLeaderboard();
     this.onClickMatches();
 
     RendererController.Instance.resizeHandler();
@@ -85,13 +74,6 @@ export class ShopScene extends StateContainer {
   private onClickMatches():void {
    }
 
-  /*private onClickLeaderboard():void {
-    this.leaderboardButton.element.tint = 0xffffff;
-    this.matchesButton.element.tint = 0xaaaaaa;
-
-    this.matchesTab.element.visible = false;
-    this.leaderboard.show();
-  }*/
 
   private createLeaderboard():void {
 

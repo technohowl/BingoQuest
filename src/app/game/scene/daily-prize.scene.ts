@@ -65,7 +65,7 @@ export class DailyPrizeScene extends StateContainer {
       this.spinningWheel.destroy();
     }
 
-    const results:number[] = [75, 10, 50,25, 100, 50, 10, 10];
+    const results:number[] = [250, 10, 50,25, 75, 50, 30, 100];
 
     const spinBehavior:SpinningBehavior = new SpinningBehavior({
       stops: [0, 45, 90, 135, 180, 225, 270, 305]

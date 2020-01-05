@@ -1,7 +1,7 @@
 import { BehaviorBase } from '@app/core/behavior.core';
 import { ComponentBase } from '@app/core/component.core';
 import { BitmapTextComponent } from '@app/components/bitmap-text.component';
-import { Point, Graphics } from 'pixi.js';
+import {Point, Graphics, Texture} from 'pixi.js';
 import { FacebookInstant } from '@app/services/facebook-instant';
 import { SpriteComponent } from '@app/components/sprite.component';
 import { ContainerComponent } from '@app/components/container.component';
@@ -92,24 +92,23 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
       callback();
       return;
     }
+    try {
+      FacebookInstant.instance.getWeeklyScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
+        this.weeklyLeaderboard = list;
+        //console.log("Weekly lb:", list);
+        FacebookInstant.instance.getGlobalScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
+          this.globalLeaderboard = list;
+          callback();
+        });
+        /* if(isLoaded) {
+           callback();
+         }
+         isLoaded = true;*/
+      });
+    }catch(e) {
+      callback();
+    }
 
-    let isLoaded:boolean = false;
-
-    FacebookInstant.instance.getWeeklyScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
-      this.weeklyLeaderboard = list;
-      //console.log("Weekly lb:", list);
-      if(isLoaded) {
-        callback();
-      }
-      isLoaded = true;
-    });
-    FacebookInstant.instance.getGlobalScore(0, 6, (list: Array<FBInstant.LeaderboardEntry>) => {
-      this.globalLeaderboard = list;
-      if(isLoaded) {
-        callback();
-      }
-      isLoaded = true;
-    });
 
   }
 
@@ -160,7 +159,10 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
             this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
           } else {
             this.playerStats.emitToChildren('score', 'text', 0);
-            this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
+            if(!isNullOrUndefined(this.weeklyPlayerData))
+              this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.weeklyPlayerData.getRank()));
+            else
+              this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(0));
 
           }
           //this.addCurrentPosition(this.playerData);
@@ -202,9 +204,14 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
     for (let i = 0; i < length; i++) {
       this.addEntry(i, this.globalLeaderboard[i]);
     }
-
-    this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.playerData.getRank()));
-    this.playerStats.emitToChildren('score', 'text', this.playerData.getScore());
+    if(this.playerData == null || isNullOrUndefined(this.playerData.getScore())) {
+      this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(0));
+      this.playerStats.emitToChildren('score', 'text', 0);
+    }
+    else {
+      this.playerStats.emitToChildren('rank', 'text', this.getRankLetter(this.playerData.getRank()));
+      this.playerStats.emitToChildren('score', 'text', this.playerData.getScore());
+    }
   }
 
   createContainer(name:string):void  {
@@ -281,7 +288,20 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
   }
 
   protected addCurrentPosition(entry: FBInstant.LeaderboardEntry): void {
-
+    console.warn("Current player:", entry);
+    let playerPhoto : Texture;
+    let score : number;
+    let rank : number;
+    if(isNullOrUndefined(entry)){
+        //FBInstant.player.getPhoto()
+      playerPhoto = Texture.fromImage(FBInstant.player.getPhoto());
+      score = 0;
+      rank = 0;
+    }else{
+      playerPhoto = FacebookInstant.instance.getPlayerImage(entry.getPlayer());
+      score = entry.getScore();
+      rank = entry.getRank();
+    }
     this.playerStats = new ContainerComponent({
       parent: this.leaderboardContainer.element,
       element: {
@@ -303,7 +323,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
             position: new Point(0, -105)
           }
         })
-          .fromTexture(FacebookInstant.instance.getPlayerImage(entry.getPlayer()))
+          .fromTexture(playerPhoto)
           .anchor(0.5)
           .mask(new Graphics().beginFill(0xff0000).drawCircle(0, -105, 30).endFill()),
         new SpriteComponent({
@@ -316,7 +336,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
         new BitmapTextComponent({
           tag: ['rank'],
           element: {
-            text: this.getRankLetter(entry.getRank()),
+            text: this.getRankLetter(rank),
             font: '20px arial',
             tint: 0x000000,
             position: new Point(-40, -110),
@@ -326,7 +346,7 @@ export class LeaderboardBehavior extends BehaviorBase<LeaderboardType, Leaderboa
         new BitmapTextComponent({
           tag: ['score'],
           element: {
-            text: entry.getScore().toString(),
+            text: score.toString(),
             font: '36px arial',
             tint: 0x000000,
             position: new Point(35, -110),

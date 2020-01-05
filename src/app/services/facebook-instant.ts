@@ -15,6 +15,7 @@ export class FacebookInstant extends EventEmitter {
     public static _instance: FacebookInstant;
 
     private _online: boolean;
+    private _adCount: boolean;
     private leaderboardImages: Map<string, Texture>;
     private intAd: FBInstant.AdInstance;
     private rewardAd: FBInstant.AdInstance;
@@ -28,6 +29,7 @@ export class FacebookInstant extends EventEmitter {
     private constructor() {
         super();
         this._online = true;
+        this._adCount = false;
         this.isRewardedAdLoaded = false;
         this.isRewardedAdExtaBallLoaded = false;
         this.isInterstitialLoaded = false;
@@ -160,6 +162,13 @@ export class FacebookInstant extends EventEmitter {
     }
     set isOnline(value: boolean) {
         this._online = value;
+    }
+
+    get isGamePlayed(): boolean {
+        return this._adCount;
+    }
+    set isGamePlayed(value: boolean) {
+        this._adCount = value;
     }
 
     public logEvent( eventName:string, value?:number ):void{
@@ -476,16 +485,15 @@ export class FacebookInstant extends EventEmitter {
         });
     }
     showInterstitialAd(onComplete: () => void): void {
-
         if (!this.isOnline) {
             onComplete();
             return;
         }
-        if(this.intAd == null || !this.isInterstitialLoaded){
+        if((this.intAd == null || !this.isInterstitialLoaded)){
             onComplete();
             return;
         }
-
+        this.isGamePlayed = false;
         this.intAd.showAsync().then(()=>{
             this.intAd = null;
             this.isInterstitialLoaded = false;

@@ -81,6 +81,12 @@ export class GameScene extends StateContainer {
         this.pauseScreen()
     }
     );
+
+    FacebookInstant.instance.isGamePlayed = true;
+
+    //todo tarun remove in prod
+    //this.createCoinAdsButton(Resources.getConfig().ads_win_extra_ball);
+
   }
 
   createBehaviors(): void {
@@ -352,7 +358,10 @@ export class GameScene extends StateContainer {
             visible: true
           }
         }).text('Exit Game').AddCallback(() => {
-          this.onForceQuit();
+          FacebookInstant.instance.showInterstitialAd(()=>{
+            this.onForceQuit();
+          });
+
         }),
       ]
     })
@@ -515,6 +524,54 @@ export class GameScene extends StateContainer {
       ],
     }).anchor(0.5).texture('button-ads', 'content');
     TweenMax.fromTo(element.element.scale, 0.3, {x: 0.7,y: 0.7}, {x: 0.8, y: 0.8, yoyo: true, repeat: -1, repeatDelay: 0.2, ease: Bounce.easeInOut});
+  }
+
+  createCoinAdsButton(award: number): void {
+
+    let element = new SpriteComponent({
+      parent: this,
+      element: {
+        position: new Point(175, -300),
+        scale: new Point(1, 0.8),
+      },
+      children: [
+        new SpriteComponent({
+          element: {
+            scale: new Point(0.4, 0.4),
+            //tint: 0x444444,
+            //blendMode: 2,
+            position: new Point(-50, -3)
+          }
+        }).texture('coin', 'content').anchor(0.5),
+
+        new BitmapTextComponent({
+          element: {
+            position: new Point(14, 7),
+            text: `+${award} Balls`,
+            align: 'center',
+            font: '24px arial',
+            tint: 0x555555,
+            anchor: new Point(0.4, 1)
+          }
+        }),
+        new BitmapTextComponent({
+          element: {
+            position: new Point(11, 5),
+            text: `200 Coins`,
+            align: 'center',
+            font: '24px arial',
+            tint: 0x555555,
+            visible:false,
+            anchor: new Point(0.5, 0.2)
+          }}).blendMode(2)
+      ],
+      behavior: [
+        new ButtonBehavior({
+          click: (comp: ComponentBase) => this.onClickAds(comp, award)
+        })
+      ],
+    }).anchor(0.5).texture('button', 'content');
+    TweenMax.fromTo(element.element.scale, 0.5, {x: 0.8,y: 0.8}, {x: 0.76, y: 0.76, yoyo: true, repeat: -1, repeatDelay: 0.4, ease: Bounce.easeInOut});
   }
 
   onClickAds(comp: ComponentBase, award: number):void {

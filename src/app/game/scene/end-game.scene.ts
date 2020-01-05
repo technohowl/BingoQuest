@@ -113,7 +113,7 @@ export class EndGameScene extends StateContainer {
     }
 
     private saveData():void {
-        GameModelData.instance.powerBingos = 1;
+        //GameModelData.instance.powerBingos = 1;
         GameModelData.instance.money += GameModelData.instance.powerCoins;
         this.bingosWon = GameModelData.instance.powerBingos;
         GameModelData.instance.sessionBingos = GameModelData.instance.powerBingos;
