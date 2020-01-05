@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+//const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const args = require('yargs').argv
 
@@ -18,6 +19,13 @@ module.exports = {
     contentBase: './build',
     hot: true,
     port: 8080
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+      parallel: true,
+      cache: true,
+    })],
   },
   plugins: [
     new CleanWebpackPlugin(['build']),
@@ -35,13 +43,14 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ].concat( (env !== 'build') ? [] :
     [
-      new UglifyJSPlugin({
+
+      /*new UglifyJSPlugin({
         uglifyOptions: {
           compress: {
             drop_console: true
           }
         }
-      })
+      })*/
     ]
   ),
   module: {

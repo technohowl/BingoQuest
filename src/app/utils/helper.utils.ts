@@ -5,7 +5,7 @@ export class Helper {
 
   
   private constructor() {
-    
+
   }
 
   static numPad(value:number):string {

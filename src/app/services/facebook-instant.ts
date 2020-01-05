@@ -6,7 +6,7 @@ import {LocaleHelper} from "@app/components/locale.componenet";
 import {Helper} from "@app/utils/helper.utils";
 import Product = FBInstant.Product;
 import Purchase = FBInstant.Purchase;
-//import {Timber} from "@timberio/browser";
+import {Log} from "@app/utils/Log";
 //import {LogLevel} from "@timberio/types";
 
 
@@ -24,7 +24,6 @@ export class FacebookInstant extends EventEmitter {
     private isRewardedAdLoaded: boolean;
     private isRewardedAdExtaBallLoaded: boolean;
     private isInterstitialLoaded: boolean;
-    //private logger: Timber;
 
     private constructor() {
         super();
@@ -52,9 +51,6 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public initializeAPI(onInitialize: () => void): void {
-/*        this.logger = new Timber("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2FwaS50aW1iZXIuaW8vIiwiZXhwIjpudWxsLCJpYXQiOjE1NzcwMDI2ODEsImlzcyI6Imh0dHBzOi8vYXBpLnRpbWJlci5pby9hcGlfa2V5cyIsInByb3ZpZGVyX2NsYWltcyI6eyJhcGlfa2V5X2lkIjo0NTIxLCJ1c2VyX2lkIjoiYXBpX2tleXw0NTIxIn0sInN1YiI6ImFwaV9rZXl8NDUyMSJ9.oFVim2193TrwYEI_6UZwizKftYOiexSGjtNKx4IJAiA",
-            "25818");
-        this.logger.info("Hello");*/
         if (!this._online) {
             onInitialize();
             return;
@@ -91,6 +87,7 @@ export class FacebookInstant extends EventEmitter {
                 // this.ID = FBInstant.context.getID();
                 // this.playerName = FBInstant.player.getName();
                 // this.playerId = FBInstant.player.getID();
+
                 return this.getPlayerWeeklyScore(entry => {
 
                     //console.log("Weekly score:", entry);
@@ -653,6 +650,7 @@ export class FacebookInstant extends EventEmitter {
                 productID: product.productID
             }).then(function(catalog) {
                 console.log(catalog); // [{productID: '12345', ...}, ...]
+                Log.Instance.log("Buy Inapp", catalog);
                 callback(catalog);
             });
         }catch (e) {

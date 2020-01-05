@@ -89,7 +89,9 @@ export class PowerSelectScene extends StateContainer {
         const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
         if(isRewardVisible)
             this.createAdsButton(element.element);
-        this.createAdsButton(element.element);
+
+        //this.createConfetti();
+        //this.createAdsButton(element.element);
         RendererController.Instance.resizeHandler();
     }
 
@@ -351,5 +353,37 @@ export class PowerSelectScene extends StateContainer {
             EventManager.Instance.emit('change-state', 'game')
         })
     }
+/*
+    private createConfetti() {
+       // TweenMax.set("img",{xPercent:"-50%",yPercent:"-50%"})
 
+        let total:number = 70 ;
+      // let     w:number = RendererController.Instance.width/2 ;
+       let h:number =RendererController.Instance.height/2;
+
+        for (var i=0 , div:SpriteComponent ; i<total; i++){
+            div = new SpriteComponent(
+                {
+                    parent: this,
+                    element: {
+                    scale: new Point(0.4,0.4),
+                    position: new Point(-28, this.R( -RendererController.Instance.height/2, RendererController.Instance.height/2))
+                }
+            }).anchor(0.5).texture('coin', 'content');
+            //this.addChild(div);
+            //TweenMax.set(div,{x:this.R(0,w),y:this.R(-100,100),opacity:1,scale:this.R(0,0.5)+0.5,color:"hsl("+this.R(170,360)+",50%,50%)"});
+            this.animm(div, h);
+            console.log("Adding sprite:")
+        };
+
+
+    }
+
+    animm(elm:SpriteComponent, h:number):void{
+        TweenMax.to(elm,this.R(0,5)+3,{y:h,ease:Linear.easeNone,repeat:-1, delay:-5});
+        TweenMax.to(elm,this.R(0,5)+1,{x:'+=70', repeat:-1,yoyo:true,ease:Sine.easeInOut})
+        TweenMax.to(elm,this.R(0,1)+0.5,{opacity:0, repeat:-1,yoyo:true,ease:Sine.easeInOut})
+    };
+
+    R(min:number, max:number):number{ return min + ( Math.random() * (max - min)) };*/
 }
