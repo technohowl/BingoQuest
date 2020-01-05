@@ -120,6 +120,13 @@ export class GameScene extends StateContainer {
   }
   private getTotalBalls(): number {
     let initial = Resources.getConfig().total_balls;
+    if(GameModelData.instance.isExtraCalls)
+    {
+      initial += 2;
+      console.warn("Received extra 2 calls");
+    }
+
+    GameModelData.instance.isExtraCalls = false;
 
     GameModelData.instance.items.forEach((value: PowerList) => {
       if (value === 'extra-ball') {

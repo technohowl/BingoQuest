@@ -37,7 +37,7 @@ export class MoneyCounterComponent extends ContainerComponent {
         }).on('text-value', (comp:ComponentBase, value:number) => {
           //(comp as BitmapTextComponent).text((value).toString());
           let currentValue:number = +(comp as BitmapTextComponent).element.text;
-          console.error("Current money :", currentValue, value);
+          //console.error("Current money :", currentValue, value);
           this.timerF(currentValue, value, comp);
 
         })

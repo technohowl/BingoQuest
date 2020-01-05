@@ -32,6 +32,7 @@ export class GameModelData {
     private properties:GameModelProps;
     contextScore:number;
     weeklyPlayerScore:number;
+    adscalls:boolean;
 
     private constructor(props?:GameModelProps) {
         this.properties = props;
@@ -110,6 +111,13 @@ export class GameModelData {
     }
     set playerWeekScore(value:number) {
         this.weeklyPlayerScore = value;
+    }
+
+    get isExtraCalls():boolean {
+        return this.adscalls;
+    }
+    set isExtraCalls(value:boolean) {
+        this.adscalls = value;
     }
 
 
