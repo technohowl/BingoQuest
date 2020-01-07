@@ -73,12 +73,12 @@ export class MoneyCounterComponent extends ContainerComponent {
     if(diff<0){
 
         (comp as BitmapTextComponent).text((value - decr).toString());
-        setTimeout( this.timerF.bind(this, (value - decr), finalValue, comp), 30 );
+        setTimeout( this.timerF.bind(this, (value - decr), finalValue, comp), 10 );
 
     }else if(diff>0) {
 
         (comp as BitmapTextComponent).text((value + decr).toString());
-        setTimeout(this.timerF.bind(this, (value + decr), finalValue, comp), 30);
+        setTimeout(this.timerF.bind(this, (value + decr), finalValue, comp), 10);
 
     }
   }

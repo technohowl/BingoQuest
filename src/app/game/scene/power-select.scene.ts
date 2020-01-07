@@ -15,7 +15,7 @@ import { ComponentBase } from '@app/core/component.core';
 import { GameModelData, PowerList } from '@models/game-model.data';
 import { MoneyCounterComponent } from '../power-select/money-counter.component';
 import { FacebookInstant } from '@app/services/facebook-instant';
-import { TweenMax, Bounce } from 'gsap';
+import {TweenMax, Bounce, Sine} from 'gsap';
 import { SoundController } from '@app/controller/sound.controller';
 import {LocaleHelper} from "@app/components/locale.componenet";
 
@@ -86,10 +86,10 @@ export class PowerSelectScene extends StateContainer {
             }
         });
 
-        const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
+        const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.powerup);
         if(isRewardVisible)
             this.createAdsButton(element.element);
-
+       //this.showNotificationText();
         //this.createConfetti();
         //this.createAdsButton(element.element);
         RendererController.Instance.resizeHandler();
@@ -221,12 +221,15 @@ export class PowerSelectScene extends StateContainer {
         this.coinsComp.destroy();
         this.callsComp.destroy();
 
-        FacebookInstant.instance.playVideo(  () => {
-            SoundController.instance.audio('sfx').play('notification-alert-02');
-            if(type == 0)
+        FacebookInstant.instance.showRewardedAd( Resources.getConfig().ads.powerup, () => {
+            if(type == 0) {
+                SoundController.instance.audio('sfx').play('notification-alert-02');
                 GameModelData.instance.money += Resources.getConfig().ads_win_powerup;
-            else
+            }
+            else {
                 GameModelData.instance.isExtraCalls = true;
+                this.showNotificationText();
+            }
 
         }, (_:any) => {
             console.log('error');
@@ -386,4 +389,24 @@ export class PowerSelectScene extends StateContainer {
     };
 
     R(min:number, max:number):number{ return min + ( Math.random() * (max - min)) };*/
+    private showNotificationText() {
+        const texxt: BitmapTextComponent = new BitmapTextComponent({
+            parent: this,
+            element: {
+                position: new Point(0, 290),
+                text: 'Received extra 2 calls!',
+                font: '36px lobster',
+                tint: 0x7fe9ef,
+                alpha: 0,
+                anchor: new Point(0.5, 0.5)
+            }
+        }).blendMode(2);
+        /* TweenMax.to(texxt.element, 0.7, {alpha: 1, ease: Sine.easeIn});
+         TweenMax.to(texxt.element, 0.7, {alpha: 0, ease: Sine.easeOut, delay:5});*/
+        TweenMax.fromTo(texxt.element, 0.7, { y: 200, alpha:0 }, { y: 290,alpha:1, repeat: 0, ease: Sine.easeInOut })
+            .eventCallback('onComplete', () =>     SoundController.instance.audio('sfx').play('notification-alert-01') );
+
+        TweenMax.fromTo(texxt.element, 2, {alpha: 1}, {alpha: 0, delay: 2})
+
+    }
 }

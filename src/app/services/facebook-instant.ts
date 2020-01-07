@@ -20,9 +20,11 @@ export class FacebookInstant extends EventEmitter {
     private intAd: FBInstant.AdInstance;
     private rewardAd: FBInstant.AdInstance;
     private rewardAdExtraBall: FBInstant.AdInstance;
+    private rewardAdPowerUp: FBInstant.AdInstance;
 
     private isRewardedAdLoaded: boolean;
     private isRewardedAdExtaBallLoaded: boolean;
+    private isRewardedAdPowerUp: boolean;
     private isInterstitialLoaded: boolean;
 
     private constructor() {
@@ -31,6 +33,7 @@ export class FacebookInstant extends EventEmitter {
         this._adCount = false;
         this.isRewardedAdLoaded = false;
         this.isRewardedAdExtaBallLoaded = false;
+        this.isRewardedAdPowerUp = false;
         this.isInterstitialLoaded = false;
 
         this.leaderboardImages = new Map<string, Texture>();
@@ -94,7 +97,10 @@ export class FacebookInstant extends EventEmitter {
                     // get ebtry from leaderboard and save temp in gameModel.
                     GameModelData.instance.playerWeekScore = entry == null ? 0 : entry.getScore() || 0;
                     Helper.log( `Weekly Score: ${GameModelData.instance.playerWeekScore}`);
-                    this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
+                    /*this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
+
+                    });*/
+                    this.cacheRewarded(Resources.getConfig().ads.powerup, ()=>{
 
                     });
                     this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
@@ -348,10 +354,12 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public isRewardedAdAvailable(id: string): Boolean {
-        if(id === (Resources.getConfig().ads.extraballs) ){
+        if(id === (Resources.getConfig().ads.powerup) ){
+            return this.isRewardedAdPowerUp;
+        }
+        else if(id === (Resources.getConfig().ads.extraballs) ){
             return this.isRewardedAdExtaBallLoaded;
         }else {
-            console.log("this.isRewardedAdLoaded:", this.isRewardedAdLoaded);
             return this.isRewardedAdLoaded;
         }
     }
@@ -364,14 +372,25 @@ export class FacebookInstant extends EventEmitter {
             .then((rewardedVideo: FBInstant.AdInstance) => {
                 //console.log("Rewarded video getRewardedVideoAsync:" , id);
                 Helper.log("Rewarded video getRewardedVideoAsync:" , id);
-                if(id === Resources.getConfig().ads.extraballs) {
+                if(id === Resources.getConfig().ads.powerup) {
+                    this.rewardAdPowerUp = rewardedVideo;
+                    this.rewardAdPowerUp.loadAsync().then(() => {
+                        this.isRewardedAdPowerUp = true;
+                        //Log.Instance.log("Rewarded extra power up loaded:" , id);
+                        onComplete();
+                    }).catch((error:any)=>{
+                        Log.Instance.log("Rewarded video error 0:" , error);
+                        onComplete();
+                    });
+                }
+                else if(id === Resources.getConfig().ads.extraballs) {
                     this.rewardAdExtraBall = rewardedVideo;
                     this.rewardAdExtraBall.loadAsync().then(() => {
                         this.isRewardedAdExtaBallLoaded = true;
-                        Helper.log("Rewarded extra video loaded:" , id);
+                        //Log.Instance.log("Rewarded extra video loaded:" , id);
                         onComplete();
                     }).catch((error:any)=>{
-                        Helper.log("Rewarded video error 1:" , error);
+                        Log.Instance.log("Rewarded video error 1:" , error);
                         onComplete();
                     });
                 }
@@ -379,10 +398,10 @@ export class FacebookInstant extends EventEmitter {
                     this.rewardAd = rewardedVideo;
                     this.rewardAd.loadAsync().then(() => {
                         this.isRewardedAdLoaded = true;
-                        Helper.log("Rewarded video loaded id:" , id);
+                        //Log.Instance.log("Rewarded video loaded id:" , id);
                         onComplete();
                     }).catch((error:any)=>{
-                        Helper.log("Rewarded video error 2:" , error);
+                        Log.Instance.log("Rewarded video error 2:" , error);
                         onComplete();
                     });
                 }
@@ -394,18 +413,44 @@ export class FacebookInstant extends EventEmitter {
         });
     }
 
+
+
     public showRewardedAd(id:string, onComplete: () => void, onFail: (data:any) => void):void{
         if (!this.isOnline) {
             onComplete();
             return;
         }
+        if(id === (Resources.getConfig().ads.powerup) ){
+            this.playRewardedPowerUp(onComplete, onFail);
 
-        if(id === (Resources.getConfig().ads.extraballs) ){
+        }
+        else if(id === (Resources.getConfig().ads.extraballs) ){
             this.playextraballsVideo(onComplete, onFail);
 
         }else {
             this.playVideo(onComplete, onFail);
         }
+    }
+
+    public playRewardedPowerUp(onComplete: () => void, onFail: (data: any) => void): void {
+        if(!this.isRewardedAdPowerUp){
+            onFail("Not available.");
+            return;
+        }
+
+        this.rewardAdPowerUp.showAsync()
+            .then(() => {
+                this.rewardAdPowerUp = null;
+                this.isRewardedAdPowerUp = false;
+                //this.cacheRewarded(Resources.getConfig().ads.extraballs);
+                this.cacheRewarded(Resources.getConfig().ads.powerup, ()=>{});
+                onComplete();
+            })
+            .catch((reason: any) => {
+                console.log(reason);
+                onFail(reason);
+            });
+
     }
 
     public playextraballsVideo(onComplete: () => void, onFail: (data: any) => void): void {
@@ -438,7 +483,10 @@ export class FacebookInstant extends EventEmitter {
             .then(() => {
                 this.rewardAd = null;
                 this.isRewardedAdLoaded = false;
-                this.cacheRewarded(Resources.getConfig().ads.game, onComplete);
+                this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
+
+                });
+                onComplete();
             })
             .catch((reason: any) => {
                 console.log(reason);

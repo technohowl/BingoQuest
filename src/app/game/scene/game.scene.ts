@@ -83,7 +83,13 @@ export class GameScene extends StateContainer {
     );
 
     FacebookInstant.instance.isGamePlayed = true;
+    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
 
+    if(!isRewardVisible) {
+      FacebookInstant.instance.cacheRewarded(Resources.getConfig().ads.game, () => {
+        Helper.log("Received extra ball cached ad");
+      });
+    }
     //todo tarun remove in prod
     //this.createCoinAdsButton(Resources.getConfig().ads_win_extra_ball);
 

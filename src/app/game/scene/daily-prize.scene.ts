@@ -136,7 +136,7 @@ export class DailyPrizeScene extends StateContainer {
     GameModelData.instance.money += value;
     GameModelData.instance.saveTime();
     this.createContinuebutton();
-    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
+    const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.powerup);
     if(isRewardVisible)
       this.createAdsButton();
   }
@@ -232,7 +232,7 @@ export class DailyPrizeScene extends StateContainer {
 
   onClickSpinAgain(comp:ComponentBase):void {
 
-    FacebookInstant.instance.playVideo( () => {
+    FacebookInstant.instance.showRewardedAd(Resources.getConfig().ads.powerup, () => {
       
       comp.element.visible = false;
       this.continueButton.destroy();
