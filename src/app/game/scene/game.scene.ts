@@ -39,7 +39,7 @@ export class GameScene extends StateContainer {
   private endGameContainer:ContainerComponent;
   private isAdUsed:boolean;
   private isExtraAdUsed:boolean;
-  private isGameRunning: boolean;
+  //private isGameRunning: boolean;
 
   constructor() {
     super()
@@ -75,21 +75,24 @@ export class GameScene extends StateContainer {
     this.createBottomBar();
 
     RendererController.Instance.resizeHandler();
-    this.isGameRunning = true;
-    FacebookInstant.instance.addPause(() =>
-    {
-        this.pauseScreen()
-    }
-    );
+    //this.isGameRunning = true;
 
+    Timer.Instance.paused = false;
     FacebookInstant.instance.isGamePlayed = true;
     const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
 
     if(!isRewardVisible) {
       FacebookInstant.instance.cacheRewarded(Resources.getConfig().ads.game, () => {
-        Helper.log("Received extra ball cached ad");
+        Helper.log("Present game ball cached ad");
       });
     }
+
+    FacebookInstant.instance.addPause(() =>
+        {
+          //Log.instance.warn("on Paused called");
+          this.pauseScreen()
+        }
+    );
     //todo tarun remove in prod
     //this.createCoinAdsButton(Resources.getConfig().ads_win_extra_ball);
 
@@ -302,9 +305,9 @@ export class GameScene extends StateContainer {
 
   pauseScreen(): void {
     ///console.error("OnPaused:");
-    if(Timer.Instance.paused || !this.isGameRunning) {
+   /* if(Timer.Instance.paused || !this.isGameRunning) {
       return;
-    }
+    }*/
 
     Timer.Instance.paused = true;
 
@@ -440,7 +443,7 @@ export class GameScene extends StateContainer {
   }
 
   private onFinishLevel(): void {
-    this.isGameRunning = false;
+    //this.isGameRunning = false;
     const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
     if(isRewardVisible)
       this.createAdsButton(Resources.getConfig().ads_win_extra_ball);
@@ -641,8 +644,8 @@ export class GameScene extends StateContainer {
     this.pieceCounter.destroy();
     this.ballGenerator.destroy();
     Timer.Instance.paused = false;
-    EventManager.Instance.emit('change-state', 'map');
     FacebookInstant.instance.removePause()
+    EventManager.Instance.emit('change-state', 'map');
   }
 
 

@@ -97,17 +97,17 @@ export class FacebookInstant extends EventEmitter {
                     // get ebtry from leaderboard and save temp in gameModel.
                     GameModelData.instance.playerWeekScore = entry == null ? 0 : entry.getScore() || 0;
                     Helper.log( `Weekly Score: ${GameModelData.instance.playerWeekScore}`);
-                    /*this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
-
-                    });*/
+                    /**/
                     this.cacheRewarded(Resources.getConfig().ads.powerup, ()=>{
+                       setTimeout(this.cacheRewarded.bind(this, Resources.getConfig().ads.game, () =>{
+                           setTimeout(this.cacheInterstitialAd.bind(this, Resources.getConfig().ads.interstitial, () =>{
 
+                           }, (error:Error)=>{
+                               Log.instance.log("Error in interstitial", error.message);
+                           }), 1000);
+                       }), 1000);
                     });
-                    this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
 
-                    }, (data: any) =>{
-                        console.log("Failed to load interstitial:" , data);
-                    });
                     this.addEvents();
                     this.getContextScore(()=>{
                         callback();
@@ -379,7 +379,7 @@ export class FacebookInstant extends EventEmitter {
                         //Log.Instance.log("Rewarded extra power up loaded:" , id);
                         onComplete();
                     }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 0:" , error);
+                        Log.Instance.log("Rewarded video error 0:" , error.message);
                         onComplete();
                     });
                 }
@@ -390,7 +390,7 @@ export class FacebookInstant extends EventEmitter {
                         //Log.Instance.log("Rewarded extra video loaded:" , id);
                         onComplete();
                     }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 1:" , error);
+                        Log.Instance.log("Rewarded video error 1:" , error.message);
                         onComplete();
                     });
                 }
@@ -401,7 +401,7 @@ export class FacebookInstant extends EventEmitter {
                         //Log.Instance.log("Rewarded video loaded id:" , id);
                         onComplete();
                     }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 2:" , error);
+                        Log.Instance.log("Rewarded video error 2:" , error.message);
                         onComplete();
                     });
                 }
@@ -513,20 +513,16 @@ export class FacebookInstant extends EventEmitter {
             return;
         }
 
-        FBInstant.getInterstitialAdAsync(
-            id,
-        )
+        FBInstant.getInterstitialAdAsync(id)
             .then((interAd: FBInstant.AdInstance) => {
                 this.intAd = interAd;
                 console.log(this.intAd);
                 return this.intAd.loadAsync().then(()=>{
                     this.isInterstitialLoaded = true;
+                    onComplete();
                 });
-            }).then(() => {
-            console.log('loaded');
-            onComplete();
-        }).catch((err : Error) => {
-            onFail(err);
+            }).catch((err : Error) => {
+                onFail(err);
         });
     }
     showInterstitialAd(onComplete: () => void): void {

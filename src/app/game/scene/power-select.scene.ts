@@ -25,8 +25,8 @@ export class PowerSelectScene extends StateContainer {
     private powersSelected:PowerList[];
     private listContainers:ContainerComponent[];
     private money:MoneyCounterComponent;
-    private coinsComp:SpriteComponent;
-    private callsComp:SpriteComponent;
+/*    private coinsComp:SpriteComponent;
+    private callsComp:SpriteComponent;*/
 
     constructor () {
         super()
@@ -88,8 +88,14 @@ export class PowerSelectScene extends StateContainer {
 
         const isRewardVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.powerup);
         if(isRewardVisible)
+            this.createExtraCallsButton(element.element);
+
+        const isGameAdVisible: Boolean = FacebookInstant.instance.isRewardedAdAvailable(Resources.getConfig().ads.game);
+        if(isGameAdVisible)
             this.createAdsButton(element.element);
-       //this.showNotificationText();
+
+
+        //this.showNotificationText();
         //this.createConfetti();
         //this.createAdsButton(element.element);
         RendererController.Instance.resizeHandler();
@@ -130,50 +136,8 @@ export class PowerSelectScene extends StateContainer {
         } )
     }
 
-    createAdsButton(parent:Sprite):void {
-
-        const prize:number = Resources.getConfig().ads_win_powerup;
-        this.coinsComp = new SpriteComponent({
-            parent: parent,
-            element: {
-                position: new Point(-RendererController.Instance.center.x/2,  290),
-                scale: new Point(1,1),
-            },
-            children: [
-                new SpriteComponent({
-                    element: {
-                        scale: new Point(0.5,0.5),
-                        tint: 0x444444,
-                        blendMode: 2,
-                        position: new Point(-40, -3)
-                    }
-                }).texture('icon-ads', 'content').anchor(0.5),
-                new BitmapTextComponent({
-                    element: {
-                        position: new Point(11, 4),
-                        //todo locale
-                        text: `Win\n${prize}    `,
-                        align: 'center',
-                        font: '24px arial',
-                        tint: 0x555555,
-                        anchor: new Point(0.5,0.65)
-                    }
-                }).blendMode(2),
-                new SpriteComponent({
-                    element: {
-                        scale: new Point(0.25,0.25),
-                        position: new Point( 40, 12),
-                    }
-                }).texture('coin', 'content').anchor(0.5)
-            ],
-            behavior: [
-                new ButtonBehavior({
-                    click: (comp:ComponentBase) => this.onClickAds(comp, 0)
-                })
-            ],
-        }).anchor(0.5).texture('button-ads', 'content');
-
-        this.callsComp = new SpriteComponent({
+    createExtraCallsButton(parent:Sprite):void{
+        new SpriteComponent({
             parent: parent,
             element: {
                 position: new Point(RendererController.Instance.center.x/2, 290),
@@ -215,25 +179,74 @@ export class PowerSelectScene extends StateContainer {
         }).anchor(0.5).texture('button-ads', 'content');
     }
 
+    createAdsButton(parent:Sprite):void {
+
+        const prize:number = Resources.getConfig().ads_win_powerup;
+        new SpriteComponent({
+            parent: parent,
+            element: {
+                position: new Point(-RendererController.Instance.center.x/2,  290),
+                scale: new Point(1,1),
+            },
+            children: [
+                new SpriteComponent({
+                    element: {
+                        scale: new Point(0.5,0.5),
+                        tint: 0x444444,
+                        blendMode: 2,
+                        position: new Point(-40, -3)
+                    }
+                }).texture('icon-ads', 'content').anchor(0.5),
+                new BitmapTextComponent({
+                    element: {
+                        position: new Point(11, 4),
+                        //todo locale
+                        text: `Win\n${prize}    `,
+                        align: 'center',
+                        font: '24px arial',
+                        tint: 0x555555,
+                        anchor: new Point(0.5,0.65)
+                    }
+                }).blendMode(2),
+                new SpriteComponent({
+                    element: {
+                        scale: new Point(0.25,0.25),
+                        position: new Point( 40, 12),
+                    }
+                }).texture('coin', 'content').anchor(0.5)
+            ],
+            behavior: [
+                new ButtonBehavior({
+                    click: (comp:ComponentBase) => this.onClickAds(comp, 0)
+                })
+            ],
+        }).anchor(0.5).texture('button-ads', 'content');
+
+
+    }
+
     onClickAds(_comp:ComponentBase, type: number):void {
         //comp.destroy();
+        _comp.destroy();
+        //this.coinsComp.destroy();
+        //this.callsComp.destroy();
 
-        this.coinsComp.destroy();
-        this.callsComp.destroy();
-
-        FacebookInstant.instance.showRewardedAd( Resources.getConfig().ads.powerup, () => {
-            if(type == 0) {
+        if(type == 0){
+            FacebookInstant.instance.showRewardedAd( Resources.getConfig().ads.game, () => {
                 SoundController.instance.audio('sfx').play('notification-alert-02');
                 GameModelData.instance.money += Resources.getConfig().ads_win_powerup;
-            }
-            else {
+            }, (_:any) => {
+                console.log('error');
+            });
+        }else{
+            FacebookInstant.instance.showRewardedAd( Resources.getConfig().ads.powerup, () => {
                 GameModelData.instance.isExtraCalls = true;
                 this.showNotificationText();
-            }
+            }, (_:any) => {
+                console.log('error');
+            });
+        }
 
-        }, (_:any) => {
-            console.log('error');
-        })
 
     }
 
@@ -390,6 +403,7 @@ export class PowerSelectScene extends StateContainer {
 
     R(min:number, max:number):number{ return min + ( Math.random() * (max - min)) };*/
     private showNotificationText() {
+        //GameModelData.instance.isExtraCalls = true;
         const texxt: BitmapTextComponent = new BitmapTextComponent({
             parent: this,
             element: {
