@@ -49,6 +49,7 @@ export class FacebookInstant extends EventEmitter {
     get contextId(): string {
         return FBInstant.context.getID();
     }
+
     get getId(): string {
         return FBInstant.player.getID();
     }
@@ -64,21 +65,24 @@ export class FacebookInstant extends EventEmitter {
                 console.log(reason);
             });
     }
+
     get entryPoint(): any {
         return FBInstant.getEntryPointData();
     }
+
     public setProgress(value: number): void {
         if (!this._online) {
             return;
         }
         FBInstant.setLoadingProgress(value);
     }
-/*
-    public sendLog(data: any, logLevel: LogLevel = LogLevel.Info){
-        this.logger.log(data, logLevel).then(_=>{
 
-        });
-    }*/
+    /*
+        public sendLog(data: any, logLevel: LogLevel = LogLevel.Info){
+            this.logger.log(data, logLevel).then(_=>{
+
+            });
+        }*/
 
     public startGame(callback: () => void): void {
         if (!this._online) {
@@ -86,7 +90,7 @@ export class FacebookInstant extends EventEmitter {
             return;
         }
         FBInstant.startGameAsync()
-            .then( () => {
+            .then(() => {
                 // this.ID = FBInstant.context.getID();
                 // this.playerName = FBInstant.player.getName();
                 // this.playerId = FBInstant.player.getID();
@@ -96,25 +100,25 @@ export class FacebookInstant extends EventEmitter {
                     //console.log("Weekly score:", entry);
                     // get ebtry from leaderboard and save temp in gameModel.
                     GameModelData.instance.playerWeekScore = entry == null ? 0 : entry.getScore() || 0;
-                    Helper.log( `Weekly Score: ${GameModelData.instance.playerWeekScore}`);
+                    Helper.log(`Weekly Score: ${GameModelData.instance.playerWeekScore}`);
                     /**/
-                    this.cacheRewarded(Resources.getConfig().ads.powerup, ()=>{
-                       setTimeout(this.cacheRewarded.bind(this, Resources.getConfig().ads.game, () =>{
-                           setTimeout(this.cacheInterstitialAd.bind(this, Resources.getConfig().ads.interstitial, () =>{
+                    this.cacheRewarded(Resources.getConfig().ads.powerup, () => {
+                        setTimeout(this.cacheRewarded.bind(this, Resources.getConfig().ads.game, () => {
+                            setTimeout(this.cacheInterstitialAd.bind(this, Resources.getConfig().ads.interstitial, () => {
 
-                           }, (error:Error)=>{
-                               Log.instance.log("Error in interstitial", error.message);
-                           }), 1000);
-                       }), 1000);
+                            }, (error: Error) => {
+                                Log.instance.log("Error in interstitial", error.message);
+                            }), 1000);
+                        }), 1000);
                     });
 
                     this.addEvents();
-                    this.getContextScore(()=>{
+                    this.getContextScore(() => {
                         callback();
                     });
                 });
 
-            } )
+            })
             .catch((reason: any) => {
                 console.log(reason);
                 //this.sendLog(`startGameAsync: ${reason}`, LogLevel.Error);
@@ -140,6 +144,7 @@ export class FacebookInstant extends EventEmitter {
                 console.log(reason);
             });
     }
+
     public saveData(data: any, callback: () => void): void {
         if (!this._online) {
             callback();
@@ -163,6 +168,7 @@ export class FacebookInstant extends EventEmitter {
     get isOnline(): boolean {
         return this._online;
     }
+
     set isOnline(value: boolean) {
         this._online = value;
     }
@@ -170,18 +176,19 @@ export class FacebookInstant extends EventEmitter {
     get isGamePlayed(): boolean {
         return this._adCount;
     }
+
     set isGamePlayed(value: boolean) {
         this._adCount = value;
     }
 
-    public logEvent( eventName:string, value?:number ):void{
+    public logEvent(eventName: string, value?: number): void {
         FBInstant.logEvent(
             eventName,
             value
         );
     }
 
-    public openGame(gameId: string, callback: ()=> void):void{
+    public openGame(gameId: string, callback: () => void): void {
         FBInstant
             .switchGameAsync(gameId)
             .then(function() {
@@ -191,22 +198,22 @@ export class FacebookInstant extends EventEmitter {
             });
     }
 
-    public createShortcut():void {
+    public createShortcut(): void {
         FBInstant.canCreateShortcutAsync()
-                .then(function(canCreateShortcut) {
-                    if (canCreateShortcut) {
-                        FBInstant.createShortcutAsync()
-                            .then(function() {
-                                window.localStorage.setItem('shortcut', "1");
+            .then(function(canCreateShortcut) {
+                if (canCreateShortcut) {
+                    FBInstant.createShortcutAsync()
+                        .then(function() {
+                            window.localStorage.setItem('shortcut', "1");
 
                             // Shortcut created
-                            })
-                            .catch(function() {
+                        })
+                        .catch(function() {
                             // Shortcut not created
                             window.localStorage.setItem('shortcut', "1");
                         });
-                    }
-                });
+                }
+            });
     }
 
     //tarun added weekly scoring
@@ -217,20 +224,20 @@ export class FacebookInstant extends EventEmitter {
                 leaderboard.setScoreAsync(value).then((_) => {
                     //console.log("leaderboard updated:");
                     FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly).then((weekylyLeaderboard) => {
-                        if(FBInstant.context.getID() !=null){
-                            weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore).then((_)=>{
+                        if (FBInstant.context.getID() != null) {
+                            weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore).then((_) => {
                                 /*FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
                                     callback(groupLoeaderboard.setScoreAsync(value));
                                 });*/
                                 //console.log("Updating leaderboard :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
 
                                 FBInstant.getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`).then((groupLoeaderboard) => {
-                                    groupLoeaderboard.setScoreAsync(GameModelData.instance.playerContextScore).then(_=>{
-                                        console.warn("Updated score leaderboard :", Resources.getConfig().leaderboard.group,FBInstant.context.getID());
+                                    groupLoeaderboard.setScoreAsync(GameModelData.instance.playerContextScore).then(_ => {
+                                        console.warn("Updated score leaderboard :", Resources.getConfig().leaderboard.group, FBInstant.context.getID());
                                         FBInstant.updateAsync({
                                             action: "LEADERBOARD",
                                             name: `${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`
-                                        }).then((entryData)=>{
+                                        }).then((entryData) => {
                                             console.warn("Context leaderbaord upadted:", entryData);
                                             callback(entryData);
                                         });
@@ -239,7 +246,7 @@ export class FacebookInstant extends EventEmitter {
 
                             });
 
-                        }else {
+                        } else {
                             console.warn("weekly leaderboard updated:", GameModelData.instance.weeklyScore);
                             callback(weekylyLeaderboard.setScoreAsync(GameModelData.instance.weeklyScore));
                         }
@@ -257,46 +264,57 @@ export class FacebookInstant extends EventEmitter {
     public getGlobalScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
             .getLeaderboardAsync(Resources.getConfig().leaderboard.global)
-            .then((leaderboard) => {return leaderboard.getEntriesAsync(total, page * total)})
+            .then((leaderboard) => {
+                return leaderboard.getEntriesAsync(total, page * total)
+            })
             .then((entries) => callback(entries))
-            .catch((reason: any) => {
-                console.log(reason);
-            });
-    }
-    public getWeeklyScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
-        FBInstant
-            .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
-            .then((leaderboard) => {return leaderboard.getEntriesAsync(total, page * total)})
-            .then((entries) => callback(entries))
-            .catch((reason: any) => {
-                console.log(reason);
-            });
-    }
-    public getPlayerStats( callback: (entries: FBInstant.StatsObject) => void, keys?:Array<string>): void {
-        FBInstant.player
-            .getStatsAsync(keys)
-            .then((stats) => {callback(stats)})
             .catch((reason: any) => {
                 console.log(reason);
             });
     }
 
-    public incPlayerStats(data:any, callback: () => void): void {
+    public getWeeklyScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
+        FBInstant
+            .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
+            .then((leaderboard) => {
+                return leaderboard.getEntriesAsync(total, page * total)
+            })
+            .then((entries) => callback(entries))
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+
+    public getPlayerStats(callback: (entries: FBInstant.StatsObject) => void, keys?: Array<string>): void {
+        FBInstant.player
+            .getStatsAsync(keys)
+            .then((stats) => {
+                callback(stats)
+            })
+            .catch((reason: any) => {
+                console.log(reason);
+            });
+    }
+
+    public incPlayerStats(data: any, callback: () => void): void {
         FBInstant.player
             .incrementStatsAsync(data)
-            .then(() => {callback()})
+            .then(() => {
+                callback()
+            })
             .catch((reason: any) => {
                 console.log(reason);
                 callback();
             });
     }
-    public  getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
+
+    public getFriendsScore(page: number, total: number, callback: (entries: FBInstant.LeaderboardEntry[]) => void): void {
         FBInstant
             .getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
-            .then( (leaderboard: any) => {
+            .then((leaderboard: any) => {
                 console.log(leaderboard);
                 return leaderboard.getConnectedPlayerEntriesAsync(total, page * total);
-            } )
+            })
             .then((entries) => callback(entries))
             .catch((reason: any) => {
                 console.log(reason);
@@ -307,8 +325,7 @@ export class FacebookInstant extends EventEmitter {
         //console.log("Getting context leaderboard:");
         FBInstant
             .getLeaderboardAsync(`${Resources.getConfig().leaderboard.group}${FBInstant.context.getID()}`)
-            .then((leaderboard) =>
-            {
+            .then((leaderboard) => {
                 console.log("context leaderboard:", leaderboard);
 
                 return leaderboard.getEntriesAsync(total, page * total)
@@ -323,13 +340,13 @@ export class FacebookInstant extends EventEmitter {
             });
     }
 
-    public  getConnectedPlayers(callback: (entries: FBInstant.ContextPlayer[]) => void): void {
+    public getConnectedPlayers(callback: (entries: FBInstant.ContextPlayer[]) => void): void {
         FBInstant
             .context.getPlayersAsync()
-            .then( (players: any) => {
+            .then((players: any) => {
                 console.log(players);
                 callback(players)
-            } )
+            })
 
             .catch((reason: any) => {
                 console.log(reason);
@@ -338,14 +355,14 @@ export class FacebookInstant extends EventEmitter {
 
     public getPlayerScore(callback: (entries: FBInstant.LeaderboardEntry) => void): void {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.global)
-            .then( (leaderboard: any) => leaderboard.getPlayerEntryAsync())
+            .then((leaderboard: any) => leaderboard.getPlayerEntryAsync())
             .then((entry: FBInstant.LeaderboardEntry) => callback(entry))
             .catch((error: any) => console.log(error));
     }
 
     public getPlayerWeeklyScore(callback: (entries: FBInstant.LeaderboardEntry) => void): void {
         FBInstant.getLeaderboardAsync(Resources.getConfig().leaderboard.weekly)
-            .then( (leaderboard: any) => leaderboard.getPlayerEntryAsync())
+            .then((leaderboard: any) => leaderboard.getPlayerEntryAsync())
             .then((entry: FBInstant.LeaderboardEntry) => callback(entry))
             .catch((error: any) => {
                 console.log(error);
@@ -354,86 +371,79 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public isRewardedAdAvailable(id: string): Boolean {
-        if(id === (Resources.getConfig().ads.powerup) ){
+        if (id === (Resources.getConfig().ads.powerup)) {
             return this.isRewardedAdPowerUp;
-        }
-        else if(id === (Resources.getConfig().ads.extraballs) ){
+        } else if (id === (Resources.getConfig().ads.extraballs)) {
             return this.isRewardedAdExtaBallLoaded;
-        }else {
+        } else {
             return this.isRewardedAdLoaded;
         }
     }
 
-    public cacheRewarded(id: string, onComplete: () => void):void {
+    public cacheRewarded(id: string, onComplete: () => void): void {
         //console.log("Rewarded video cache started:" , id);
         //Helper.log("Rewarded video cache started:"+ id);
 
         FBInstant.getRewardedVideoAsync(id)
             .then((rewardedVideo: FBInstant.AdInstance) => {
                 //console.log("Rewarded video getRewardedVideoAsync:" , id);
-                Helper.log("Rewarded video getRewardedVideoAsync:" , id);
-                if(id === Resources.getConfig().ads.powerup) {
+                Helper.log("Rewarded video getRewardedVideoAsync:", id);
+                if (id === Resources.getConfig().ads.powerup) {
                     this.rewardAdPowerUp = rewardedVideo;
                     this.rewardAdPowerUp.loadAsync().then(() => {
                         this.isRewardedAdPowerUp = true;
                         //Log.Instance.log("Rewarded extra power up loaded:" , id);
                         onComplete();
-                    }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 0:" , error.message);
+                    }).catch((error: any) => {
+                        Log.Instance.log("Rewarded video error 0:", error.message);
                         onComplete();
                     });
-                }
-                else if(id === Resources.getConfig().ads.extraballs) {
+                } else if (id === Resources.getConfig().ads.extraballs) {
                     this.rewardAdExtraBall = rewardedVideo;
                     this.rewardAdExtraBall.loadAsync().then(() => {
                         this.isRewardedAdExtaBallLoaded = true;
                         //Log.Instance.log("Rewarded extra video loaded:" , id);
                         onComplete();
-                    }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 1:" , error.message);
+                    }).catch((error: any) => {
+                        Log.Instance.log("Rewarded video error 1:", error.message);
                         onComplete();
                     });
-                }
-                else {
+                } else {
                     this.rewardAd = rewardedVideo;
                     this.rewardAd.loadAsync().then(() => {
                         this.isRewardedAdLoaded = true;
                         //Log.Instance.log("Rewarded video loaded id:" , id);
                         onComplete();
-                    }).catch((error:any)=>{
-                        Log.Instance.log("Rewarded video error 2:" , error.message);
+                    }).catch((error: any) => {
+                        Log.Instance.log("Rewarded video error 2:", error.message);
                         onComplete();
                     });
                 }
 
-
-            }).catch((error:any)=>{
-            Helper.log("Rewarded video error:" , error);
+            }).catch((error: any) => {
+            Helper.log("Rewarded video error:", error);
             onComplete();
         });
     }
 
-
-
-    public showRewardedAd(id:string, onComplete: () => void, onFail: (data:any) => void):void{
+    public showRewardedAd(id: string, onComplete: () => void, onFail: (data: any) => void): void {
         if (!this.isOnline) {
             onComplete();
             return;
         }
-        if(id === (Resources.getConfig().ads.powerup) ){
+        if (id === (Resources.getConfig().ads.powerup)) {
             this.playRewardedPowerUp(onComplete, onFail);
 
-        }
-        else if(id === (Resources.getConfig().ads.extraballs) ){
+        } else if (id === (Resources.getConfig().ads.extraballs)) {
             this.playextraballsVideo(onComplete, onFail);
 
-        }else {
+        } else {
             this.playVideo(onComplete, onFail);
         }
     }
 
     public playRewardedPowerUp(onComplete: () => void, onFail: (data: any) => void): void {
-        if(!this.isRewardedAdPowerUp){
+        if (!this.isRewardedAdPowerUp) {
             onFail("Not available.");
             return;
         }
@@ -443,7 +453,8 @@ export class FacebookInstant extends EventEmitter {
                 this.rewardAdPowerUp = null;
                 this.isRewardedAdPowerUp = false;
                 //this.cacheRewarded(Resources.getConfig().ads.extraballs);
-                this.cacheRewarded(Resources.getConfig().ads.powerup, ()=>{});
+                this.cacheRewarded(Resources.getConfig().ads.powerup, () => {
+                });
                 onComplete();
             })
             .catch((reason: any) => {
@@ -454,7 +465,7 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public playextraballsVideo(onComplete: () => void, onFail: (data: any) => void): void {
-        if(!this.isRewardedAdExtaBallLoaded){
+        if (!this.isRewardedAdExtaBallLoaded) {
             onFail("Not available.");
             return;
         }
@@ -474,7 +485,7 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public playVideo(onComplete: () => void, onFail: (data: any) => void): void {
-        if(!this.isRewardedAdLoaded){
+        if (!this.isRewardedAdLoaded) {
             onFail("Not available.");
             return;
         }
@@ -483,7 +494,7 @@ export class FacebookInstant extends EventEmitter {
             .then(() => {
                 this.rewardAd = null;
                 this.isRewardedAdLoaded = false;
-                this.cacheRewarded(Resources.getConfig().ads.game, ()=>{
+                this.cacheRewarded(Resources.getConfig().ads.game, () => {
 
                 });
                 onComplete();
@@ -495,8 +506,7 @@ export class FacebookInstant extends EventEmitter {
 
     }
 
-
-    getScore(callback: (entries: Array < FBInstant.LeaderboardEntry > ) => void): void {
+    getScore(callback: (entries: Array<FBInstant.LeaderboardEntry>) => void): void {
         FBInstant
             // .getLeaderboardAsync('weekly.÷' + FBInstant.context.getID())
             .getLeaderboardAsync('global')
@@ -517,30 +527,33 @@ export class FacebookInstant extends EventEmitter {
             .then((interAd: FBInstant.AdInstance) => {
                 this.intAd = interAd;
                 console.log(this.intAd);
-                return this.intAd.loadAsync().then(()=>{
+                return this.intAd.loadAsync().then(() => {
                     this.isInterstitialLoaded = true;
                     onComplete();
                 });
-            }).catch((err : Error) => {
-                onFail(err);
+            }).catch((err: Error) => {
+            onFail(err);
         });
     }
+
     showInterstitialAd(onComplete: () => void): void {
         if (!this.isOnline) {
             onComplete();
             return;
         }
-        if((this.intAd == null || !this.isInterstitialLoaded)){
+        if ((this.intAd == null || !this.isInterstitialLoaded)) {
             onComplete();
             return;
         }
         this.isGamePlayed = false;
-        this.intAd.showAsync().then(()=>{
+        this.intAd.showAsync().then(() => {
             this.intAd = null;
             this.isInterstitialLoaded = false;
-            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {}, (_:Error) => {});
+            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
+            }, (_: Error) => {
+            });
             onComplete();
-        }).catch((_:Error)=>{
+        }).catch((_: Error) => {
             onComplete();
         });
     }
@@ -549,16 +562,16 @@ export class FacebookInstant extends EventEmitter {
     public showBot(callback: () => void): void {
         FBInstant.getSupportedAPIs();
         FBInstant.player.canSubscribeBotAsync()
-            .then(function (can_subscribe) {
+            .then(function(can_subscribe) {
                 if (can_subscribe) {
-                    FBInstant.player.subscribeBotAsync().then(()=> {
+                    FBInstant.player.subscribeBotAsync().then(() => {
                         // Player is subscribed to the bot
                         callback();
                     });
-                }else{
+                } else {
                     callback();
                 }
-        }).catch((error)=>{
+            }).catch((error) => {
             console.error("Error in show bot: ", error);
             callback();
         });
@@ -567,22 +580,24 @@ export class FacebookInstant extends EventEmitter {
     }
 
     public addPause(callback: () => void): void {
-        FBInstant.onPause( () => callback());
-    }
-    public removePause(): void {
-        FBInstant.onPause( () => {} );
+        FBInstant.onPause(() => callback());
     }
 
-    public inviteSocial(callback:() => void):void{
+    public removePause(): void {
+        FBInstant.onPause(() => {
+        });
+    }
+
+    public inviteSocial(callback: () => void): void {
         FBInstant.context.chooseAsync()
-            .then(()=>{
+            .then(() => {
                 this.getContextScore(callback);
             })
     }
 
     public startMatchmaking(callback: (value: string) => void): void {
         FBInstant.matchPlayerAsync(null, true, true)
-            .then( () => callback(FBInstant.context.getID()));
+            .then(() => callback(FBInstant.context.getID()));
     }
 
     public share(callback: () => void): void {
@@ -615,7 +630,7 @@ export class FacebookInstant extends EventEmitter {
             .catch((value: any) => console.log(value));
     }
 
-    public sendUpdate(text:string, callback: () => void): void {
+    public sendUpdate(text: string, callback: () => void): void {
         FBInstant.updateAsync({
             action: "CUSTOM",
             cta: Resources.getConfig().templates.template2.cta,
@@ -641,20 +656,19 @@ export class FacebookInstant extends EventEmitter {
         return text;
     }
 
-    public switchAsync(id: string, callback: () => void):void {
+    public switchAsync(id: string, callback: () => void): void {
         FBInstant.context.createAsync(id)
             .then(() => {
-                this.getContextScore(callback);
+                    this.getContextScore(callback);
 
                 }
-
             )
             .catch((value: any) => console.log(value));
     }
 
-    public getContextScore(callBack:()=>void):void {
+    public getContextScore(callBack: () => void): void {
         console.warn("getContextScore player stats:");
-        if(FacebookInstant.instance.contextId != null){
+        if (FacebookInstant.instance.contextId != null) {
             let data: string[] = [
                 `${FacebookInstant.instance.contextId.toString()}`
                 //`${Resources.getConfig().leaderboard.weekly}`
@@ -671,24 +685,24 @@ export class FacebookInstant extends EventEmitter {
                 callBack();
             }
 
-        }else {
+        } else {
             callBack();
         }
     }
 
-    public getInappCatalog(callback: (products: Product[]) => void):void{
+    public getInappCatalog(callback: (products: Product[]) => void): void {
         try {
             FBInstant.payments.getCatalogAsync().then(function(catalog) {
                 //console.log(catalog); // [{productID: '12345', ...}, ...]
                 callback(catalog);
             });
-        }catch (e) {
+        } catch (e) {
             console.error("Error in getting catalog stats:", e);
             callback(null);
         }
     }
 
-    public buyInappItem(product: Product, callback: (result: Purchase) => void):void{
+    public buyInappItem(product: Product, callback: (result: Purchase) => void): void {
         try {
             FBInstant.payments.purchaseAsync({
                 productID: product.productID
@@ -697,18 +711,18 @@ export class FacebookInstant extends EventEmitter {
                 Log.Instance.log("Buy Inapp", catalog);
                 callback(catalog);
             });
-        }catch (e) {
+        } catch (e) {
             console.error("Error in getting catalog stats:", e);
             callback(null);
         }
     }
 
-    public consumeItem(token: string, callback:()=>void):void{
+    public consumeItem(token: string, callback: () => void): void {
         try {
-            FBInstant.payments.consumePurchaseAsync(token).then(function () {
+            FBInstant.payments.consumePurchaseAsync(token).then(function() {
                 callback();
             });
-        }catch (e) {
+        } catch (e) {
             callback();
         }
     }

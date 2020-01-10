@@ -22,6 +22,7 @@ export class MapSelectScene extends StateContainer {
     private counter:BingoCounterComponent;
     private background:Graphics;
     private bottomBar: SpriteComponent;
+    //private mapSprite: SpriteComponent;
 
     constructor () {
         super();
@@ -46,14 +47,21 @@ export class MapSelectScene extends StateContainer {
     }
 
     createMap():void {
-
+        let childComps: ContainerComponent[];
+        //GameModelData.instance.bingos = 659;
+        if(GameModelData.instance.bingos >= 659){
+            childComps = this.addLevelsToChildren(1);
+        }
+        else{
+            childComps = this.addLevelsToChildren(0);
+        }
 
         new SpriteComponent({
             parent: this,
             element: {
                 position: new Point(0, RendererController.Instance.center.y)
             },
-            children: this.addLevelsToChildren(),
+            children: childComps,
             behavior: [
                 new ScrollingBehavior()
             ]
@@ -62,69 +70,70 @@ export class MapSelectScene extends StateContainer {
     }
 
 
-    addLevelsToChildren():ContainerComponent[] {
+    addLevelsToChildren(level: number):ContainerComponent[] {
         const containers:ContainerComponent[] = [];
 
-        containers.push(this.createLevel( 1,  0, new Point( 145, -133)));
-        containers.push(this.createLevel( 2,  3, new Point(  12, -145)));
-        containers.push(this.createLevel( 3,  6, new Point( -89, -156)));
-        containers.push(this.createLevel( 4,  9, new Point(-186, -189)));
-        containers.push(this.createLevel( 5, 12, new Point(-109, -251),4));
-        containers.push(this.createLevel( 6, 16, new Point(   7, -256),4));
-        containers.push(this.createLevel( 7, 20, new Point( 109, -272),4));
-        containers.push(this.createLevel( 8, 24, new Point( 209, -325),4));
-        containers.push(this.createLevel( 9, 28, new Point( 150, -380),4));
-        containers.push(this.createLevel(10, 32, new Point(  36, -382),4));
+        containers.push(this.createLevel( 1 + (level * 53),  (level * 659), new Point( 145, -133)));
+        containers.push(this.createLevel( 2+ (level * 53),  3+(level * 659), new Point(  12, -145)));
+        containers.push(this.createLevel( 3+ (level * 53),  6+(level * 659), new Point( -89, -156)));
+        containers.push(this.createLevel( 4+ (level * 53),  9+(level * 659), new Point(-186, -189)));
+        containers.push(this.createLevel( 5+ (level * 53), 12+(level * 659), new Point(-109, -251),4));
+        containers.push(this.createLevel( 6+ (level * 53), 16+(level * 659), new Point(   7, -256),4));
+        containers.push(this.createLevel( 7+ (level * 53), 20+(level * 659), new Point( 109, -272),4));
+        containers.push(this.createLevel( 8+ (level * 53), 24+(level * 659), new Point( 209, -325),4));
+        containers.push(this.createLevel( 9+ (level * 53), 28+(level * 659), new Point( 150, -380),4));
+        containers.push(this.createLevel(10+ (level * 53), 32+(level * 659), new Point(  36, -382),4));
 
-        containers.push(this.createLevel(11, 36, new Point( -63, -389),4));
-        containers.push(this.createLevel(12, 40, new Point(-152, -413),5));
-        containers.push(this.createLevel(13, 45, new Point(-176, -486),5));
-        containers.push(this.createLevel(14, 50, new Point( -89, -503),5));
-        containers.push(this.createLevel(15, 55, new Point(   7, -508),5));
-        containers.push(this.createLevel(16, 60, new Point( 103, -520),5));
-        containers.push(this.createLevel(17, 65, new Point( 189, -562),5));
-        containers.push(this.createLevel(18, 70, new Point( 147, -626),5));
-        containers.push(this.createLevel(19, 75, new Point(  60, -631),5));
-        containers.push(this.createLevel(20, 80, new Point( -28, -641),5));
+        containers.push(this.createLevel(11+ (level * 53), 36+(level * 659), new Point( -63, -389),4));
+        containers.push(this.createLevel(12+ (level * 53), 40+(level * 659), new Point(-152, -413),5));
+        containers.push(this.createLevel(13+ (level * 53), 45+(level * 659), new Point(-176, -486),5));
+        containers.push(this.createLevel(14+ (level * 53), 50+(level * 659), new Point( -89, -503),5));
+        containers.push(this.createLevel(15+ (level * 53), 55+(level * 659), new Point(   7, -508),5));
+        containers.push(this.createLevel(16+ (level * 53), 60+(level * 659), new Point( 103, -520),5));
+        containers.push(this.createLevel(17+ (level * 53), 65+(level * 659), new Point( 189, -562),5));
+        containers.push(this.createLevel(18+ (level * 53), 70+(level * 659), new Point( 147, -626),5));
+        containers.push(this.createLevel(19+ (level * 53), 75+(level * 659), new Point(  60, -631),5));
+        containers.push(this.createLevel(20+ (level * 53), 80+(level * 659), new Point( -28, -641),5));
 
-        containers.push(this.createLevel(21, 85, new Point(-118, -665),5));
-        containers.push(this.createLevel(22, 90, new Point(-177, -716),5));
-        containers.push(this.createLevel(23, 95, new Point(-162, -789),5));
-        containers.push(this.createLevel(24, 100, new Point( -66, -792),10));
-        containers.push(this.createLevel(25, 110, new Point(  37, -805),10));
-        containers.push(this.createLevel(26, 120, new Point( 126, -829),10));
-        containers.push(this.createLevel(27, 130, new Point( 191, -884),10));
-        containers.push(this.createLevel(28, 140, new Point( 182, -940),10));
-        containers.push(this.createLevel(29, 150, new Point(  90, -960),10));
-        containers.push(this.createLevel(30, 160, new Point(  -5, -970),10));
+        containers.push(this.createLevel(21+ (level * 53), 85+(level * 659), new Point(-118, -665),5));
+        containers.push(this.createLevel(22+ (level * 53), 90+(level * 659), new Point(-177, -716),5));
+        containers.push(this.createLevel(23+ (level * 53), 95+(level * 659), new Point(-162, -789),5));
+        containers.push(this.createLevel(24+ (level * 53), 100+(level * 659), new Point( -66, -792),10));
+        containers.push(this.createLevel(25+ (level * 53), 110+(level * 659), new Point(  37, -805),10));
+        containers.push(this.createLevel(26+ (level * 53), 120+(level * 659), new Point( 126, -829),10));
+        containers.push(this.createLevel(27+ (level * 53), 130+(level * 659), new Point( 191, -884),10));
+        containers.push(this.createLevel(28+ (level * 53), 140+(level * 659), new Point( 182, -940),10));
+        containers.push(this.createLevel(29+ (level * 53), 150+(level * 659), new Point(  90, -960),10));
+        containers.push(this.createLevel(30+ (level * 53), 160+(level * 659), new Point(  -5, -970),10));
 
-        containers.push(this.createLevel(31, 170, new Point( -97, -992),10));
-        containers.push(this.createLevel(32, 180, new Point(-166,-1038),10));
-        containers.push(this.createLevel(33, 190, new Point(-166,-1119),10));
-        containers.push(this.createLevel(34, 200, new Point( -74,-1125),10));
+        containers.push(this.createLevel(31+ (level * 53), 170+(level * 659), new Point( -97, -992),10));
+        containers.push(this.createLevel(32+ (level * 53), 180+(level * 659), new Point(-166,-1038),10));
+        containers.push(this.createLevel(33+ (level * 53), 190+(level * 659), new Point(-166,-1119),10));
+        containers.push(this.createLevel(34+ (level * 53), 200+(level * 659), new Point( -74,-1125),10));
 
-        containers.push(this.createLevel(35,210, new Point(  18,-1135),10));
-        containers.push(this.createLevel(36,220, new Point( 116,-1150),10));
-        containers.push(this.createLevel(37,230, new Point( 189,-1203),10));
-        containers.push(this.createLevel(38,240, new Point( 118,-1253),10));
-        containers.push(this.createLevel(39,250, new Point(  13,-1253),20));
-        containers.push(this.createLevel(40,270, new Point( -85,-1270),20));
-        containers.push(this.createLevel(41,290, new Point(-161,-1312),20));
-        containers.push(this.createLevel(42,310, new Point(-173,-1392),20));
-        containers.push(this.createLevel(43,330, new Point( -82,-1413),20));
-        containers.push(this.createLevel(44,350, new Point(  25,-1414),20));
-        containers.push(this.createLevel(45,370, new Point( 120,-1440),20));
-        containers.push(this.createLevel(46,390, new Point( 183,-1495),30));
-        containers.push(this.createLevel(47,420, new Point( 103,-1533),30));
-        containers.push(this.createLevel(48,450, new Point(  18,-1533), 30));
-        containers.push(this.createLevel(49,480, new Point(  -68,-1545), 30));
-        containers.push(this.createLevel(50,510, new Point(  -140,-1562), 30));
-        containers.push(this.createLevel(51,540, new Point(  -170,-1610), 40));
-        containers.push(this.createLevel(52,580, new Point(  -115,-1645), 40));
-        containers.push(this.createLevel(53,620, new Point(  -50,-1660), 40));
-        containers.push(this.createLevel(54,660, new Point(  -100,-1665), 0,true));
+        containers.push(this.createLevel(35+ (level * 53),210+(level * 659), new Point(  18,-1135),10));
+        containers.push(this.createLevel(36+ (level * 53),220+(level * 659), new Point( 116,-1150),10));
+        containers.push(this.createLevel(37+ (level * 53),230+(level * 659), new Point( 189,-1203),10));
+        containers.push(this.createLevel(38+ (level * 53),240+(level * 659), new Point( 118,-1253),10));
+        containers.push(this.createLevel(39+ (level * 53),250+(level * 659), new Point(  13,-1253),20));
+        containers.push(this.createLevel(40+ (level * 53),270+(level * 659), new Point( -85,-1270),20));
+        containers.push(this.createLevel(41+ (level * 53),290+(level * 659), new Point(-161,-1312),20));
+        containers.push(this.createLevel(42+ (level * 53),310+(level * 659), new Point(-173,-1392),20));
+        containers.push(this.createLevel(43+ (level * 53),330+(level * 659), new Point( -82,-1413),20));
+        containers.push(this.createLevel(44+ (level * 53),350+(level * 659), new Point(  25,-1414),20));
+        containers.push(this.createLevel(45+ (level * 53),370+(level * 659), new Point( 120,-1440),20));
+        containers.push(this.createLevel(46+ (level * 53),390+(level * 659), new Point( 183,-1495),30));
+        containers.push(this.createLevel(47+ (level * 53),420+(level * 659), new Point( 103,-1533),30));
+        containers.push(this.createLevel(48+ (level * 53),450+(level * 659), new Point(  18,-1533), 30));
+        containers.push(this.createLevel(49+ (level * 53),480+(level * 659), new Point(  -68,-1545), 30));
+        containers.push(this.createLevel(50+ (level * 53),510+(level * 659), new Point(  -140,-1562), 30));
+        containers.push(this.createLevel(51+ (level * 53),540+(level * 659), new Point(  -170,-1610), 40));
+        containers.push(this.createLevel(52+ (level * 53),580+(level * 659), new Point(  -115,-1645), 40));
+        containers.push(this.createLevel(53+ (level * 53),620+(level * 659), new Point(  -40,-1660), 40));
+        containers.push(this.createLevel(54+ (level * 53),660+(level * 659), new Point(  -100,-1665), 0,true));
 
 
+        //console.log("containers[0].element", containers[containers.length - 1].element, containers[1].element.y);
         containers.sort( (a:ContainerComponent, b:ContainerComponent) => {
             return a.element.y - b.element.y
         });
@@ -136,7 +145,7 @@ export class MapSelectScene extends StateContainer {
     createLevel(value:number, required:number, position:Point, nextReq:number = 3, isLast:boolean = false):ContainerComponent {
 
         const locked:boolean = required > GameModelData.instance.bingos;
-        const areAllOpened:boolean = GameModelData.instance.bingos >= 450;
+        //const areAllOpened:boolean = GameModelData.instance.bingos > 620;
         if(!locked) {
             this.lastOpened = true;
         }
@@ -145,7 +154,8 @@ export class MapSelectScene extends StateContainer {
         const container:ContainerComponent = new ContainerComponent({
             element: {
                 position: position,
-                visible: isNextOpen
+                visible: isNextOpen 
+
             },
             children: [
                 new SpriteComponent({
@@ -168,7 +178,7 @@ export class MapSelectScene extends StateContainer {
                     element: {
                         position: new Point(0, -70),
                         // tarun && will hide played levels
-                        visible: locked && this.lastOpened || areAllOpened,
+                        visible: locked && this.lastOpened,
                     },
                     children: [
                         new SpriteComponent({
@@ -200,9 +210,16 @@ export class MapSelectScene extends StateContainer {
             this.lastOpened = false;
         }
         container.element.name += `_${value}`;
-        if(isNextOpen && !locked)
-            TweenMax.fromTo(container.element.scale, 0.3, {x: 1,y: 1}, {x: 1.05, y: 1.05, yoyo: true, repeat: -1, repeatDelay: 0.2, ease: Bounce.easeInOut});
-
+        if(isNextOpen && !locked) {
+            TweenMax.fromTo(container.element.scale, 0.3, {x: 1, y: 1}, {
+                x: 1.05,
+                y: 1.05,
+                yoyo: true,
+                repeat: -1,
+                repeatDelay: 0.2,
+                ease: Bounce.easeInOut
+            });
+        }
         return container;
     }
 
