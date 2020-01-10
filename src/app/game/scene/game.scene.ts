@@ -374,9 +374,11 @@ export class GameScene extends StateContainer {
             visible: true
           }
         }).text('Exit Game').AddCallback(() => {
+          /*
           FacebookInstant.instance.showInterstitialAd(()=>{
             this.onForceQuit();
-          });
+          });*/
+          this.onForceQuit();
 
         }),
       ]
