@@ -14,6 +14,7 @@ import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
 import { GameModelData } from '@models/game-model.data';
 import { Bounce, TweenMax, Sine} from "gsap";
+import {Log} from "@app/utils/Log";
 
 
 export class MapSelectScene extends StateContainer {
@@ -42,6 +43,8 @@ export class MapSelectScene extends StateContainer {
 
         this.createBingoCounter();
         this.createBottomBar();
+
+        this.checkEntryPoints();
 
         RendererController.Instance.resizeHandler()
     }
@@ -361,5 +364,10 @@ export class MapSelectScene extends StateContainer {
                })
            ]
         }).anchor(0.5).texture('bottom-marker-background', 'content')
+    }
+
+     checkEntryPoints():void {
+         let entryPoints = FBInstant.getEntryPointData();
+         Log.Instance.log("Entry points:", entryPoints);
     }
 }
