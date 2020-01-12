@@ -367,7 +367,7 @@ export class MapSelectScene extends StateContainer {
     }
 
      checkEntryPoints():void {
-         let entryPoints = FBInstant.getEntryPointData();
-         Log.Instance.log("Entry points:", entryPoints);
+         /*let entryPoints = FBInstant.getEntryPointData();
+         Log.Instance.log("Entry points:", entryPoints);*/
     }
 }
