@@ -7,7 +7,6 @@ import {Helper} from "@app/utils/helper.utils";
 import Product = FBInstant.Product;
 import Purchase = FBInstant.Purchase;
 import {Log} from "@app/utils/Log";
-//import {LogLevel} from "@timberio/types";
 
 
 export class FacebookInstant extends EventEmitter {
@@ -396,6 +395,7 @@ export class FacebookInstant extends EventEmitter {
                         onComplete();
                     }).catch((error: any) => {
                         Log.Instance.log("Rewarded video error 0:", error.message);
+                        this.adsRetryTimer(id, error);
                         onComplete();
                     });
                 } else if (id === Resources.getConfig().ads.extraballs) {
@@ -406,6 +406,7 @@ export class FacebookInstant extends EventEmitter {
                         onComplete();
                     }).catch((error: any) => {
                         Log.Instance.log("Rewarded video error 1:", error.message);
+                        this.adsRetryTimer(id, error);
                         onComplete();
                     });
                 } else {
@@ -416,6 +417,7 @@ export class FacebookInstant extends EventEmitter {
                         onComplete();
                     }).catch((error: any) => {
                         Log.Instance.log("Rewarded video error 2:", error.message);
+                        this.adsRetryTimer(id, error);
                         onComplete();
                     });
                 }
@@ -532,6 +534,10 @@ export class FacebookInstant extends EventEmitter {
                     onComplete();
                 });
             }).catch((err: Error) => {
+            /*if(err &&  !isNullOrUndefined(err.message) && err.message === "No fill")
+            {
+                setTimeout(this.cacheInterstitialAd.bind(this, id),  30000);
+            }*/
             onFail(err);
         });
     }
@@ -549,7 +555,7 @@ export class FacebookInstant extends EventEmitter {
         this.intAd.showAsync().then(() => {
             this.intAd = null;
             this.isInterstitialLoaded = false;
-            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial, () => {
+            this.cacheInterstitialAd(Resources.getConfig().ads.interstitial_bet, () => {
             }, (_: Error) => {
             });
             onComplete();
@@ -725,5 +731,12 @@ export class FacebookInstant extends EventEmitter {
         } catch (e) {
             callback();
         }
+    }
+
+    private adsRetryTimer(_id: string, _error:Error) {
+        /*if(error &&  !isNullOrUndefined(error.message) && error.message === "No fill")
+        {
+            setTimeout(this.cacheRewarded.bind(this, id), 30000);
+        }*/
     }
 }
