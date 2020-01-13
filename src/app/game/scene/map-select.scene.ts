@@ -14,7 +14,6 @@ import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { ComponentBase } from '@app/core/component.core';
 import { GameModelData } from '@models/game-model.data';
 import { Bounce, TweenMax, Sine} from "gsap";
-import {Log} from "@app/utils/Log";
 
 
 export class MapSelectScene extends StateContainer {

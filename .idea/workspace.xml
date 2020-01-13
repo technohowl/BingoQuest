@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -107,7 +108,8 @@
       <workItem from="1578748446878" duration="950000" />
       <workItem from="1578811795055" duration="539000" />
       <workItem from="1578828914068" duration="769000" />
-      <workItem from="1578833040005" duration="3484000" />
+      <workItem from="1578833040005" duration="4659000" />
+      <workItem from="1578912424169" duration="520000" />
     </task>
     <servers />
   </component>
@@ -160,11 +162,11 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="625" height="500" key="SwitcherDM" timestamp="1578841461507">
+    <state width="625" height="500" key="SwitcherDM" timestamp="1578912486277">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state width="625" height="500" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1578652375411" />
-    <state width="625" height="500" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1578841461507" />
+    <state width="625" height="500" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1578912486277" />
     <state x="100" y="123" width="2360" height="1169" key="VCS.FileHistoryDialog" timestamp="1577013135929">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
@@ -173,6 +175,10 @@
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
     <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577214231271" />
+    <state x="1046" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578851826140">
+      <screen x="0" y="23" width="2560" height="1369" />
+    </state>
+    <state x="1046" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.2560.1369@0.23.2560.1369" timestamp="1578851826140" />
     <state x="946" y="469" width="816" height="574" key="find.popup" timestamp="1578410662198">
       <screen x="0" y="23" width="2560" height="1369" />
     </state>
