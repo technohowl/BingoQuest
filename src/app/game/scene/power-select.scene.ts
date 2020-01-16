@@ -1,8 +1,8 @@
 
 import {
     StateContainer, EventManager,
-    SpriteComponent,
-} from '@app/game'
+    SpriteComponent, PowerSelectData,
+} from '@app/game';
 import { Point, Sprite } from 'pixi.js';
 import { ButtonBehavior } from '@app/behaviors/button.behavior';
 import { BitmapTextComponent } from '@app/components/bitmap-text.component';
@@ -255,13 +255,31 @@ export class PowerSelectScene extends StateContainer {
         const powerSelected:PowerSelectBehavior = new PowerSelectBehavior({
             powers:[
                 {name: 'Bingo',      chances: 3, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
-                {name: 'Coin',       chances: 9, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
-                {name: 'Extra Ball', chances: 4, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
-                {name: 'Daub',       chances: 4, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
-                {name: '2 Daubs',    chances: 1, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
+                {name: 'Coin',       chances: 12, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
+                {name: 'Extra Ball', chances: 2, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
+                {name: 'Daub',       chances: 2, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
+                {name: '2 Daubs',    chances: 2, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
                 {name: 'Key',        chances: 4, texture:Resources.getTexture('key', 'content'), power: 'key'},
             ]
         });
+
+        let powers_1:PowerSelectData[] = [
+            {name: 'Bingo',      chances: 3, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
+            {name: 'Coin',       chances: 9, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
+            {name: 'Extra Ball', chances: 4, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
+            {name: 'Daub',       chances: 3, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
+            {name: '2 Daubs',    chances: 2, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
+            {name: 'Key',        chances: 4, texture:Resources.getTexture('key', 'content'), power: 'key'},
+        ];
+
+        let powers_2:PowerSelectData[] = [
+            {name: 'Bingo',      chances: 4, texture:Resources.getTexture('bingo-icon', 'content'), power: 'instant-bingo'},
+            {name: 'Coin',       chances: 7, texture:Resources.getTexture('coin', 'content'), power: 'coin'},
+            {name: 'Extra Ball', chances: 4, texture:Resources.getTexture('extra-ball', 'content'), power: 'extra-ball'},
+            {name: 'Daub',       chances: 3, texture:Resources.getTexture('star-icon', 'content'), power: 'bonus-daub'},
+            {name: '2 Daubs',    chances: 3, texture:Resources.getTexture('star-icon2', 'content'), power: '2-bonus-daub'},
+            {name: 'Key',        chances: 4, texture:Resources.getTexture('key', 'content'), power: 'key'},
+        ];
 
         powerSelected.on('selected', () => {
             SoundController.instance.audio('sfx').play('notification-alert-01');
@@ -269,6 +287,11 @@ export class PowerSelectScene extends StateContainer {
             //tarun
             GameModelData.instance.money -= (15 + 5 * powerSelected.totalClicks);
             this.validateMoneyButtons();
+            if(powerSelected.totalClicks == 1){
+                powerSelected.changePowerData(powers_1);
+            }else if(powerSelected.totalClicks == 2){
+                powerSelected.changePowerData(powers_2);
+            }
         });
 
         const container:ContainerComponent = new ContainerComponent({

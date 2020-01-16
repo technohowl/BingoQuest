@@ -44,11 +44,17 @@ export class PowerSelectBehavior extends BehaviorBase<PowerBehaviorState, PowerB
     this.title = element.getChildWithTag('title') as BitmapTextComponent;
 
   }
+
+  public changePowerData(data: PowerSelectData[]): void{
+    this.properties.powers = data;
+  }
   
   private getRandomResult():PowerSelectData {
 
     let counter = 0;
     let sort = Helper.RandomInt(0, 24);
+
+    //console.log("Powers Data:", this.properties.powers);
 
     for(let i = 0; i < this.properties.powers.length; i++) {
       counter += this.properties.powers[i].chances;
