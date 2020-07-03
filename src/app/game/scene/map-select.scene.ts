@@ -1,7 +1,7 @@
 
 import {
     StateContainer,
-    EventManager, FacebookInstant, Resources
+    EventManager, FacebookInstant
 } from '@app/game';
 import { RendererController } from '@app/controller/renderer.controller';
 import { SpriteComponent } from '@app/components/sprite.component';
@@ -267,10 +267,11 @@ export class MapSelectScene extends StateContainer {
             }
         }).texture('botton-bar', 'background').anchor(0.5, 1);
 
-        this.createItemCounter( new Point(-60, -50), Resources.getTexture('bingoicon'),'2458786131022945');
-        this.createItemCounter( new Point(40, -50), Resources.getTexture('sudokuicon'),'836916043371368');
-        this.createItemCounter( new Point(140, -50), Resources.getTexture('idlepizza'),'958968481102514');
-        // this.createItemCounter('powers-daub', new Point( 150, -60), Resources.getTexture('star-icon', 'content'))
+        //this.createItemCounter( new Point(-60, -50), Resources.getTexture('bingoicon'),'2458786131022945');
+        //this.createItemCounter( new Point(40, -50), Resources.getTexture('sudokuicon'),'836916043371368');
+        //this.createItemCounter( new Point(140, -50), Resources.getTexture('idlepizza'),'958968481102514');
+
+        //this.createItemCounter('powers-daub', new Point( 150, -60), Resources.getTexture('star-icon', 'content'))
 
         this.createButtonSettings();
         if(FBInstant.getSupportedAPIs().includes("payments.purchaseAsync")){

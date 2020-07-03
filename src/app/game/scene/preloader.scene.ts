@@ -25,9 +25,15 @@ export class PreloaderScene extends StateContainer {
     loader.add('bingoicon', 'assets/bingoicon.png');
     loader.add('loading', 'assets/loading.png');
     loader.add('shop', 'assets/shop.png');
-    loader.add('sudokuicon', 'assets/sudokuicon.png');
-    loader.add('idlepizza', 'assets/idlepizza.png');
-    loader.add('playicon', 'assets/play_icon.png');
+    loader.add('b', 'assets/b.png');
+    loader.add('i', 'assets/i.png');
+    loader.add('n', 'assets/n.png');
+    loader.add('g', 'assets/g.png');
+    loader.add('o', 'assets/o.png');
+
+    //loader.add('sudokuicon', 'assets/sudokuicon.png');
+    //loader.add('idlepizza', 'assets/idlepizza.png');
+    //loader.add('playicon', 'assets/play_icon.png');
 
     loader.add('background', 'assets/background.json');
     loader.add('content', 'assets/content.json');
@@ -74,6 +80,7 @@ export class PreloaderScene extends StateContainer {
     }
 
     GameModelData.instance.props = response;
+    //GameModelData.instance.powerKeys = 10;
 
     EventManager.Instance.emit('change-state', 'intro');
 

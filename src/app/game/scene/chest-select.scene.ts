@@ -49,7 +49,9 @@ export class ChestSelectScene extends StateContainer {
     this.createChest(new Point(-140, 100));
     this.createChest(new Point(   0, 100));
     this.createChest(new Point( 140, 100));
-    
+
+    this.createContinuebutton();
+
     RendererController.Instance.resizeHandler();
 
   }
@@ -92,11 +94,9 @@ export class ChestSelectScene extends StateContainer {
     .to(comp.element, 0.2, {rotation: Helper.DegreeToRad(0)})
     .to(comp.element.scale, 0.5, {x: 0.8, y: 0.8}, 0)
 
-
     GameModelData.instance.powerKeys--;
-    if(GameModelData.instance.powerKeys <= 0) {
-      this.createContinuebutton();
-    }
+    /*if(GameModelData.instance.powerKeys <= 0) {
+    }*/
 
   }
   private onCompleteAnim(comp:SpriteComponent):void {

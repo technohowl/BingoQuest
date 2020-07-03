@@ -3,7 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="eb99d37c-dbb3-4bd0-a316-336bbbc4a0c1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/board/ball-slider.behavior.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/board/ball-slider.behavior.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/scene/chest-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/chest-select.scene.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/scene/game.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/game.scene.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/map-select.scene.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/game/scene/preloader.scene.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/game/scene/preloader.scene.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/bingoicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/idlepizza.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/assets/sudokuicon.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +39,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/app/game/shop" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
@@ -110,6 +117,11 @@
       <workItem from="1578828914068" duration="769000" />
       <workItem from="1578833040005" duration="4659000" />
       <workItem from="1578912424169" duration="520000" />
+      <workItem from="1584821371858" duration="36000" />
+      <workItem from="1584821479435" duration="78000" />
+      <workItem from="1589614960744" duration="4471000" />
+      <workItem from="1589729119588" duration="427000" />
+      <workItem from="1590243893198" duration="14000" />
     </task>
     <servers />
   </component>
@@ -117,76 +129,13 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="880" y="373" key="#Inspections" timestamp="1576070581459">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="880" y="373" key="#Inspections/0.23.2560.1369@0.23.2560.1369" timestamp="1576070581459" />
-    <state x="1003" y="517" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576304817702">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="1003" y="517" key="#com.intellij.fileTypes.FileTypeChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1576304817702" />
-    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser" timestamp="1577018760278">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="1093" y="430" key="#com.intellij.ide.util.MemberChooser/0.23.2560.1369@0.23.2560.1369" timestamp="1577018760278" />
-    <state x="968" y="436" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1577970482488">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="968" y="436" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577970482488" />
-    <state x="955" y="406" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1578078622916">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="955" y="406" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1578078622916" />
-    <state width="2539" height="393" key="GridCell.Tab.0.bottom" timestamp="1576352855728">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state width="2539" height="393" key="GridCell.Tab.0.bottom/0.23.2560.1369@0.23.2560.1369" timestamp="1576352855728" />
-    <state width="2539" height="393" key="GridCell.Tab.0.center" timestamp="1576352855727">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state width="2539" height="393" key="GridCell.Tab.0.center/0.23.2560.1369@0.23.2560.1369" timestamp="1576352855727" />
-    <state width="2539" height="393" key="GridCell.Tab.0.left" timestamp="1576352855727">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state width="2539" height="393" key="GridCell.Tab.0.left/0.23.2560.1369@0.23.2560.1369" timestamp="1576352855727" />
-    <state width="2539" height="393" key="GridCell.Tab.0.right" timestamp="1576352855728">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state width="2539" height="393" key="GridCell.Tab.0.right/0.23.2560.1369@0.23.2560.1369" timestamp="1576352855728" />
-    <state x="286" y="23" width="1290" height="897" key="SettingsEditor" timestamp="1578643026530">
+    <state width="625" height="500" key="SwitcherDM" timestamp="1589729308809">
       <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state x="286" y="23" key="SettingsEditor/0.23.1440.833@0.23.1440.833" timestamp="1578643026530" />
-    <state x="789" y="346" width="1290" height="897" key="SettingsEditor/0.23.2560.1369@0.23.2560.1369" timestamp="1578230097771" />
-    <state x="1010" y="446" width="540" height="524" key="StructurePopup" timestamp="1576071329557">
-      <screen x="0" y="23" width="2560" height="1369" />
+    <state width="625" height="500" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1589729308809" />
+    <state x="325" y="137" width="789" height="604" key="find.popup" timestamp="1589729268937">
+      <screen x="0" y="23" width="1440" height="833" />
     </state>
-    <state x="1010" y="446" width="540" height="524" key="StructurePopup/0.23.2560.1369@0.23.2560.1369" timestamp="1576071329557" />
-    <state width="625" height="500" key="SwitcherDM" timestamp="1578912486277">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state width="625" height="500" key="SwitcherDM/0.23.1440.833@0.23.1440.833" timestamp="1578652375411" />
-    <state width="625" height="500" key="SwitcherDM/0.23.2560.1369@0.23.2560.1369" timestamp="1578912486277" />
-    <state x="100" y="123" width="2360" height="1169" key="VCS.FileHistoryDialog" timestamp="1577013135929">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="100" y="123" width="2360" height="1169" key="VCS.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577013135929" />
-    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1577214231271">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="100" y="123" width="2360" height="1169" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.2560.1369@0.23.2560.1369" timestamp="1577214231271" />
-    <state x="1046" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1578851826140">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="1046" y="614" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.23.2560.1369@0.23.2560.1369" timestamp="1578851826140" />
-    <state x="946" y="469" width="816" height="574" key="find.popup" timestamp="1578410662198">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="532" y="294" width="685" height="508" key="find.popup/0.23.1440.833@0.23.1440.833" timestamp="1576588518349" />
-    <state x="946" y="469" width="816" height="574" key="find.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1578410662198" />
-    <state x="945" y="336" width="838" height="676" key="search.everywhere.popup" timestamp="1578237301716">
-      <screen x="0" y="23" width="2560" height="1369" />
-    </state>
-    <state x="945" y="336" width="838" height="676" key="search.everywhere.popup/0.23.2560.1369@0.23.2560.1369" timestamp="1578237301716" />
+    <state x="325" y="137" width="789" height="604" key="find.popup/0.23.1440.833@0.23.1440.833" timestamp="1589729268937" />
   </component>
 </project>

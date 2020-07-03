@@ -6,6 +6,7 @@ import { BitmapTextComponent } from '@app/components/bitmap-text.component';
 import { Point } from 'pixi.js';
 import { ContainerComponent } from '@app/components/container.component';
 import { Helper } from '@app/utils/helper.utils';
+import {Resources} from "@app/utils/resources.utils";
 
 
 export type BallSliderStates = 'stopped' | 'generating' | 'finished' | 'waiting';
@@ -49,10 +50,12 @@ export class BallSliderBehavior extends BehaviorBase<BallSliderStates, BallSlide
       children:[
         new SpriteComponent({
           element: {
-            
+            scale: new Point(0.75, 0.75),
+            texture: Resources.getTexture(this.getBallByValue(value)),
+            position: new Point(0, 0),
           }
-        }).anchor(0.5).texture( this.getBallByValue(value), 'content'),
-        new BitmapTextComponent({
+        }).anchor(0.5),
+        /*new BitmapTextComponent({
           element: {
             position: new Point(-8, 0),
             text: this.getFormattedValue(value),
@@ -60,14 +63,14 @@ export class BallSliderBehavior extends BehaviorBase<BallSliderStates, BallSlide
             tint: 0x000000,
             anchor: new Point(1,0.6)
           }
-        }),
+        }),*/
         new BitmapTextComponent({
           element: {
-            position: new Point(-8, 0),
+            position: new Point(0, 7),
             text: Helper.numPad(value),
-            font: '28px arial',
+            font: '35px arial',
             tint: 0x000000,
-            anchor: new Point(0,0.6)
+            anchor: new Point(0.5,0.5)
           }
         })
       ]
@@ -78,6 +81,7 @@ export class BallSliderBehavior extends BehaviorBase<BallSliderStates, BallSlide
     return ball;
   }
 
+  // @ts-ignore
   private getFormattedValue(value:number):string {
     if(value <= 15) {
       return `B`;
@@ -94,15 +98,20 @@ export class BallSliderBehavior extends BehaviorBase<BallSliderStates, BallSlide
 
   getBallByValue(value:number):string {
     if(value <= 15) {
-      return 'ball-1';
+      //return 'ball-1';
+      return 'b';
     } else if(value <= 30) {
-      return 'ball-2';
+      //return 'ball-2';
+      return 'i';
     } else if(value <= 45) {
-      return 'ball-3';
+      //return 'ball-3';
+      return 'n';
     } else if(value <= 60) {
-      return 'ball-4';
+      //return 'ball-4';
+      return 'g';
     } else {
-      return 'ball-5';
+      //return 'ball-5';
+      return 'o';
     }
   }
 

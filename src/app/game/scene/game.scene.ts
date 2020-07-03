@@ -192,7 +192,7 @@ export class GameScene extends StateContainer {
           behavior: [
             new BallSliderBehavior({
               eventName: 'number-generator',
-              quantity: 6
+              quantity: 5
             })
           ]
         }),
